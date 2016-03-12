@@ -9,7 +9,7 @@ rm(list = ls())
   # caret: particionado
 ################################################
 
-pkgs = list("foreign")
+pkgs = c("foreign","data.table")
 to.install <- pkgs[ ! pkgs %in% installed.packages() ]
 install.packages( to.install, dependencies = TRUE )
 
@@ -17,9 +17,8 @@ install.packages( to.install, dependencies = TRUE )
 lapply(pkgs,require,character.only=TRUE)
 
 
-
-
-
+is.element("data.table", installed.packages())
+library(data.table)
 # Lectura de datos
 mlibras <- read.arff("movement_libras.arff")
 arrhythmia <- read.arff("arrhythmia.arff")
@@ -32,25 +31,16 @@ colnames(arrhythmia) <- tolower(colnames(arrhythmia))
 colnames(wdbc) <- tolower(colnames(wdbc))
 
 
-# d = list(mlibras, arrhythmia, wdbc)
 
 
-# Para cada dataset
-# Desde 1 hasta 5
-#   Hacemos una partición estratificada
-#
-#   Para {train, prueba}
-#     Hacemos greedy de selección de características
-#     Evaluamos tasa de acierto en el contrario
-#
-#   Hacemos media
+datasets = list(mlibras, arrhythmia, wdbc)
+
+
+# Semilla aleatoria
+set.seed(1)
 
 n <- nrow(mlibras)
 mclases <- split(mlibras, mlibras$class)
-
-
-
-set.seed(1)
 
 make.partition <- function(data,per){
   rows <- sample(1:nrow(data), nrow(data)*per) 
@@ -59,10 +49,10 @@ make.partition <- function(data,per){
 }
 
 mclases.partitioned <- lapply(mclases, make.partition, per=0.5 )
-
-
-
-
+mclases.training <- lapply (mclases.partitioned, function(x){ x$training } )
+mclases.training <- rbindlist(mclases.training)
+mclases.test <- lapply (mclases.partitioned, function(x){ x$test } )
+mclases.test <- rbindlist(mclases.test)
 
 SFS <- function(data){
   
