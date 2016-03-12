@@ -9,7 +9,7 @@ rm(list = ls())
   # caret: particionado
 ################################################
 
-pkgs = list("foreign","ggplot2")
+pkgs = list("foreign")
 to.install <- pkgs[ ! pkgs %in% installed.packages() ]
 install.packages( to.install, dependencies = TRUE )
 
@@ -33,6 +33,34 @@ colnames(wdbc) <- tolower(colnames(wdbc))
 
 
 # d = list(mlibras, arrhythmia, wdbc)
+
+
+# Para cada dataset
+# Desde 1 hasta 5
+#   Hacemos una partición estratificada
+#
+#   Para {train, prueba}
+#     Hacemos greedy de selección de características
+#     Evaluamos tasa de acierto en el contrario
+#
+#   Hacemos media
+
+n <- nrow(mlibras)
+mclases <- split(mlibras, mlibras$class)
+
+
+
+set.seed(1)
+
+make.partition <- function(data,per){
+  rows <- sample(1:nrow(data), nrow(data)*per) 
+  
+  list(training = data[rows,], test = data[-rows,])
+}
+
+mclases.partitioned <- lapply(mclases, make.partition, per=0.5 )
+
+
 
 
 
