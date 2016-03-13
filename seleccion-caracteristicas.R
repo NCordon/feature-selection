@@ -18,16 +18,16 @@ if ( length(to.install) > 0 )
   install.packages( to.install, dependencies = TRUE )
   
 lapply(pkgs, require, character.only=TRUE)
+
+
 ##########################################################################
-
-Filter(function(x){ length(unique(x))>1 }, data)
-
 # Lectura de datos
 mlibras <- read.arff("movement_libras.arff")
 arrhythmia <- read.arff("arrhythmia.arff")
 wdbc <- read.arff("wdbc.arff")
 
 
+# Función de normalización de datasets
 normalize <- function(data){
   colnames(data) <- tolower(colnames(data))
   data <- data[,c(colnames(data) [colnames(data) != "class"], "class")]
@@ -57,23 +57,12 @@ tasa.clas <- function (train, mask){
 
 
 ##########################################################################
-# Lista de datasets
-datasets = list(mlibras, arrhythmia, wdbc)
-##########################################################################
-
-##########################################################################
 # Función de generación de particiones
 make.partition <- function(data,per){
   rows <- sample(1:nrow(data), nrow(data)*per) 
   
   list(train = data[rows,], test = data[-rows,])
 }
-
-##########################################################################
-
-
-# Semilla aleatoria
-set.seed(1)
 
 ##########################################################################
 ### Función SFS
@@ -96,7 +85,7 @@ SFS <- function(data){
       tasa.clas(data, m)
     } )
     
-    if (max(evs) < max){
+    if (max(evs) <= max){
       break
     }
     
@@ -110,25 +99,32 @@ SFS <- function(data){
 
 ##########################################################################
 ### Bucle principal
-
-
-data.clases <- split(mlibras, mlibras$class)
-i <- 1
-
-while (i<=5){
-  partitioned <- lapply(data.clases, make.partition, per=0.5 )
-  train <- lapply (partitioned, function(x){ x$train } )
-  train <- rbindlist(train)
-  test <- lapply (partitioned, function(x){ x$test } )
-  test <- rbindlist(test)
+##########################################################################
+# Lista de datasets
+datasets = list(mlibras, arrhythmia, wdbc)
+# Semilla aleatoria
+set.seed(1)
+##########################################################################
+lapply (datasets, function(x){
+  class.split <- split(x, x$class)
+  i <- 1
   
-  # Primero usando la máscara dada por el train
-  mask <- SFS(train)
-  print(c( tasa.clas(test,mask), tasa.clas(train,mask)) )
-  
-  # Usando ahora la máscara dada por el test
-  mask <- SFS(test)
-  print(c( tasa.clas(test,mask), tasa.clas(train,mask)) )
-  
-  i <- i+1
-}
+  while (i<=5){
+    partitioned <- lapply(class.split, make.partition, per=0.5 )
+    train <- lapply (partitioned, function(x){ x$train } )
+    train <- rbindlist(train)
+    test <- lapply (partitioned, function(x){ x$test } )
+    test <- rbindlist(test)
+    
+    
+    # Primero usando la máscara dada por el train
+    mask <- SFS(train)
+    print(c( tasa.clas(test,mask), tasa.clas(train,mask)) )
+    
+    # Usando ahora la máscara dada por el test
+    mask <- SFS(test)
+    print(c( tasa.clas(test,mask), tasa.clas(train,mask)) )
+    
+    i <- i+1
+  }
+})
