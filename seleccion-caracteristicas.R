@@ -14,8 +14,10 @@ rm(list = ls())
 pkgs = c("foreign", "data.table", "kknn")
 to.install <- pkgs[ ! pkgs %in% installed.packages() ]
 
-install.packages( to.install, dependencies = TRUE )
-lapply(pkgs,require,character.only=TRUE)
+if ( length(to.install) > 0 )
+  install.packages( to.install, dependencies = TRUE )
+  
+lapply(pkgs, require, character.only=TRUE)
 ################################################
 
 
@@ -47,35 +49,54 @@ datasets = list(mlibras, arrhythmia, wdbc)
           make.partition <- function(data,per){
             rows <- sample(1:nrow(data), nrow(data)*per) 
             
-            list(training = data[rows,], test = data[-rows,])
+            list(train = data[rows,], test = data[-rows,])
           }
           
           mclases.partitioned <- lapply(mclases, make.partition, per=0.5 )
-          mclases.training <- lapply (mclases.partitioned, function(x){ x$training } )
-          mclases.training <- rbindlist(mclases.training)
+          mclases.train <- lapply (mclases.partitioned, function(x){ x$train } )
+          mclases.train <- rbindlist(mclases.train)
           mclases.test <- lapply (mclases.partitioned, function(x){ x$test } )
           mclases.test <- rbindlist(mclases.test)
 
+          tasa.clas(mclases.train, mclases.test, c(1,0,1,0,1))
 ##########################################################################
 
           
 tasa.clas <- function (train, test, mask){
   # Aplicamos la máscara
-  test <- subset(test, select = c(which(mask==1), colnum(test)))
-  train <- subset(train, select = c(which(mask==1), colnum(train)))
+  test <- subset(test, select = c(which(mask==1), ncol(test)))
+  train <- subset(train, select = c(which(mask==1), ncol(train)))
   
-  knn.clas <- kknn (class~., train, test, distance=2, class, k=3, use.all = FALSE)
+  # Obtenemos el fit que se haría del conjunto test para el 3-knn
+  knn.clas <- kknn (class~., train, test, distance=2, class, k=3)
   fit <- fitted(knn.clas)
   
-  length(which(test$class != fit))
-  
-  # Por terminar...
+  # Tasa de clasificación
+  return (100 * length(which(test$class == fit)) / length(test$class))
 }
 
-SFS <- function(data){
+
+SFS <- function(col.number, train, test){
+  n <- col.number
+  mask <- rep(0,n)
+  non.selected <- seq(1,n)
+  max <- 0
   
-   #Por implementar  
+  repeat{
+    evs <- lapply (non.selected, function(x){
+      m <- mask
+      m[x] <- 1
+      tasa.clas(train, test, m)
+    } )
+    
+    if (max(evs) < max){
+      break
+    }
+    
+    mask [which.max (evs)] <- 1
+    non.selected <- non.selected[non.selected != which.max(evs)]
+    max <- max(evs)
+  }
   
-  
-  
+  return mask
 }
