@@ -21,6 +21,17 @@ lapply(pkgs, require, character.only=TRUE)
 
 
 ##########################################################################
+# Semillas aleatorias
+semilla = c(
+  12345678,
+  23456781,
+  34567812,
+  45678123,
+  56781234
+)
+
+
+##########################################################################
 # Lectura de datos
 mlibras <- read.arff("movement_libras.arff")
 arrhythmia <- read.arff("arrhythmia.arff")
@@ -102,14 +113,14 @@ SFS <- function(data){
 ##########################################################################
 # Lista de datasets
 datasets = list(mlibras, arrhythmia, wdbc)
-# Semilla aleatoria
-set.seed(1)
+
 ##########################################################################
 lapply (datasets, function(x){
   class.split <- split(x, x$class)
   i <- 1
   
   while (i<=5){
+    set.seed(semilla[i])
     partitioned <- lapply(class.split, make.partition, per=0.5 )
     train <- lapply (partitioned, function(x){ x$train } )
     train <- rbindlist(train)
@@ -128,3 +139,7 @@ lapply (datasets, function(x){
     i <- i+1
   }
 })
+
+
+colnames(arrhythmia)[unlist( lapply(colnames(arrhythmia), function(x){length(unique(arrhythmia[,x]))==1}))]
+
