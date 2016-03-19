@@ -41,8 +41,18 @@ wdbc <- read.arff("wdbc.arff")
 # Función de normalización de datasets
 normalize <- function(data){
   colnames(data) <- tolower(colnames(data))
-  data <- data[,c(colnames(data) [colnames(data) != "class"], "class")]
-  #Filter(function(x){ length(unique(x))>1 }, data)
+  names <- colnames(data)[ colnames(data) != "class" ]
+  
+  data <- data[,c(names, "class")]
+  data <- Filter(function(x){ length(unique(x))>1 }, data)
+  
+  # Columnas con valores entre 0 y 1
+  data.frame(lapply(data, function(x){ 
+    if(is.numeric(x)){
+      x/(max(x)-min(x))
+    }
+    else x
+  }))
 }
 
 # Normalizamos los nombres de los atributos
@@ -139,7 +149,3 @@ lapply (datasets, function(x){
     i <- i+1
   }
 })
-
-
-colnames(arrhythmia)[unlist( lapply(colnames(arrhythmia), function(x){length(unique(arrhythmia[,x]))==1}))]
-
