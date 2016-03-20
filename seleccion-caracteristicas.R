@@ -11,7 +11,7 @@ rm(list = ls())
 ##########################################################################
 # Cargamos pkgs
 
-pkgs = c("foreign", "data.table", "class")
+pkgs = c("foreign", "data.table", "class", "log")
 to.install <- pkgs[ ! pkgs %in% installed.packages() ]
 
 if ( length(to.install) > 0 )
@@ -151,6 +151,52 @@ BL <- function(data){
   
   mask
 }
+
+##########################################################################
+### Función búsqueda local del primer mejor
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto 
+###     de características que se obtienen de aplicar la búsqueda local del
+###     primer mejor
+##########################################################################
+
+SA <- function(data){
+  # Solución greedy inicial
+  mask <- SFS(data)
+  n <- length(mask)
+  tasa.best <- tasa.clas(data, mask)
+  
+  # Parámetros del enfriamiento simulado
+  max.eval <- 15000
+  max.vecinos <- 10*n
+  max.exitos <- 0.1*max.vecinos
+  T0 <- 0.3*tasa.best/-log(0.3, base=exp(1))
+  Tf <- 1e-3
+  n.eval <- 0
+  n.vecinos <- 0
+  n.exitos <- 0
+  
+  repeat{
+    n.eval <- n.eval + n.vecinos
+    n.vecinos <- 0
+    n.exitos <- 0
+    
+    while(n.vecinos < max.vecinos & n.exitos < max.exitos){
+      # Generamos un vecino
+      m <- mask
+      m[i] <- (m[i]+1)%%2
+      tasa.actual <- tasa.clas(data, m)
+      
+      if (tasa.actual > tasa.best){
+        mask <- m
+        tasa.best <- tasa.actual
+        n.exitos <- n.exitos + 1
+      }
+      
+      n.vecinos <- n.vecinos + 1
+    }
+  mask
+}
+
 ##########################################################################
 ### Función evaluación calidad algoritmo
 ###     Para un algoritmo devuelve valores que permiten medir su calidad
