@@ -11,7 +11,7 @@ rm(list = ls())
 ##########################################################################
 # Cargamos pkgs
 
-pkgs = c("foreign", "data.table", "class", "log")
+pkgs = c("foreign", "data.table", "class", "base")
 to.install <- pkgs[ ! pkgs %in% installed.packages() ]
 
 if ( length(to.install) > 0 )
@@ -127,7 +127,8 @@ BL <- function(data){
     repeat{
       # Generamos un vecino
       m <- mask
-      m[i] <- (m[i]+1)%%2
+      j <- sample(1:n,1)
+      m[j] <- (m[j]+1)%%2
       tasa.actual <- tasa.clas(data, m)
       
       if (tasa.actual > tasa.best){
@@ -164,37 +165,57 @@ SA <- function(data){
   mask <- SFS(data)
   n <- length(mask)
   tasa.best <- tasa.clas(data, mask)
+  mask.best <- mask
   
   # Parámetros del enfriamiento simulado
   max.eval <- 15000
   max.vecinos <- 10*n
   max.exitos <- 0.1*max.vecinos
-  T0 <- 0.3*tasa.best/-log(0.3, base=exp(1))
-  Tf <- 1e-3
+  
+  t.actual <- 0.3*tasa.best/-log(0.3, base=exp(1))
+  t.final <- 1e-3
+  beta <- (t.actual - t.final)/((max.eval/max.vecinos)*t.actual*t.final)
+  
   n.eval <- 0
   n.vecinos <- 0
   n.exitos <- 0
+  fin <- FALSE
   
-  repeat{
-    n.eval <- n.eval + n.vecinos
+  while(n.eval < max.eval & !fin){
     n.vecinos <- 0
     n.exitos <- 0
     
-    while(n.vecinos < max.vecinos & n.exitos < max.exitos){
+    while(n.vecinos < max.vecinos 
+          & n.exitos < max.exitos 
+          & n.eval < max.eval){
       # Generamos un vecino
       m <- mask
+      fin <- TRUE
+      
+      i <- sample(1:n,1)
       m[i] <- (m[i]+1)%%2
       tasa.actual <- tasa.clas(data, m)
+      u <- runif(1, 0.0, 1.0)
+      delta <- tasa.actual - tasa.best
       
-      if (tasa.actual > tasa.best){
+      if (delta >= 0 || u <= exp(delta/t.actual)){
         mask <- m
         tasa.best <- tasa.actual
         n.exitos <- n.exitos + 1
+        fin <- FALSE
+        
+        if (delta >=0){
+          mask.best <- m
+        }
+        
       }
       
       n.vecinos <- n.vecinos + 1
+      n.eval <- n.eval + 1
     }
-  mask
+  t.actual <- t.actual/(1 + beta*t.actual)  
+  }
+  mask.best
 }
 
 ##########################################################################
@@ -229,7 +250,7 @@ cross.eval <- function(algorithm){
     class.split <- split(x, x$class)
     i <- 1
     
-    while (i<=5){
+    while (i<=1){
       set.seed(semilla[i])
       partitioned <- lapply(class.split, make.partition, per=0.5 )
       train <- lapply (partitioned, function(x){ x$train } )
@@ -277,3 +298,4 @@ datasets.names = c("mlibras","arrhythmia","wdbc")
 
 cross.eval(SFS)
 cross.eval(BL)
+cross.eval(SA)
