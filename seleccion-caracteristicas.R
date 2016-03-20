@@ -21,17 +21,6 @@ lapply(pkgs, require, character.only=TRUE)
 
 
 ##########################################################################
-# Semillas aleatorias
-semilla = c(
-  12345678,
-  23456781,
-  34567812,
-  45678123,
-  56781234
-)
-
-
-##########################################################################
 # Lectura de datos
 mlibras <- read.arff("movement_libras.arff")
 arrhythmia <- read.arff("arrhythmia.arff")
@@ -118,60 +107,127 @@ SFS <- function(data){
   mask
 }
 
+
 ##########################################################################
-### Bucle principal
+### Función búsqueda local del primer mejor
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto 
+###     de características que se obtienen de aplicar la búsqueda local del
+###     primer mejor
 ##########################################################################
+
+BL <- function(data){
+  mask <- SFS(data)
+  n <- length(mask)
+  fin <- FALSE
+  tasa.best <- tasa.clas(data, mask)
+  
+  repeat{
+    i <- 1
+    
+    repeat{
+      # Generamos un vecino
+      m <- mask
+      m[i] <- (m[i]+1)%%2
+      tasa.actual <- tasa.clas(data, m)
+      
+      if (tasa.actual > tasa.best){
+        mask <- m
+        tasa.best <- tasa.actual
+        break
+      }
+      else{
+        i <- i+1
+        
+        if (i>n){         
+          fin <- TRUE
+          break
+        }
+      }
+    }
+    # Si no hemos encontrado un vecino que mejore a la solución actual, fin del algoritmo
+    if (fin)
+      break
+  }
+  
+  mask
+}
+##########################################################################
+### Función evaluación calidad algoritmo
+###     Para un algoritmo devuelve valores que permiten medir su calidad
+###     como algoritmo, haciendo un 5x2 cross validation
+###     Tasa clasificación en media para el clasificador 3-knn
+###     Tasa reducción de características en media
+###     Media del tiempo de ejecución
+##########################################################################
+
+cross.eval <- function(algorithm){
+  # Semillas aleatorias
+  semilla = c(
+    12345678,
+    23456781,
+    34567812,
+    45678123,
+    56781234
+  )
+  
+  for (j in 1:length(datasets)){
+    x <- datasets[[j]]
+    num.variables <- length(colnames(x))
+    tiempo.exec = c()
+    train.tasas = c()
+    test.tasas = c()
+    tasa.red = c()
+    
+    cat("Dataset", datasets.names[j])
+    
+    class.split <- split(x, x$class)
+    i <- 1
+    
+    while (i<=5){
+      set.seed(semilla[i])
+      partitioned <- lapply(class.split, make.partition, per=0.5 )
+      train <- lapply (partitioned, function(x){ x$train } )
+      train <- rbindlist(train)
+      test <- lapply (partitioned, function(x){ x$test } )
+      test <- rbindlist(test)
+      
+      
+      # Primero usando la máscara dada por el train
+      tmp <- proc.time()[3]
+      mask <- algorithm(train)
+      tiempo.exec <- c(tiempo.exec, proc.time()[3] - tmp)
+      
+      test.tasas <- c(test.tasas, tasa.clas(test,mask)) 
+      train.tasas <- c(train.tasas, tasa.clas(train,mask))
+      tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
+      
+      
+      # Usando ahora la máscara dada por el test
+      tmp <- proc.time()[3]
+      mask <- algorithm(test)
+      tiempo.exec <- c(tiempo.exec, proc.time()[3] - tmp)
+      test.tasas <- c(test.tasas, tasa.clas(train,mask)) 
+      train.tasas <- c(train.tasas, tasa.clas(test,mask)) 
+      tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
+      
+      i <- i+1
+    }
+    cat("\n\tTasas de clasificación:\n")
+    cat("\t\tTest:", mean(test.tasas), "\t","Train:", mean(train.tasas))
+    cat("\n\tTasa de reducción:", mean(tasa.red))
+    cat("\n\tTiempo de ejecución:", mean(tiempo.exec))
+    cat("\n")
+  }
+}
+
+
+##########################################################################
+### Comparación
+
 # Lista de datasets
 datasets = list(mlibras, arrhythmia, wdbc)
 datasets.names = c("mlibras","arrhythmia","wdbc")
 ##########################################################################
 
-
-for (j in 1:length(datasets)){
-  x <- datasets[[j]]
-  num.variables <- length(colnames(x))
-  tiempo.exec = c()
-  train.tasas = c()
-  test.tasas = c()
-  tasa.red = c()
-  
-  cat("Dataset", datasets.names[j])
-  
-  class.split <- split(x, x$class)
-  i <- 1
-  
-  while (i<=5){
-    set.seed(semilla[i])
-    partitioned <- lapply(class.split, make.partition, per=0.5 )
-    train <- lapply (partitioned, function(x){ x$train } )
-    train <- rbindlist(train)
-    test <- lapply (partitioned, function(x){ x$test } )
-    test <- rbindlist(test)
-    
-    
-    # Primero usando la máscara dada por el train
-    tmp <- proc.time()[3]
-    mask <- SFS(train)
-    tiempo.exec <- c(tiempo.exec, proc.time()[3] - tmp)
-    
-    test.tasas <- c(test.tasas, tasa.clas(test,mask)) 
-    train.tasas <- c(train.tasas, tasa.clas(train,mask))
-    tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
-    
-    
-    # Usando ahora la máscara dada por el test
-    tmp <- proc.time()[3]
-    mask <- SFS(test)
-    tiempo.exec <- c(tiempo.exec, proc.time()[3] - tmp)
-    test.tasas <- c(test.tasas, tasa.clas(train,mask)) 
-    train.tasas <- c(train.tasas, tasa.clas(test,mask)) 
-    tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
-    
-    i <- i+1
-  }
-  cat("\n\tTasas de clasificación:\n")
-  cat("\t\tTest:", mean(test.tasas), "\t","Train:", mean(train.tasas))
-  cat("\n\tTasa de reducción:", mean(tasa.red))
-  cat("\n\tTiempo de ejecución:", mean(tiempo.exec))
-  cat("\n")
-}
+cross.eval(SFS)
+cross.eval(BL)
