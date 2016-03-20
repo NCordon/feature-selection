@@ -123,9 +123,17 @@ SFS <- function(data){
 ##########################################################################
 # Lista de datasets
 datasets = list(mlibras, arrhythmia, wdbc)
-
+datasets.names = c("mlibras","arrhythmia","wdbc")
 ##########################################################################
-lapply (datasets, function(x){
+
+
+for (j in 1:length(datasets)){
+  x <- datasets[[j]]
+  train.tasas = c()
+  test.tasas = c()
+  
+  cat("Datos para el dataset ", datasets.names[j])
+  
   class.split <- split(x, x$class)
   i <- 1
   
@@ -140,12 +148,18 @@ lapply (datasets, function(x){
     
     # Primero usando la máscara dada por el train
     mask <- SFS(train)
-    print(c( tasa.clas(test,mask), tasa.clas(train,mask)) )
+    test.tasas <- c(test.tasas, tasa.clas(test,mask)) 
+    train.tasas <- c(train.tasas, tasa.clas(train,mask)) 
     
     # Usando ahora la máscara dada por el test
     mask <- SFS(test)
-    print(c( tasa.clas(test,mask), tasa.clas(train,mask)) )
+    test.tasas <- c(test.tasas, tasa.clas(train,mask)) 
+    train.tasas <- c(train.tasas, tasa.clas(test,mask)) 
     
     i <- i+1
   }
-})
+  cat("\n\tTasas de clasificación:\n")
+  cat("\tTest: ", mean(test.tasas))
+  cat("\tTrain: ", mean(train.tasas))
+  cat("\n")
+}
