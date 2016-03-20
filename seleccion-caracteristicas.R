@@ -129,10 +129,13 @@ datasets.names = c("mlibras","arrhythmia","wdbc")
 
 for (j in 1:length(datasets)){
   x <- datasets[[j]]
+  num.variables <- length(colnames(x))
+  tiempo.exec = c()
   train.tasas = c()
   test.tasas = c()
+  tasa.red = c()
   
-  cat("Datos para el dataset ", datasets.names[j])
+  cat("Dataset", datasets.names[j])
   
   class.split <- split(x, x$class)
   i <- 1
@@ -147,19 +150,28 @@ for (j in 1:length(datasets)){
     
     
     # Primero usando la máscara dada por el train
+    tmp <- proc.time()[3]
     mask <- SFS(train)
+    tiempo.exec <- c(tiempo.exec, proc.time()[3] - tmp)
+    
     test.tasas <- c(test.tasas, tasa.clas(test,mask)) 
-    train.tasas <- c(train.tasas, tasa.clas(train,mask)) 
+    train.tasas <- c(train.tasas, tasa.clas(train,mask))
+    tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
+    
     
     # Usando ahora la máscara dada por el test
+    tmp <- proc.time()[3]
     mask <- SFS(test)
+    tiempo.exec <- c(tiempo.exec, proc.time()[3] - tmp)
     test.tasas <- c(test.tasas, tasa.clas(train,mask)) 
     train.tasas <- c(train.tasas, tasa.clas(test,mask)) 
+    tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
     
     i <- i+1
   }
   cat("\n\tTasas de clasificación:\n")
-  cat("\tTest: ", mean(test.tasas))
-  cat("\tTrain: ", mean(train.tasas))
+  cat("\t\tTest:", mean(test.tasas), "\t","Train:", mean(train.tasas))
+  cat("\n\tTasa de reducción:", mean(tasa.red))
+  cat("\n\tTiempo de ejecución:", mean(tiempo.exec))
   cat("\n")
 }
