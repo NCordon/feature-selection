@@ -181,7 +181,7 @@ SA <- function(data){
   n.exitos <- 0
   fin <- FALSE
   
-  while(n.eval < max.eval & !fin){
+  while(n.eval < max.eval & !fin & t.actual > t.final){
     n.vecinos <- 0
     n.exitos <- 0
     
@@ -250,7 +250,7 @@ cross.eval <- function(algorithm){
     class.split <- split(x, x$class)
     i <- 1
     
-    while (i<=1){
+    while (i<=5){
       set.seed(semilla[i])
       partitioned <- lapply(class.split, make.partition, per=0.5 )
       train <- lapply (partitioned, function(x){ x$train } )
