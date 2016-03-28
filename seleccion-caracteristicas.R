@@ -8,6 +8,7 @@ rm(list = ls())
   # foreign: leer ARFF 
   # data.table: rbindinglist
   # class: kknn
+  # base: logaritmo
 ##########################################################################
 # Cargamos pkgs
 
@@ -32,6 +33,7 @@ normalize <- function(data){
   colnames(data) <- tolower(colnames(data))
   names <- colnames(data)[ colnames(data) != "class" ]
   
+  # La última columna es la de clase, y quitamos columnas con un único valor
   data <- data[,c(names, "class")]
   data <- Filter(function(x){ length(unique(x))>1 }, data)
   
@@ -44,7 +46,7 @@ normalize <- function(data){
   }))
 }
 
-# Normalizamos los nombres de los atributos
+# Normalizamos los datasets
 mlibras <- normalize(mlibras)
 arrhythmia <- normalize(arrhythmia)
 wdbc <- normalize(wdbc)
