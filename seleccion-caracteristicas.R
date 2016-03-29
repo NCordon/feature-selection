@@ -247,8 +247,7 @@ BT <- function(data){
   mask.best <- mask
   tasa.best <- tasa.clas(data, mask)
   n <- length(mask)
-  
-  fin <- FALSE
+
   max.eval <- 15000
   max.vecinos <- 30
   # Tamaño máximo de la lista tabú
@@ -256,13 +255,15 @@ BT <- function(data){
   
   # Lista tabú
   tabu.list <- c()
+  
   # Posición a escribir de la lista tabú
   tl.pos <- 1
   n.eval <- 0
   
-  while(!fin && (n.eval < max.eval)){
+  while(n.eval < max.eval){
     non.selected <- seq(1,n)
     n.vecinos <- 0
+    tasa.mejor.vecino <- 0
     
     while((n.vecinos < max.vecinos) && (n.eval < max.eval)){
       m <- mask
@@ -280,22 +281,37 @@ BT <- function(data){
       
       m[j] <- (m[j]+1)%%2
       tasa.actual <- tasa.clas(data, m)
+      tabu.act <- (j %in% tabu.list)
       
-      # El criterio de aspiración y el de actualización del mejor vecino son el
-      # mismo
-      if (tasa.actual > tasa.best){
-        mask.best <- m
-        tasa.best <- tasa.actual
-        tabu.best <- j
-        fin <- TRUE
+      if (tabu.act){
+        # El criterio de aspiración
+        if (tasa.actual > tasa.best){
+          if (tasa.actual > tasa.mejor.vecino){
+            tasa.mejor.vecino <- tasa.actual
+            tabu.elem <- j
+            mejor.vecino <- m
+          }
+        }
       }
+      else{
+        if (tasa.actual > tasa.mejor.vecino){
+          tasa.mejor.vecino <- tasa.actual
+          tabu.elem <- j
+          mejor.vecino <- m
+        }
+      }
+    }
+    
+    if (tasa.mejor.vecino > tasa.best){
+      mask.best <- mejor.vecino
+      tasa.best <- tasa.mejor.vecino
     }
     
     # Introducimos en la lista tabú el elemento que ha dado lugar
     # a la mejor solución del vecindario anterior
-    tabu.list[tl.pos] <- tabu.best
-    tl.pos <- ((tl.pos + 1) %% max.tabu) + 1
-    mask <- mask.best
+    tabu.list[tl.pos] <- tabu.elem
+    tl.pos <- (tl.pos %% max.tabu) + 1
+    mask <- mejor.vecino
   }
   mask.best
 }
@@ -332,7 +348,7 @@ cross.eval <- function(algorithm){
     class.split <- split(x, x$class)
     i <- 1
     
-    while (i<=5){
+    while (i<=1){
       set.seed(semilla[i])
       partitioned <- lapply(class.split, make.partition, per=0.5 )
       train <- lapply (partitioned, function(x){ x$train } )
@@ -381,3 +397,4 @@ datasets.names <- c("mlibras","arrhythmia","wdbc")
 cross.eval(SFS)
 cross.eval(BL)
 cross.eval(SA)
+cross.eval(BT)
