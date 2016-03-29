@@ -180,10 +180,16 @@ SA <- function(data){
   
   # Parámetros del enfriamiento simulado
   max.eval <- 15000
-  max.vecinos <- 10*n
+  max.vecinos <- n
   max.exitos <- 0.1*max.vecinos
+  # Mejores valores probados
+  #mu <- 0.05
+  #phi <- 0.05
+  mu <- 0.3
+  phi <- 0.3
   
-  t.actual <- 0.3*tasa.best/-log(0.3, base=exp(1))
+  
+  t.actual <- mu*tasa.best/-log(phi, base=exp(1))
   t.final <- 1e-3
   beta <- (t.actual - t.final)/((max.eval/max.vecinos)*t.actual*t.final)
   
@@ -191,11 +197,12 @@ SA <- function(data){
   n.vecinos <- 0
   n.exitos <- 0
   fin <- FALSE
-  
+
   while(n.eval < max.eval & !fin & t.actual > t.final){
     n.vecinos <- 0
     n.exitos <- 0
     
+    # Un enfriamiento
     while(n.vecinos < max.vecinos 
           & n.exitos < max.exitos 
           & n.eval < max.eval){
@@ -291,9 +298,9 @@ cross.eval <- function(algorithm){
       i <- i+1
     }
     cat("\n\tTasas de clasificación:\n")
-    cat("\t\tTest:", mean(test.tasas), "\t","Train:", mean(train.tasas))
-    cat("\n\tTasa de reducción:", mean(tasa.red))
-    cat("\n\tTiempo de ejecución:", mean(tiempo.exec))
+    cat("\t\t Test:", test.tasas, "\n\t\t","Train:", train.tasas)
+    cat("\n\tTasa de reducción:", tasa.red)
+    cat("\n\tTiempo de ejecución(s):", tiempo.exec)
     cat("\n")
   }
 }
@@ -303,8 +310,8 @@ cross.eval <- function(algorithm){
 ### Comparación
 
 # Lista de datasets
-datasets = list(mlibras, arrhythmia, wdbc)
-datasets.names = c("mlibras","arrhythmia","wdbc")
+datasets <- list(mlibras, arrhythmia, wdbc)
+datasets.names <- c("mlibras","arrhythmia","wdbc")
 ##########################################################################
 
 cross.eval(SFS)
