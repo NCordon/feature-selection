@@ -182,11 +182,9 @@ SA <- function(data){
   max.eval <- 15000
   max.vecinos <- n
   max.exitos <- 0.1*max.vecinos
-  # Mejores valores probados
-  #mu <- 0.05
-  #phi <- 0.05
   mu <- 0.3
   phi <- 0.3
+  # Nota: los mejores valores probados para estos parámetros han sido 0.05 y 0.05
   
   
   t.actual <- mu*tasa.best/-log(phi, base=exp(1))
@@ -232,6 +230,72 @@ SA <- function(data){
       n.eval <- n.eval + 1
     }
   t.actual <- t.actual/(1 + beta*t.actual)  
+  }
+  mask.best
+}
+
+
+##########################################################################
+### Función búsqueda tabú básica
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto 
+###     de características que se obtienen de aplicar la tabú con memoria
+###     a corto plazo
+##########################################################################
+
+BT <- function(data){
+  mask <- SFS(data)
+  mask.best <- mask
+  tasa.best <- tasa.clas(data, mask)
+  n <- length(mask)
+  
+  fin <- FALSE
+  max.eval <- 15000
+  max.vecinos <- 30
+  # Tamaño máximo de la lista tabú
+  max.tabu <- n/3
+  
+  # Lista tabú
+  tabu.list <- c()
+  # Posición a escribir de la lista tabú
+  tl.pos <- 1
+  n.eval <- 0
+  
+  while(!fin && (n.eval < max.eval)){
+    non.selected <- seq(1,n)
+    n.vecinos <- 0
+    
+    while((n.vecinos < max.vecinos) && (n.eval < max.eval)){
+      m <- mask
+      n.vecinos <- n.vecinos + 1
+      n.eval <- n.eval + 1
+      
+      repeat{
+        j <- sample(1:n,1)
+        
+        if (j %in% non.selected){
+          non.selected <- non.selected[non.selected!=j]
+          break
+        }
+      }
+      
+      m[j] <- (m[j]+1)%%2
+      tasa.actual <- tasa.clas(data, m)
+      
+      # El criterio de aspiración y el de actualización del mejor vecino son el
+      # mismo
+      if (tasa.actual > tasa.best){
+        mask.best <- m
+        tasa.best <- tasa.actual
+        tabu.best <- j
+        fin <- TRUE
+      }
+    }
+    
+    # Introducimos en la lista tabú el elemento que ha dado lugar
+    # a la mejor solución del vecindario anterior
+    tabu.list[tl.pos] <- tabu.best
+    tl.pos <- ((tl.pos + 1) %% max.tabu) + 1
+    mask <- mask.best
   }
   mask.best
 }
@@ -298,7 +362,7 @@ cross.eval <- function(algorithm){
       i <- i+1
     }
     cat("\n\tTasas de clasificación:\n")
-    cat("\t\t Test:", test.tasas, "\n\t\t","Train:", train.tasas)
+    cat("\t\t Test: ", test.tasas, "\n\t\t","Train:", train.tasas)
     cat("\n\tTasa de reducción:", tasa.red)
     cat("\n\tTiempo de ejecución(s):", tiempo.exec)
     cat("\n")
