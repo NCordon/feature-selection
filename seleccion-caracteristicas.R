@@ -122,36 +122,45 @@ BL <- function(data){
   n <- length(mask)
   fin <- FALSE
   tasa.best <- tasa.clas(data, mask)
+  max.eval <- 15000
+  n.eval <- 0
   
-  repeat{
-    i <- 1
+  while(!fin && (n.eval < max.eval)){
+    non.selected <- seq(1,n)
     
-    repeat{
-      # Generamos un vecino
+    while(!fin && (n.eval < max.eval)){
+      # Generamos un vecino hasta que mejoremos
+      # o hasta que agotemos el vecindario
+      
       m <- mask
-      j <- sample(1:n,1)
+      
+      repeat{
+        j <- sample(1:n,1)
+        
+        if (j %in% non.selected){
+          non.selected <- non.selected[non.selected!=j]
+          break
+        }
+      }
+      
       m[j] <- (m[j]+1)%%2
       tasa.actual <- tasa.clas(data, m)
+      n.eval <- n.eval + 1
       
       if (tasa.actual > tasa.best){
         mask <- m
         tasa.best <- tasa.actual
-        break
+        fin <- TRUE
       }
       else{
-        i <- i+1
-        
-        if (i>n){         
+        if (length(non.selected) == 0){         
           fin <- TRUE
-          break
         }
       }
     }
     # Si no hemos encontrado un vecino que mejore a la solución actual, fin del algoritmo
-    if (fin)
-      break
+    fin <- (length(non.selected) == 0)
   }
-  
   mask
 }
 
