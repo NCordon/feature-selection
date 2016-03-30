@@ -247,7 +247,7 @@ BT <- function(data){
   mask.best <- mask
   tasa.best <- tasa.clas(data, mask)
   n <- length(mask)
-
+  
   max.eval <- 15000
   max.vecinos <- 30
   # Tamaño máximo de la lista tabú
@@ -261,49 +261,35 @@ BT <- function(data){
   n.eval <- 0
   
   while(n.eval < max.eval){
-    non.selected <- seq(1,n)
-    n.vecinos <- 0
     tasa.mejor.vecino <- 0
-    
-    while((n.vecinos < max.vecinos) && (n.eval < max.eval)){
+    pos.vecinos <- sample(1:n, min(c(max.vecinos, max.eval-n.eval)))
+
+    evs <- sapply(pos.vecinos, function(j){
       m <- mask
-      n.vecinos <- n.vecinos + 1
-      n.eval <- n.eval + 1
-      
-      repeat{
-        j <- sample(1:n,1)
-        
-        if (j %in% non.selected){
-          non.selected <- non.selected[non.selected!=j]
-          break
-        }
-      }
       
       m[j] <- (m[j]+1)%%2
       tasa.actual <- tasa.clas(data, m)
-      tabu.act <- (j %in% tabu.list)
       
-      if (tabu.act){
-        # El criterio de aspiración
-        if (tasa.actual > tasa.best){
-          if (tasa.actual > tasa.mejor.vecino){
-            tasa.mejor.vecino <- tasa.actual
-            tabu.elem <- j
-            mejor.vecino <- m
-          }
+      if (j %in% tabu.list){
+        # Si el criterio de aspiración no se cumple
+        #   Asignamos un valor basura a la tasa para
+        #   que no sea escogida como la mejor
+        if (tasa.actual <= tasa.best){
+          tasa.actual <- 0
         }
       }
-      else{
-        if (tasa.actual > tasa.mejor.vecino){
-          tasa.mejor.vecino <- tasa.actual
-          tabu.elem <- j
-          mejor.vecino <- m
-        }
-      }
-    }
+      
+      tasa.actual
+    })
+    
+    j <- which.max(evs) 
+    tasa.mejor.vecino <- evs[j]
+    tabu.elem <- pos.vecinos[j]
+    # Esto asigna a la solución actual el mejor vecino
+    mask[tabu.elem] <- (mask[tabu.elem]+1)%%2
     
     if (tasa.mejor.vecino > tasa.best){
-      mask.best <- mejor.vecino
+      mask.best <- mask
       tasa.best <- tasa.mejor.vecino
     }
     
@@ -311,10 +297,13 @@ BT <- function(data){
     # a la mejor solución del vecindario anterior
     tabu.list[tl.pos] <- tabu.elem
     tl.pos <- (tl.pos %% max.tabu) + 1
-    mask <- mejor.vecino
+    
+    # Actualizamos el número de evaluaciones
+    n.eval <- n.eval + length(pos.vecinos)
   }
   mask.best
 }
+
 
 ##########################################################################
 ### Función evaluación calidad algoritmo
