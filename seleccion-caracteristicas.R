@@ -328,7 +328,7 @@ BT.ext <- function(data){
   
   while(n.eval < max.eval){
     # Reinicialización
-    if (n.sin.mejora %% n.reinic == 0){
+    if ((n.sin.mejora %% n.reinic == 0)){
       u <- runif(1, 0.0, 1.0)
       
       if (u < 0.25){
@@ -350,6 +350,19 @@ BT.ext <- function(data){
           x
         }, n = n.soluciones)
       }
+      # Cambio de tamaño de la lista tabú
+      u <- runif(1, 0.0, 1.0)
+      if (u < 0.5){
+        # Aumenta de tamaño en un 50%
+        max.tabu <- ceiling(max.tabu*1.5)
+      }
+      else{
+        # Disminuye en un 50%
+        max.tabu <- ceiling(max.tabu*0.5)
+      }
+      
+      tl.pos <- min(tl.pos, max.tabu)
+      n.sin.mejora <- 0
     }
     
     tasa.mejor.vecino <- 0
@@ -383,10 +396,10 @@ BT.ext <- function(data){
       mask.best <- mask
       tasa.best <- tasa.mejor.vecino
       frec <- frec + mask
-      n.reinic <- 0
+      n.sin.mejora <- 0
     }
     else{
-      n.reinic <- n.reinic + 1
+      n.sin.mejora <- n.sin.mejora + 1
     }
     
     # Introducimos en la lista tabú el elemento que ha dado lugar
@@ -480,8 +493,8 @@ datasets <- list(mlibras, arrhythmia, wdbc)
 datasets.names <- c("mlibras","arrhythmia","wdbc")
 ##########################################################################
 
-cross.eval(SFS)
-cross.eval(BL)
-cross.eval(SA)
-cross.eval(BT)
+#cross.eval(SFS)
+#cross.eval(BL)
+#cross.eval(SA)
+#cross.eval(BT)
 cross.eval(BT.ext)
