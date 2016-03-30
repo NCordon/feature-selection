@@ -319,7 +319,7 @@ BT.ext <- function(data){
   tabu.list <- c()
   # Lista de frecuencias
   frec <- rep(0,n)
-  n.reinic <- 10
+  n.reinic <- 20
   n.sin.mejora <- 0
   
   # Posición a escribir de la lista tabú
@@ -343,6 +343,8 @@ BT.ext <- function(data){
         mask <- sapply(frec, function(f,n){
           u <- runif(1, 0.0, 1.0)
           x <- 0
+          # Evita que falle en las primeras iteraciones
+          n <- max(n,1)
           
           if (u < 1 - f/n){
             x <- 1
@@ -493,8 +495,8 @@ datasets <- list(mlibras, arrhythmia, wdbc)
 datasets.names <- c("mlibras","arrhythmia","wdbc")
 ##########################################################################
 
-#cross.eval(SFS)
-#cross.eval(BL)
-#cross.eval(SA)
-#cross.eval(BT)
+cross.eval(SFS)
+cross.eval(BL)
+cross.eval(SA)
+cross.eval(BT)
 cross.eval(BT.ext)
