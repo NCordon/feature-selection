@@ -1,3 +1,0 @@
-\select@language {spanish}
-\select@language {spanish}
-\contentsline {section}{\numberline {1}Descripción del problema}{2}{section.1}
