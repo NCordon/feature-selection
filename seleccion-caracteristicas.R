@@ -5,10 +5,10 @@ rm(list = ls())
 ##########################################################################
 # Lista de paquetes a cargar
 
-  # foreign: leer ARFF 
-  # data.table: rbindinglist
-  # class: kknn
-  # base: logaritmo
+# foreign: leer ARFF
+# data.table: rbindinglist
+# class: kknn
+# base: logaritmo
 ##########################################################################
 # Cargamos pkgs
 
@@ -17,7 +17,7 @@ to.install <- pkgs[ ! pkgs %in% installed.packages() ]
 
 if ( length(to.install) > 0 )
   install.packages( to.install, dependencies = TRUE )
-  
+
 sapply(pkgs, require, character.only=TRUE)
 
 
@@ -38,7 +38,7 @@ normalize <- function(data){
   data <- Filter(function(x){ length(unique(x))>1 }, data)
   
   # Columnas con valores entre 0 y 1
-  data.frame(lapply(data, function(x){ 
+  data.frame(lapply(data, function(x){
     if(is.numeric(x)){
       (x-min(x))/(max(x)-min(x))
     }
@@ -71,7 +71,7 @@ tasa.clas <- function (train, mask){
 ##########################################################################
 # Función de generación de particiones
 make.partition <- function(data,per){
-  rows <- sample(1:nrow(data), nrow(data)*per) 
+  rows <- sample(1:nrow(data), nrow(data)*per)
   
   list(train = data[rows,], test = data[-rows,])
 }
@@ -79,8 +79,8 @@ make.partition <- function(data,per){
 
 ##########################################################################
 ### Función SFS
-###     Para un data frame devuelve para el clasificador 3-knn el conjunto 
-###     de características que maximizan la tasa de clasificación de ese 
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto
+###     de características que maximizan la tasa de clasificación de ese
 ###     conjunto usando leaving one out en el knn euclídeo
 ##########################################################################
 
@@ -90,16 +90,17 @@ SFS <- function(data){
   mask <- rep(0,n)
   non.selected <- seq(1,n)
   max <- 0
+  fin <- FALSE
   
-  repeat{
+  while(!fin){
     evs <- sapply (non.selected, function(x){
       m <- mask
       m[x] <- 1
       tasa.clas(data, m)
     } )
     
-    if (max(evs) <= max){
-      break
+    if (max(evs) < max || length(evs)==0){
+      fin <- TRUE
     }
     
     sel <- non.selected[which.max (evs)]
@@ -114,7 +115,7 @@ SFS <- function(data){
 
 ##########################################################################
 ### Función búsqueda local del primer mejor
-###     Para un data frame devuelve para el clasificador 3-knn el conjunto 
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto
 ###     de características que se obtienen de aplicar la búsqueda local del
 ###     primer mejor
 ##########################################################################
@@ -122,53 +123,46 @@ SFS <- function(data){
 BL <- function(data){
   mask <- SFS(data)
   n <- length(mask)
-  fin <- FALSE
   tasa.best <- tasa.clas(data, mask)
+  mejora.found <- TRUE
   max.eval <- 15000
   n.eval <- 0
   
-  while(!fin && (n.eval < max.eval)){
+  while(mejora.found && (n.eval < max.eval)){
     non.selected <- seq(1,n)
+    vecinos.left <- TRUE
+    mejora.found <- FALSE
     
-    while(!fin && (n.eval < max.eval)){
+    while(!mejora.found && vecinos.left && (n.eval < max.eval)){
       # Generamos un vecino hasta que mejoremos
       # o hasta que agotemos el vecindario
       
       m <- mask
-      
-      repeat{
-        j <- sample(1:n,1)
-        
-        if (j %in% non.selected){
-          non.selected <- non.selected[non.selected!=j]
-          break
-        }
-      }
+      j <- sample(non.selected, 1)
+      non.selected <- non.selected[non.selected!=j]
       
       m[j] <- (m[j]+1)%%2
       tasa.actual <- tasa.clas(data, m)
       n.eval <- n.eval + 1
       
-      if (tasa.actual > tasa.best){
+      if (tasa.actual >= tasa.best){
         mask <- m
         tasa.best <- tasa.actual
-        fin <- TRUE
+        mejora.found <- TRUE
       }
       else{
-        if (length(non.selected) == 0){         
-          fin <- TRUE
+        if (length(non.selected) == 0){
+          vecinos.left <- FALSE
         }
       }
     }
-    # Si no hemos encontrado un vecino que mejore a la solución actual, fin del algoritmo
-    fin <- (length(non.selected) == 0)
   }
   mask
 }
 
 ##########################################################################
 ### Función búsqueda local del primer mejor
-###     Para un data frame devuelve para el clasificador 3-knn el conjunto 
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto
 ###     de características que se obtienen de aplicar la búsqueda local del
 ###     primer mejor
 ##########################################################################
@@ -197,14 +191,14 @@ SA <- function(data){
   n.vecinos <- 0
   n.exitos <- 0
   fin <- FALSE
-
+  
   while(n.eval < max.eval & !fin & t.actual > t.final){
     n.vecinos <- 0
     n.exitos <- 0
     
     # Un enfriamiento
-    while(n.vecinos < max.vecinos 
-          & n.exitos < max.exitos 
+    while(n.vecinos < max.vecinos
+          & n.exitos < max.exitos
           & n.eval < max.eval){
       # Generamos un vecino
       m <- mask
@@ -231,7 +225,7 @@ SA <- function(data){
       n.vecinos <- n.vecinos + 1
       n.eval <- n.eval + 1
     }
-  t.actual <- t.actual/(1 + beta*t.actual)  
+    t.actual <- t.actual/(1 + beta*t.actual)
   }
   mask.best
 }
@@ -239,7 +233,7 @@ SA <- function(data){
 
 ##########################################################################
 ### Función búsqueda tabú básica
-###     Para un data frame devuelve para el clasificador 3-knn el conjunto 
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto
 ###     de características que se obtienen de aplicar la tabú con memoria
 ###     a corto plazo
 ##########################################################################
@@ -265,7 +259,7 @@ BT <- function(data){
   while(n.eval < max.eval){
     tasa.mejor.vecino <- 0
     pos.vecinos <- sample(1:n, min(c(max.vecinos, max.eval-n.eval)))
-
+    
     evs <- sapply(pos.vecinos, function(j){
       m <- mask
       
@@ -284,7 +278,7 @@ BT <- function(data){
       tasa.actual
     })
     
-    j <- which.max(evs) 
+    j <- which.max(evs)
     tasa.mejor.vecino <- evs[j]
     tabu.elem <- pos.vecinos[j]
     # Esto asigna a la solución actual el mejor vecino
@@ -334,7 +328,7 @@ BT.ext <- function(data){
       u <- runif(1, 0.0, 1.0)
       
       if (u < 0.25){
-        mask <- sample(0:1, n, replace=TRUE)  
+        mask <- sample(0:1, n, replace=TRUE)
       }
       else if (u < 0.5){
         mask <- mask.best
@@ -390,7 +384,7 @@ BT.ext <- function(data){
       tasa.actual
     })
     
-    j <- which.max(evs) 
+    j <- which.max(evs)
     tasa.mejor.vecino <- evs[j]
     tabu.elem <- pos.vecinos[j]
     # Esto asigna a la solución actual el mejor vecino
@@ -446,12 +440,12 @@ cross.eval <- function(algorithm){
     test.tasas = c()
     tasa.red = c()
     
-    cat("Dataset", datasets.names[j])
+    cat("Dataset", datasets.names[j], "\n")
     
     class.split <- split(x, x$class)
     i <- 1
     
-    while (i<=1){
+    while (i<=5){
       set.seed(semilla[i])
       partitioned <- lapply(class.split, make.partition, per=0.5 )
       train <- lapply (partitioned, function(x){ x$train } )
@@ -465,7 +459,7 @@ cross.eval <- function(algorithm){
       mask <- algorithm(train)
       tiempo.exec <- c(tiempo.exec, proc.time()[3] - tmp)
       
-      test.tasas <- c(test.tasas, tasa.clas(test,mask)) 
+      test.tasas <- c(test.tasas, tasa.clas(test,mask))
       train.tasas <- c(train.tasas, tasa.clas(train,mask))
       tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
       
@@ -474,20 +468,23 @@ cross.eval <- function(algorithm){
       tmp <- proc.time()[3]
       mask <- algorithm(test)
       tiempo.exec <- c(tiempo.exec, proc.time()[3] - tmp)
-      test.tasas <- c(test.tasas, tasa.clas(train,mask)) 
-      train.tasas <- c(train.tasas, tasa.clas(test,mask)) 
+      test.tasas <- c(test.tasas, tasa.clas(train,mask))
+      train.tasas <- c(train.tasas, tasa.clas(test,mask))
       tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
       
       i <- i+1
     }
-    cat("\n\tTasas de clasificación:\n")
-    cat("\t\t Test: ", test.tasas, "\n\t\t","Train:", train.tasas)
-    cat("\n\tTasa de reducción:", tasa.red)
-    cat("\n\tTiempo de ejecución(s):", tiempo.exec)
-    cat("\n")
+    with.decimals <- function(v){ format(v, nsmall=5) }
+    result <- data.frame(with.decimals(test.tasas),
+                         with.decimals(tasa.red),
+                         with.decimals(tiempo.exec),
+                         with.decimals(train.tasas))
+    
+    colnames(result) <- c("Tasa.test", "Tasa.red", "T.exec", "Tasa.train")
+    
+    print(result)
   }
 }
-
 
 ##########################################################################
 ### Comparación
@@ -499,6 +496,6 @@ datasets.names <- c("mlibras","arrhythmia","wdbc")
 
 cross.eval(SFS)
 cross.eval(BL)
-cross.eval(SA)
-cross.eval(BT)
-cross.eval(BT.ext)
+#cross.eval(SA)
+#cross.eval(BT)
+#cross.eval(BT.ext)
