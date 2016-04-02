@@ -11,15 +11,17 @@ rm(list = ls())
 # base: logaritmo
 ##########################################################################
 # Cargamos pkgs
+load.my.packages <- function(){
+  pkgs = c("foreign", "data.table", "class", "base")
+  to.install <- pkgs[ ! pkgs %in% installed.packages() ]
+  
+  if ( length(to.install) > 0 )
+    install.packages( to.install, dependencies = TRUE )
+  
+  sapply(pkgs, require, character.only=TRUE)
+}
 
-pkgs = c("foreign", "data.table", "class", "base")
-to.install <- pkgs[ ! pkgs %in% installed.packages() ]
-
-if ( length(to.install) > 0 )
-  install.packages( to.install, dependencies = TRUE )
-
-sapply(pkgs, require, character.only=TRUE)
-
+load.my.packages()
 
 ##########################################################################
 # Lectura de datos
@@ -74,6 +76,21 @@ make.partition <- function(data,per){
   rows <- sample(1:nrow(data), nrow(data)*per)
   
   list(train = data[rows,], test = data[-rows,])
+}
+
+
+##########################################################################
+### Función 3NN
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto
+###     de características triviales, esto es todas
+###
+##########################################################################
+
+NN3 <- function(data){
+  n <- ncol(data)
+  n <- n-1
+  mask <- rep(1,n)
+  mask
 }
 
 
@@ -448,7 +465,7 @@ cross.eval <- function(algorithm){
     test.tasas = c()
     tasa.red = c()
     
-    cat("\nProcesando dataset", datasets.names[j])
+    cat("Procesando dataset", datasets.names[j], "\n")
     
     class.split <- split(x, x$class)
     i <- 1
@@ -486,15 +503,19 @@ cross.eval <- function(algorithm){
       i <- i+1
     }
     with.decimals <- function(v){ format(v, nsmall=5) }
-    result <- data.frame(with.decimals(test.tasas),
-                         with.decimals(tasa.red),
-                         with.decimals(tiempo.exec),
-                         with.decimals(train.tasas))
+    result <- data.frame(
+                          with.decimals(test.tasas),
+                          with.decimals(train.tasas),
+                          with.decimals(tasa.red),
+                          with.decimals(tiempo.exec)
+                        )
     
-    result.medias <- data.frame(with.decimals(mean(test.tasas)),
-                                with.decimals(mean(tasa.red)),
-                                with.decimals(mean(tiempo.exec)),
-                                with.decimals(mean(train.tasas)))
+    result.medias <- data.frame(
+                                  with.decimals(mean(test.tasas)),
+                                  with.decimals(mean(train.tasas)),
+                                  with.decimals(mean(tasa.red)),
+                                  with.decimals(mean(tiempo.exec))
+                                )
     
     names.result <- c("Tasa.test", "Tasa.red", "T.exec", "Tasa.train")
     colnames(result) <- names.result
@@ -508,6 +529,13 @@ cross.eval <- function(algorithm){
   append(all.results, mean.results)
 } 
 
+
+load.my.image <- function(){
+  load(file = "seleccion-caracteristicas.RData")
+}
+save.my.image <- function(){
+  save.image(file = "seleccion-caracteristicas.RData", safe=TRUE)  
+}
 
 ##########################################################################
 ### Obtención de resultados
@@ -526,13 +554,26 @@ semilla <- c(
 
 # Lista de datasets
 
-datasets <- list(mlibras, arrhythmia, wdbc)
-datasets.names <- c("mlibras","arrhythmia","wdbc")
+datasets <- list(wdbc, mlibras, arrhythmia)
+datasets.names <- c("wdbc", "mlibras", "arrhythmia")
 
 ##########################################################################
+# Cargamos el entorno guardado hasta el momento
+load.my.image()
+load.my.packages()
 
+# Después de ejecutar cada algoritmo, guardamos la imagen para poderla recuperar
 SFS.results <- cross.eval(SFS)
+save.my.image()
+
 BL.results <- cross.eval(BL)
+save.my.image()
+
 ES.results <- cross.eval(ES)
-#BT.results <- cross.eval(BT)
-#BT.ext.results <-cross.eval(BT.ext)
+save.my.image()
+
+BT.results <- cross.eval(BT)
+save.my.image()
+
+BT.ext.results <-cross.eval(BT.ext)
+save.my.image()
