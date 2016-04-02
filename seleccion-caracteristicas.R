@@ -446,6 +446,8 @@ cross.eval <- function(algorithm){
   )
 
   n.eval <- length(semilla)
+  all.results <- list()
+  mean.results <- list()
   
   for (j in 1:length(datasets)){
     x <- datasets[[j]]
@@ -455,7 +457,7 @@ cross.eval <- function(algorithm){
     test.tasas = c()
     tasa.red = c()
     
-    cat("\nDataset", datasets.names[j], "\n")
+    cat("\nProcesando dataset", datasets.names[j], "\n")
     
     class.split <- split(x, x$class)
     i <- 1
@@ -507,11 +509,13 @@ cross.eval <- function(algorithm){
     colnames(result) <- names.result
     colnames(result.medias) <- names.result    
     
-    print(result)
-    cat("\tMedias resultados\n")
-    print(result.medias)
+    all.results[[j]] <- result
+    mean.results[[j]] <- result.medias
   }
-}
+  names(all.results) <- datasets.names
+  names(mean.results) <- paste(datasets.names, ".media", sep="")
+  append(all.results, mean.results)
+} 
 
 
 ##########################################################################
@@ -522,8 +526,8 @@ datasets <- list(mlibras, arrhythmia, wdbc)
 datasets.names <- c("mlibras","arrhythmia","wdbc")
 ##########################################################################
 
-cross.eval(SFS)
-cross.eval(BL)
-cross.eval(ES)
-#cross.eval(BT)
-#cross.eval(BT.ext)
+SFS.results <- cross.eval(SFS)
+BL.results <- cross.eval(BL)
+ES.results <- cross.eval(ES)
+#BT.results <- cross.eval(BT)
+#BT.ext.results <- cross.eval(BT.ext)
