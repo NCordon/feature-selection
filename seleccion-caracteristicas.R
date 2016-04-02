@@ -330,6 +330,14 @@ BT <- function(data){
   mask.best
 }
 
+
+##########################################################################
+### Función búsqueda tabú extendida
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto
+###     de características que se obtienen de aplicar la tabú con memoria
+###     a corto y largo plazo
+##########################################################################
+
 BT.ext <- function(data){
   mask <- SFS(data)
   mask.best <- mask
