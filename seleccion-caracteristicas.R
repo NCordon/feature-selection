@@ -436,15 +436,6 @@ BT.ext <- function(data){
 ##########################################################################
 
 cross.eval <- function(algorithm){
-  # Semillas aleatorias
-  semilla <- c(
-     12345678
-    ,23456781
-    ,34567812
-    ,45678123
-    ,56781234
-  )
-
   n.eval <- length(semilla)
   all.results <- list()
   mean.results <- list()
@@ -457,7 +448,7 @@ cross.eval <- function(algorithm){
     test.tasas = c()
     tasa.red = c()
     
-    cat("\nProcesando dataset", datasets.names[j], "\n")
+    cat("\nProcesando dataset", datasets.names[j])
     
     class.split <- split(x, x$class)
     i <- 1
@@ -519,15 +510,29 @@ cross.eval <- function(algorithm){
 
 
 ##########################################################################
-### Comparación
+### Obtención de resultados
+##########################################################################
+
+# Semillas aleatorias
+
+semilla <- c(
+  12345678
+  ,23456781
+  ,34567812
+  ,45678123
+  ,56781234
+)
+
 
 # Lista de datasets
+
 datasets <- list(mlibras, arrhythmia, wdbc)
 datasets.names <- c("mlibras","arrhythmia","wdbc")
+
 ##########################################################################
 
 SFS.results <- cross.eval(SFS)
 BL.results <- cross.eval(BL)
 ES.results <- cross.eval(ES)
 #BT.results <- cross.eval(BT)
-#BT.ext.results <- cross.eval(BT.ext)
+#BT.ext.results <-cross.eval(BT.ext)
