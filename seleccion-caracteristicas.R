@@ -18,7 +18,7 @@ to.install <- pkgs[ ! pkgs %in% installed.packages() ]
 if ( length(to.install) > 0 )
   install.packages( to.install, dependencies = TRUE )
   
-lapply(pkgs, require, character.only=TRUE)
+sapply(pkgs, require, character.only=TRUE)
 
 
 ##########################################################################
@@ -40,7 +40,7 @@ normalize <- function(data){
   # Columnas con valores entre 0 y 1
   data.frame(lapply(data, function(x){ 
     if(is.numeric(x)){
-      x/(max(x)-min(x))
+      (x-min(x))/(max(x)-min(x))
     }
     else x
   }))
@@ -75,6 +75,7 @@ make.partition <- function(data,per){
   
   list(train = data[rows,], test = data[-rows,])
 }
+
 
 ##########################################################################
 ### Función SFS
@@ -494,7 +495,7 @@ cross.eval <- function(algorithm){
 datasets <- list(mlibras, arrhythmia, wdbc)
 datasets.names <- c("mlibras","arrhythmia","wdbc")
 ##########################################################################
-
+help(knn.cv)
 cross.eval(SFS)
 cross.eval(BL)
 cross.eval(SA)
