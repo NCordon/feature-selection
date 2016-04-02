@@ -161,13 +161,13 @@ BL <- function(data){
 }
 
 ##########################################################################
-### Función búsqueda local del primer mejor
+### Función enfriamiento simulado
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
-###     de características que se obtienen de aplicar la búsqueda local del
-###     primer mejor
+###     de características que se obtienen de aplicar enfriamiento simulado
+###
 ##########################################################################
 
-SA <- function(data){
+ES <- function(data){
   # Solución greedy inicial
   mask <- SFS(data)
   n <- length(mask)
@@ -176,7 +176,7 @@ SA <- function(data){
   
   # Parámetros del enfriamiento simulado
   max.eval <- 15000
-  max.vecinos <- n
+  max.vecinos <- 10*n
   max.exitos <- 0.1*max.vecinos
   mu <- 0.3
   phi <- 0.3
@@ -185,14 +185,23 @@ SA <- function(data){
   
   t.actual <- mu*tasa.best/-log(phi, base=exp(1))
   t.final <- 1e-3
+  
+  # Comprobamos que la temperatura final sea menor que la inicial
+  # y la ajustamos en caso contrario
+  while (t.final >= t.actual){
+    t.final <- t.final * 1e-3
+  }
+  
   beta <- (t.actual - t.final)/((max.eval/max.vecinos)*t.actual*t.final)
   
   n.eval <- 0
   n.vecinos <- 0
-  n.exitos <- 0
-  fin <- FALSE
+  n.exitos <- 1
   
-  while(n.eval < max.eval & !fin & t.actual > t.final){
+  # Nueva iteración
+  # print ("Nueva iteración")
+  
+  while(n.eval < max.eval & n.exitos>0 & t.actual > t.final){
     n.vecinos <- 0
     n.exitos <- 0
     
@@ -200,21 +209,21 @@ SA <- function(data){
     while(n.vecinos < max.vecinos
           & n.exitos < max.exitos
           & n.eval < max.eval){
-      # Generamos un vecino
-      m <- mask
-      fin <- TRUE
       
-      i <- sample(1:n,1)
-      m[i] <- (m[i]+1)%%2
+      m <- mask
+      
+      # Generamos un vecino
+      j <- sample(1:n,1)
+      m[j] <- (m[j]+1)%%2
+      
       tasa.actual <- tasa.clas(data, m)
-      u <- runif(1, 0.0, 1.0)
       delta <- tasa.actual - tasa.best
+      u <- runif(1, 0.0, 1.0)
       
       if (delta >= 0 || u <= exp(delta/t.actual)){
         mask <- m
         tasa.best <- tasa.actual
         n.exitos <- n.exitos + 1
-        fin <- FALSE
         
         if (delta >=0){
           mask.best <- m
@@ -226,6 +235,10 @@ SA <- function(data){
       n.eval <- n.eval + 1
     }
     t.actual <- t.actual/(1 + beta*t.actual)
+    # Depuración
+    #cat("\n Temperatura actual: ", t.actual)
+    #cat("\n Número de éxitos: ", n.exitos)
+    #cat("\n Número de vecinos generados ", n.vecinos)
   }
   mask.best
 }
@@ -424,13 +437,15 @@ BT.ext <- function(data){
 
 cross.eval <- function(algorithm){
   # Semillas aleatorias
-  semilla = c(
-    12345678,
-    23456781,
-    34567812,
-    45678123,
-    56781234
+  semilla <- c(
+     12345678
+    ,23456781
+    ,34567812
+    ,45678123
+    ,56781234
   )
+
+  n.eval <- length(semilla)
   
   for (j in 1:length(datasets)){
     x <- datasets[[j]]
@@ -440,12 +455,12 @@ cross.eval <- function(algorithm){
     test.tasas = c()
     tasa.red = c()
     
-    cat("Dataset", datasets.names[j], "\n")
+    cat("\nDataset", datasets.names[j], "\n")
     
     class.split <- split(x, x$class)
     i <- 1
     
-    while (i<=5){
+    while (i <= n.eval){
       set.seed(semilla[i])
       partitioned <- lapply(class.split, make.partition, per=0.5 )
       train <- lapply (partitioned, function(x){ x$train } )
@@ -483,11 +498,21 @@ cross.eval <- function(algorithm){
                          with.decimals(tiempo.exec),
                          with.decimals(train.tasas))
     
-    colnames(result) <- c("Tasa.test", "Tasa.red", "T.exec", "Tasa.train")
+    result.medias <- data.frame(with.decimals(mean(test.tasas)),
+                                with.decimals(mean(tasa.red)),
+                                with.decimals(mean(tiempo.exec)),
+                                with.decimals(mean(train.tasas)))
+    
+    names.result <- c("Tasa.test", "Tasa.red", "T.exec", "Tasa.train")
+    colnames(result) <- names.result
+    colnames(result.medias) <- names.result    
     
     print(result)
+    cat("\tMedias resultados\n")
+    print(result.medias)
   }
 }
+
 
 ##########################################################################
 ### Comparación
@@ -499,6 +524,6 @@ datasets.names <- c("mlibras","arrhythmia","wdbc")
 
 cross.eval(SFS)
 cross.eval(BL)
-#cross.eval(SA)
+cross.eval(ES)
 #cross.eval(BT)
 #cross.eval(BT.ext)
