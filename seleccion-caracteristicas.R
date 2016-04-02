@@ -455,19 +455,22 @@ cross.eval <- function(algorithm){
       
       
       # Primero usando la máscara dada por el train
-      tmp <- proc.time()[3]
+      t.inicial <- proc.time()[3]
       mask <- algorithm(train)
-      tiempo.exec <- c(tiempo.exec, proc.time()[3] - tmp)
+      t.final <- proc.time()[3]
       
+      tiempo.exec <- c(tiempo.exec, t.final - t.inicial)
       test.tasas <- c(test.tasas, tasa.clas(test,mask))
       train.tasas <- c(train.tasas, tasa.clas(train,mask))
       tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
       
       
       # Usando ahora la máscara dada por el test
-      tmp <- proc.time()[3]
+      t.inicial <- proc.time()[3]
       mask <- algorithm(test)
-      tiempo.exec <- c(tiempo.exec, proc.time()[3] - tmp)
+      t.final <- proc.time()[3]
+      
+      tiempo.exec <- c(tiempo.exec, t.final - t.inicial)
       test.tasas <- c(test.tasas, tasa.clas(train,mask))
       train.tasas <- c(train.tasas, tasa.clas(test,mask))
       tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
