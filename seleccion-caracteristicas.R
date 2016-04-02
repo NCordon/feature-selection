@@ -61,7 +61,7 @@ tasa.clas <- function (train, mask){
   train <- subset(train, select = which(mask==1))
   
   # Obtenemos el fit que se haría del conjunto test para el 3-knn
-  fit <- knn.cv(train, cl, k = 3, l = 0, prob = FALSE, use.all = TRUE)
+  fit <- knn.cv(train, cl, k = 3, prob = FALSE, use.all = TRUE)
   
   # Tasa de clasificación
   return (100 * length(which(cl == fit)) / length(cl))
@@ -102,8 +102,9 @@ SFS <- function(data){
       break
     }
     
-    mask [which.max (evs)] <- 1
-    non.selected <- non.selected[non.selected != which.max(evs)]
+    sel <- non.selected[which.max (evs)]
+    mask [sel] <- 1
+    non.selected <- non.selected[non.selected != sel]
     max <- max(evs)
   }
   
@@ -495,7 +496,7 @@ cross.eval <- function(algorithm){
 datasets <- list(mlibras, arrhythmia, wdbc)
 datasets.names <- c("mlibras","arrhythmia","wdbc")
 ##########################################################################
-help(knn.cv)
+
 cross.eval(SFS)
 cross.eval(BL)
 cross.eval(SA)
