@@ -138,8 +138,9 @@ SFS <- function(data){
 ##########################################################################
 
 BL <- function(data){
-  mask <- SFS(data)
-  n <- length(mask)
+  n <- ncol(data)
+  n <- n-1
+  mask <- sample(0:1, n, replace=TRUE)
   tasa.best <- tasa.clas(data, mask)
   mejora.found <- TRUE
   max.eval <- 15000
@@ -185,11 +186,11 @@ BL <- function(data){
 ##########################################################################
 
 ES <- function(data){
-  # Solución greedy inicial
-  mask <- SFS(data)
-  n <- length(mask)
-  tasa.best <- tasa.clas(data, mask)
+  n <- ncol(data)
+  n <- n-1
+  mask <- sample(0:1, n, replace=TRUE)
   mask.best <- mask
+  tasa.best <- tasa.clas(data, mask.best)
   
   # Parámetros del enfriamiento simulado
   max.eval <- 15000
@@ -269,9 +270,11 @@ ES <- function(data){
 ##########################################################################
 
 BT <- function(data){
-  mask <- SFS(data)
+  n <- ncol(data)
+  n <- n-1
+  mask <- sample(0:1, n, replace=TRUE)
   mask.best <- mask
-  tasa.best <- tasa.clas(data, mask)
+  tasa.best <- tasa.clas(data, mask.best)
   n <- length(mask)
   
   max.eval <- 15000
@@ -339,9 +342,11 @@ BT <- function(data){
 ##########################################################################
 
 BT.ext <- function(data){
-  mask <- SFS(data)
+  n <- ncol(data)
+  n <- n-1
+  mask <- sample(0:1, n, replace=TRUE)
   mask.best <- mask
-  tasa.best <- tasa.clas(data, mask)
+  tasa.best <- tasa.clas(data, mask.best)
   n <- length(mask)
   
   max.eval <- 15000
@@ -565,7 +570,7 @@ data.file <- "seleccion-caracteristicas.RData"
 save.my.image <- function(){
   save.image(file = data.file, safe=TRUE)  
 }
-load(file = data.file)
+#load(file = data.file)
 
 # Después de ejecutar cada algoritmo, guardamos la imagen para poderla recuperar
 

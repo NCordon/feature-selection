@@ -214,20 +214,25 @@ conjunto de atributos. El proceso se repite intercambiando los conjuntos de entr
 metaheaurística/algoritmo se calculará como la media de todas las tasas de clasificación obtenidas sobre el conjunto test
 (10 en total). Otras medidas que se tendrán en cuenta a la hora de evaluar la bondad de un algoritmo empleado serán:
 \begin{itemize}
- \item Tasa de reducción: Número de características que contiene seleccionadas la máscara sobre el total que podía seleccionar
+ \item Tasa de reducción: Número de características que contiene seleccionadas la máscara sobre el total que podía 
+ seleccionar. 
  \item Tiempo de ejecución: Tiempo en segundos que tarda el algoritmo en devolver un conjunto de características.
 \end{itemize}
 
 
-La tasa de clasificación del clasificador se mide (en tanto por uno) como: $$tasa\: clasificacion = \frac{instancias\: bien\: clasificadas}{total\: instancias}$$
+La tasa de clasificación del clasificador se mide (en tanto por uno) como: $$tasa\: clasificacion = \frac{instancias\: 
+bien\: clasificadas}{total\: instancias}$$
 
 La representación usada es la binaria (1 o 0 por característica), donde tenemos un vector de tamaño $n$, con $n$ el número 
 de atributos (exceptuando la clase), y la metaheaurística/algoritmo ha seleccionado el atributo si y solo si lo ha marcado 
-a 1. A una representación de esta forma, la denominamos máscara $$ mask =\begin{matrix} (0 & 1 & \ldots & 1 & 1 & 0 & \ldots) \end{matrix}$$.
+a 1. A una representación de esta forma, la denominamos máscara: $$ mask =\begin{matrix} (0 & 1\ldots 1 & 1 & 0\ldots) 
+\end{matrix}$$
 
-Se usan:
-\begin{itemize}
- \item 3-NN: se devuelve la máscara trivial y se aplica el clasificador 3-knn con todas las características.
+
+\section{Descripción de los algoritmos empleados}
+ 
+ 
+ 3-NN: se devuelve la máscara trivial y se aplica el clasificador 3-knn con todas las características.
  \item SFS (\textit{Sequential Forward Selection}): algoritmo greedy que selecciona a cada paso la característica de las no escogidas
  hasta el momento que mejora la tasa de clasificación y que termina cuando no encuentra ninguna que la mejore.
  \item 
