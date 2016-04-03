@@ -69,44 +69,6 @@ tasa.clas <- function (train, mask){
   return (100 * length(which(cl == fit)) / length(cl))
 }
 
-leave.one.out.3knn <- function(train, train.class){
-  train <- train2
-  train.class <- cl
-  n.cores <- detectCores() - 1
-  cluster <- makeCluster(n.cores)
-  n <- nrow(train)
-  
-  fit <-sapply(1:n, function(i){
-    indexes <- 1:n
-    indexes <- indexes[indexes != i]
-    
-    distances <- parSapply(cluster, indexes, function(j,train,i){
-      v <- as.numeric(train[i,]) - as.numeric(train[j,])
-      sum(v*v)
-    },train,i)
-    
-    # 3KNN
-    indexes.three <- head(order(distances), 3)
-    distances.three <- order(distances)[1:3]
-    three.n <- indexes[indexes.three]
-    class.three <- train.class[three.n]
-    
-    clases <- unique(class.three)
-    
-    if (length(clases) == 3){
-      value <- class.three [which.min(distances.three)]
-    }
-    else{
-      recuento <- sapply(clases, function(x){ sum(class.three == x)})
-      value <- clases[which.max(recuento)]
-    }
-    value
-  })
-  
-  stopCluster(cluster)
-  fit
-}
-
 
 ##########################################################################
 # Función de generación de particiones
