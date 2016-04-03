@@ -300,7 +300,7 @@ BT <- function(data){
         # Si el criterio de aspiración no se cumple
         #   Asignamos un valor basura a la tasa para
         #   que no sea escogida como la mejor
-        if (tasa.actual < tasa.best){
+        if (tasa.actual <= tasa.best){
           tasa.actual <- 0
         }
       }
@@ -353,7 +353,7 @@ BT.ext <- function(data){
   tabu.list <- c()
   # Lista de frecuencias
   frec <- rep(0,n)
-  n.reinic <- 20
+  tope.reinic <- 10
   n.sin.mejora <- 0
   
   # Posición a escribir de la lista tabú
@@ -362,7 +362,7 @@ BT.ext <- function(data){
   
   while(n.eval < max.eval){
     # Reinicialización
-    if ((n.sin.mejora %% n.reinic == 0)){
+    if ((n.sin.mejora %% tope.reinic == 0)){
       u <- runif(1, 0.0, 1.0)
       
       if (u < 0.25){
@@ -377,7 +377,7 @@ BT.ext <- function(data){
         mask <- sapply(frec, function(f,n){
           u <- runif(1, 0.0, 1.0)
           x <- 0
-          # Evita que falle en las primeras iteraciones
+          # Evita que falle cuando todas las frecuencias están a 0
           n <- max(n,1)
           
           if (u < 1 - f/n){
@@ -538,13 +538,6 @@ cross.eval <- function(algorithm){
 } 
 
 
-load.my.image <- function(){
-  load(file = "seleccion-caracteristicas.RData")
-}
-save.my.image <- function(){
-  save.image(file = "seleccion-caracteristicas.RData", safe=TRUE)  
-}
-
 ##########################################################################
 ### Obtención de resultados
 ##########################################################################
@@ -567,10 +560,18 @@ datasets.names <- c("wdbc", "mlibras", "arrhythmia")
 
 ##########################################################################
 # Cargamos el entorno guardado hasta el momento
-#load.my.image()
-load.my.packages()
+data.file <- "seleccion-caracteristicas.RData"
+
+save.my.image <- function(){
+  save.image(file = data.file, safe=TRUE)  
+}
+load(file = data.file)
 
 # Después de ejecutar cada algoritmo, guardamos la imagen para poderla recuperar
+
+NN3.results <- cross.eval(NN3)
+save.my.image()
+
 SFS.results <- cross.eval(SFS)
 save.my.image()
 
@@ -585,3 +586,5 @@ save.my.image()
 
 BT.ext.results <-cross.eval(BT.ext)
 save.my.image()
+
+#write.csv2(NN3.results$arrhythmia,file="arrhythmia.csv", quote=FALSE, row.names = FALSE)

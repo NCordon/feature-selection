@@ -183,7 +183,7 @@
 Ignacio Cordón Castillo, 25352973G\\
 \url{nachocordon@correo.ugr.es}\\
 \ \\
-4 Doble Grado Matemáticas Informática\\
+$4^{\circ}$ Doble Grado Matemáticas Informática\\
 Grupo Prácticas Viernes
 \end{center}
 \end{minipage}
@@ -201,17 +201,37 @@ Grupo Prácticas Viernes
 %\imagen{ugr.jpg}{Logo de prueba}{ugr2}{size relative to the \textwidth}
 
 \section{Descripción del problema}
-Dado un \textit{dataset} de instancias ya clasificadas, con una serie de atributos, se pretende comparar las distintas
-metaheaurísticas disponibles para comprobar cuál produce el conjunto de atributos que sirven para obtener una mayor tasa
-de clasificación (número de instancias bien clasificadas sobre el total).
+Dado un \textit{dataset} de instancias ya clasificadas, con una serie de atributos, se pretende comparar las distintas 
+metaheaurísticas disponibles para comprobar cuál produce el conjunto de atributos que sirven para obtener una mayor 
+tasa de clasificación (número de instancias bien clasificadas sobre el total) usando un clasificador de instancias.
 
-Se considera la tasa de clasificación en el problema usando un clasificador \textit{3-knn} que en el caso particular de la
-presente práctica, resuelve los conflictos de empates aleatoriamente. Además, se efectúan 5 particiones al 50\% estratificadas
+Se considera la tasa de clasificación en el problema usando un clasificador \textit{3-knn} leaving one-out. Para cada 
+instancia de un conjunto, toma las 3 más cercanas usando la distancia euclídea entre sus atributos, y etiqueta la nueva
+instancia en función de la etiqueta mayoritaria de entre esas tres. Se efectúan 5 particiones al 50\% estratificadas
 por clase en \textit{train - test}, de modo que la metaheurística proporcionará un conjunto de atributos para el conjunto de
 entrenamiento, y se calculará la tasa de clasificación que produce sobre el conjunto de prueba para el \textit{3-knn} dicho
-conjunto de atributos.
+conjunto de atributos. El proceso se repite intercambiando los conjuntos de entrenamiento y de test. La calidad de la 
+metaheaurística/algoritmo se calculará como la media de todas las tasas de clasificación obtenidas sobre el conjunto test
+(10 en total). Otras medidas que se tendrán en cuenta a la hora de evaluar la bondad de un algoritmo empleado serán:
+\begin{itemize}
+ \item Tasa de reducción: Número de características que contiene seleccionadas la máscara sobre el total que podía seleccionar
+ \item Tiempo de ejecución: Tiempo en segundos que tarda el algoritmo en devolver un conjunto de características.
+\end{itemize}
 
-La representación usada es la binaria, donde tenemos un vector de tamaño $n$, con $n$ el número de atributos (exceptuando la
-clase), y la metaheaurística/algoritmo ha seleccionado el atributo si y solo si lo ha marcado a 1. A una representación
-de esta forma, la denominamos máscara $$ mask =\begin{matrix} (\ldots & 1 & \ldots & 0 & \ldots & 1 & \ldots) \end{matrix}$$
+
+La tasa de clasificación del clasificador se mide (en tanto por uno) como: $$tasa\: clasificacion = \frac{instancias\: bien\: clasificadas}{total\: instancias}$$
+
+La representación usada es la binaria (1 o 0 por característica), donde tenemos un vector de tamaño $n$, con $n$ el número 
+de atributos (exceptuando la clase), y la metaheaurística/algoritmo ha seleccionado el atributo si y solo si lo ha marcado 
+a 1. A una representación de esta forma, la denominamos máscara $$ mask =\begin{matrix} (0 & 1 & \ldots & 1 & 1 & 0 & \ldots) \end{matrix}$$.
+
+Se usan:
+\begin{itemize}
+ \item 3-NN: se devuelve la máscara trivial y se aplica el clasificador 3-knn con todas las características.
+ \item SFS (\textit{Sequential Forward Selection}): algoritmo greedy que selecciona a cada paso la característica de las no escogidas
+ hasta el momento que mejora la tasa de clasificación y que termina cuando no encuentra ninguna que la mejore.
+ \item 
+ 
+\end{itemize}
+
 \end{document}
