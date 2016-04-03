@@ -1,0 +1,12 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textbf{\textcolor{Blue}{def}}\ tasa$\_$clasificacion\ \textcolor{BrickRed}{(}train\textcolor{BrickRed}{,}\ mascara\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ train\ \textcolor{BrickRed}{=}\ apply\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}\ train\textcolor{BrickRed}{)} \\
+\mbox{}\ \ clases\ \textcolor{BrickRed}{=}\ train\textcolor{BrickRed}{[}\textbf{\textcolor{Blue}{class}}\textcolor{BrickRed}{]} \\
+\mbox{}\ \ train\ \textcolor{BrickRed}{=}\ train\textcolor{BrickRed}{[-}\textbf{\textcolor{Blue}{class}}\textcolor{BrickRed}{]} \\
+\mbox{} \\
+\mbox{}\ \ fit\ \textcolor{BrickRed}{=}\ leave\textcolor{BrickRed}{.}one\textcolor{BrickRed}{.}out\textcolor{BrickRed}{.}3knn\textcolor{BrickRed}{(}train\textcolor{BrickRed}{,}\ clases\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \textbf{\textcolor{Blue}{return}}\ \textcolor{BrickRed}{(}\textcolor{Purple}{100}\ \textcolor{BrickRed}{*}\ length\textcolor{BrickRed}{(}which\textcolor{BrickRed}{(}clases\ \textcolor{BrickRed}{==}\ fit\textcolor{BrickRed}{))}\ \textcolor{BrickRed}{/}\ length\textcolor{BrickRed}{(}clases\textcolor{BrickRed}{))} \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}
