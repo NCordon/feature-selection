@@ -55,6 +55,16 @@ wdbc <- normalize(wdbc)
 
 
 ##########################################################################
+# Función de generación de particiones
+##########################################################################
+make.partition <- function(data,per){
+  rows <- sample(1:nrow(data), nrow(data)*per)
+  
+  list(train = data[rows,], test = data[-rows,])
+}
+
+
+##########################################################################
 ### Función tasa clasificación
 ##########################################################################
 tasa.clas <- function (train, mask){
@@ -68,16 +78,6 @@ tasa.clas <- function (train, mask){
   # Tasa de clasificación
   return (100 * length(which(cl == fit)) / length(cl))
 }
-
-
-##########################################################################
-# Función de generación de particiones
-make.partition <- function(data,per){
-  rows <- sample(1:nrow(data), nrow(data)*per)
-  
-  list(train = data[rows,], test = data[-rows,])
-}
-
 
 ##########################################################################
 ### Función 3NN
