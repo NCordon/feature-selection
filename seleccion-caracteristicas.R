@@ -12,7 +12,7 @@ rm(list = ls())
 ##########################################################################
 # Cargamos pkgs
 load.my.packages <- function(){
-  pkgs = c("foreign", "data.table", "class", "base", "parallel")
+  pkgs = c("foreign", "data.table", "class", "base")
   to.install <- pkgs[ ! pkgs %in% installed.packages() ]
   
   if ( length(to.install) > 0 )
@@ -125,7 +125,7 @@ SFS <- function(data){
     non.selected <- non.selected[non.selected != sel]
     max <- max(evs)
   }
-  print (tasa.clas(data,mask))
+  
   mask
 }
 
@@ -567,7 +567,7 @@ datasets.names <- c("wdbc", "mlibras", "arrhythmia")
 
 ##########################################################################
 # Cargamos el entorno guardado hasta el momento
-load.my.image()
+#load.my.image()
 load.my.packages()
 
 # Después de ejecutar cada algoritmo, guardamos la imagen para poderla recuperar
