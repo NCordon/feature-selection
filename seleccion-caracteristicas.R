@@ -12,7 +12,7 @@ rm(list = ls())
 ##########################################################################
 # Cargamos pkgs
 load.my.packages <- function(){
-  pkgs = c("foreign", "data.table", "class", "base")
+  pkgs = c("foreign", "data.table", "class", "base", "parallel")
   to.install <- pkgs[ ! pkgs %in% installed.packages() ]
   
   if ( length(to.install) > 0 )
@@ -67,6 +67,39 @@ tasa.clas <- function (train, mask){
   
   # Tasa de clasificación
   return (100 * length(which(cl == fit)) / length(cl))
+}
+
+
+leave.one.out.3knn <- function(train, train.class){
+  n.cores <- detectCores() - 1
+  cluster <- makeCluster(n.cores)
+  
+  parSapply(cluster, 1:nrow(train), function(i){
+    indexes <- 1:n
+    indexes <- indexes[indexes != i]
+    
+    distances <- sapply(train[-i], function(current){
+      sum(sapply(train[i,] - current, function(j){j*j}))
+    })
+      
+    # 3KNN
+    indexes.three <- head(order(distances), 3)
+    distances.three <- order(distances)[1:3]
+    three.n <- indexes[three.n]
+    class.three <- train.class[three.n]
+    
+    unicos <- unique(class.three)
+    
+    if (length(unicos) == 3){
+      value <- class.three [which.min(distances.three)]
+    }
+    else{
+      recount <- sapply(unicos, function(x){ sum(class.three == x)})
+      value <- unicos[which.max(recount)]
+    }
+  })
+  
+  value
 }
 
 
@@ -125,7 +158,7 @@ SFS <- function(data){
     non.selected <- non.selected[non.selected != sel]
     max <- max(evs)
   }
-  
+  print (tasa.clas(data,mask))
   mask
 }
 
@@ -300,7 +333,7 @@ BT <- function(data){
         # Si el criterio de aspiración no se cumple
         #   Asignamos un valor basura a la tasa para
         #   que no sea escogida como la mejor
-        if (tasa.actual <= tasa.best){
+        if (tasa.actual < tasa.best){
           tasa.actual <- 0
         }
       }
@@ -314,7 +347,7 @@ BT <- function(data){
     # Esto asigna a la solución actual el mejor vecino
     mask[tabu.elem] <- (mask[tabu.elem]+1)%%2
     
-    if (tasa.mejor.vecino > tasa.best){
+    if (tasa.mejor.vecino >= tasa.best){
       mask.best <- mask
       tasa.best <- tasa.mejor.vecino
     }
@@ -525,7 +558,7 @@ cross.eval <- function(algorithm){
                                   with.decimals(mean(tiempo.exec))
                                 )
     
-    names.result <- c("Tasa.test", "Tasa.red", "T.exec", "Tasa.train")
+    names.result <- c("Tasa.test", "Tasa.train", "Tasa.red", "T.exec")
     colnames(result) <- names.result
     colnames(result.medias) <- names.result    
     
@@ -569,6 +602,7 @@ datasets.names <- c("wdbc", "mlibras", "arrhythmia")
 # Cargamos el entorno guardado hasta el momento
 load.my.image()
 load.my.packages()
+
 
 # Después de ejecutar cada algoritmo, guardamos la imagen para poderla recuperar
 SFS.results <- cross.eval(SFS)
