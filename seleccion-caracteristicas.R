@@ -63,43 +63,48 @@ tasa.clas <- function (train, mask){
   train <- subset(train, select = which(mask==1))
   
   # Obtenemos el fit que se haría del conjunto test para el 3-knn
-  fit <- knn.cv(train, cl, k = 3, prob = FALSE, use.all = TRUE)
+  fit <- knn.cv(train, cl, k=3, use.all = TRUE)
   
   # Tasa de clasificación
   return (100 * length(which(cl == fit)) / length(cl))
 }
 
-
 leave.one.out.3knn <- function(train, train.class){
+  train <- train2
+  train.class <- cl
   n.cores <- detectCores() - 1
   cluster <- makeCluster(n.cores)
+  n <- nrow(train)
   
-  parSapply(cluster, 1:nrow(train), function(i){
+  fit <-sapply(1:n, function(i){
     indexes <- 1:n
     indexes <- indexes[indexes != i]
     
-    distances <- sapply(train[-i], function(current){
-      sum(sapply(train[i,] - current, function(j){j*j}))
-    })
-      
+    distances <- parSapply(cluster, indexes, function(j,train,i){
+      v <- as.numeric(train[i,]) - as.numeric(train[j,])
+      sum(v*v)
+    },train,i)
+    
     # 3KNN
     indexes.three <- head(order(distances), 3)
     distances.three <- order(distances)[1:3]
-    three.n <- indexes[three.n]
+    three.n <- indexes[indexes.three]
     class.three <- train.class[three.n]
     
-    unicos <- unique(class.three)
+    clases <- unique(class.three)
     
-    if (length(unicos) == 3){
+    if (length(clases) == 3){
       value <- class.three [which.min(distances.three)]
     }
     else{
-      recount <- sapply(unicos, function(x){ sum(class.three == x)})
-      value <- unicos[which.max(recount)]
+      recuento <- sapply(clases, function(x){ sum(class.three == x)})
+      value <- clases[which.max(recuento)]
     }
+    value
   })
   
-  value
+  stopCluster(cluster)
+  fit
 }
 
 
@@ -602,7 +607,6 @@ datasets.names <- c("wdbc", "mlibras", "arrhythmia")
 # Cargamos el entorno guardado hasta el momento
 load.my.image()
 load.my.packages()
-
 
 # Después de ejecutar cada algoritmo, guardamos la imagen para poderla recuperar
 SFS.results <- cross.eval(SFS)
