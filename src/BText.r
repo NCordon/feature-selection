@@ -13,31 +13,34 @@ BT.ext <- function(data){
   tasa.best <- tasa.clas(data, mask.best)
   n <- length(mask)
   
-  max.eval <- 15000
-  max.vecinos <- 30
+  max.vecinos <- BT.ext.max.vecinos
   # Tamaño máximo de la lista tabú
   max.tabu <- n/3
   
   # Lista tabú
   tabu.list <- c()
   # Lista de frecuencias
-  frec <- rep(0,n)
-  tope.reinic <- 10
+  frec <- rep(0,n*BT.ext.coef.frec)
+  tope.reinic <- BT.ext.tope.reinic
   n.sin.mejora <- 0
   
   # Posición a escribir de la lista tabú
   tl.pos <- 1
   n.eval <- 0
   
+  # Probabilidades límite de intensificación y diversificación
+  prob.diversif <- BT.ext.prob.diversif
+  prob.intensif <- BT.ext.prob.intensif + BT.ext.prob.diversif
+  
   while(n.eval < max.eval){
     # Reinicialización
     if ((n.sin.mejora %% tope.reinic == 0)){
       u <- runif(1, 0.0, 1.0)
       
-      if (u < 0.25){
+      if (u < prob.diversif){
         mask <- sample(0:1, n, replace=TRUE)
       }
-      else if (u < 0.5){
+      else if (u < prob.intensif){
         mask <- mask.best
       }
       else{

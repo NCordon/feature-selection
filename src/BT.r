@@ -13,10 +13,9 @@ BT <- function(data){
   tasa.best <- tasa.clas(data, mask.best)
   n <- length(mask)
   
-  max.eval <- 15000
-  max.vecinos <- 30
+  max.vecinos <- BT.max.vecinos
   # Tamaño máximo de la lista tabú
-  max.tabu <- n/3
+  max.tabu <- n*BT.coef.max.tabu
   
   # Lista tabú
   tabu.list <- c()

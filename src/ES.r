@@ -13,15 +13,13 @@ ES <- function(data){
   tasa.best <- tasa.clas(data, mask.best)
   
   # Parámetros del enfriamiento simulado
-  max.eval <- 15000
-  max.vecinos <- 10*n
-  max.exitos <- 0.1*max.vecinos
-  mu <- 0.3
-  phi <- 0.3
+  #max.eval <- 15000
+  max.vecinos <- ES.coef.max.vecinos*n
+  max.exitos <- ES.coef.max.exitos*max.vecinos
   # Nota: los mejores valores probados para estos parámetros han sido 0.05 y 0.05
   
   
-  t.actual <- mu*tasa.best/-log(phi, base=exp(1))
+  t.actual <- ES.mu*tasa.best/-log(ES.phi, base=exp(1))
   t.final <- 1e-3
   
   # Comprobamos que la temperatura final sea menor que la inicial

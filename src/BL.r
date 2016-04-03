@@ -11,7 +11,7 @@ BL <- function(data){
   mask <- sample(0:1, n, replace=TRUE)
   tasa.best <- tasa.clas(data, mask)
   mejora.found <- TRUE
-  max.eval <- 15000
+  #max.eval <- 15000
   n.eval <- 0
   
   while(mejora.found && (n.eval < max.eval)){

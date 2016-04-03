@@ -195,7 +195,7 @@ datasets <- list(wdbc, mlibras, arrhythmia)
 datasets.names <- c("wdbc", "mlibras", "arrhythmia")
 
 ##########################################################################
-# Cargamos el entorno guardado hasta el momento
+# Archivo donde guardamos el entorno guardado hasta el momento
 data.file <- "seleccion-caracteristicas.RData"
 
 save.my.image <- function(){
