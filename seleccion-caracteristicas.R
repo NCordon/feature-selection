@@ -117,7 +117,7 @@ SFS <- function(data){
       tasa.clas(data, m)
     } )
     
-    if (max(evs) < max || length(evs)==0){
+    if (max(evs) <= max || length(evs)==0){
       fin <- TRUE
     }
     
@@ -164,7 +164,7 @@ BL <- function(data){
       tasa.actual <- tasa.clas(data, m)
       n.eval <- n.eval + 1
       
-      if (tasa.actual >= tasa.best){
+      if (tasa.actual > tasa.best){
         mask <- m
         tasa.best <- tasa.actual
         mejora.found <- TRUE
@@ -239,12 +239,12 @@ ES <- function(data){
       delta <- tasa.actual - tasa.best
       u <- runif(1, 0.0, 1.0)
       
-      if (delta >= 0 || u <= exp(delta/t.actual)){
+      if (delta > 0 || u <= exp(delta/t.actual)){
         mask <- m
         tasa.best <- tasa.actual
         n.exitos <- n.exitos + 1
         
-        if (delta >=0){
+        if (delta > 0){
           mask.best <- m
         }
         
@@ -318,7 +318,7 @@ BT <- function(data){
     # Esto asigna a la solución actual el mejor vecino
     mask[tabu.elem] <- (mask[tabu.elem]+1)%%2
     
-    if (tasa.mejor.vecino >= tasa.best){
+    if (tasa.mejor.vecino > tasa.best){
       mask.best <- mask
       tasa.best <- tasa.mejor.vecino
     }
