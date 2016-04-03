@@ -230,9 +230,27 @@ a 1. A una representación de esta forma, la denominamos máscara: $$ mask =\beg
 
 
 \section{Descripción de los algoritmos empleados}
-Todos los algoritmos considerados, exceptuando el 3-NN tienen en común las siguientes componentes:
+Los algoritmos considerados tienen las siguientes componentes:
+
 \begin{itemize} 
- 
-\end{itemize}
+\item Esquema de representación: se usarán máscaras, sucesiones de unos y ceros de tanta longitud como atributos haya,
+exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa característica se ha escogido, y un $0$ que no.
+\item Función objetivo: la función a maximizar será la tasa de clasificación explicada arriba usando el clasificador
+3-knn con la selección de características indicada por la máscara.
+\item Generación de solución inicial: en el caso del 3-NN, la solución inciial es la máscara trivial (todos los valores a 1).
+En SFS, la solución inicial es la máscara nula (todos los valores a 0). En el resto de algoritmos, la solución inicial se
+generará de manera aleatoria (depende por tanto de la semilla empleada en cada aplicación del algoritmo).
+\item Esquema de generación de vecinos: En las metaheaurísticas empleadas (Búsqueda Local, Enfriamiento Simulado, Búsqueda
+Tabú, Búsqueda Tabú básica y extendida) se generan los vecinos cambiando el estado de la característica $i-$ésima de
+escogido a no escogido y viceversa.
+\item Se considera una función mejor cuando aumenta la función objetivo (tasa de clasificación del 3-knn para la máscara
+dada por esa solución).
+\item Criterio de parada: el criterio de parada común en las 4 metaheaurísticas empleadas es la evaluación de 15000 posibles
+soluciones. Como criterios particulares se contemplan las siguientes condiciones de parada:
+  \begin{itemize}
+    \item Búsqueda local: se parará la generación de vecinos cuando no se halle mejora en todo un entorno.
+    \item Enfriamiento simulado: se parará la ejecución cuando la temperatura actual se quede por debajo de la escogida
+    inicialmente.
+  \end{itemize}
 
 \end{document}

@@ -67,6 +67,7 @@ make.partition <- function(data,per){
 ##########################################################################
 ### Función tasa clasificación
 ##########################################################################
+
 tasa.clas <- function (train, mask){
   # Aplicamos la máscara
   cl <- train$class
