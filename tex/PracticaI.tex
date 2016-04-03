@@ -14,6 +14,8 @@
 \addto\shorthandsspanish{\let\esperiod\es@period@code}
 \makeatother
 
+\usepackage[usenames,dvipsnames]{color} % Coloring code
+
 \usepackage{longtable}
 \usepackage{tabu}
 \usepackage{supertabular}
@@ -174,7 +176,7 @@
 %----------------------------------------------------------------------------------------
 
 \begin{center}
-\includegraphics[width=8cm]{../ugr.jpg}
+\includegraphics[width=8cm]{../data/ugr.jpg}
 \end{center}
 %----------------------------------------------------------------------------------------
 
@@ -237,7 +239,10 @@ Los algoritmos considerados tienen las siguientes componentes:
 exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa característica se ha escogido, y un $0$ que no.
 \item Función objetivo: la función a maximizar será la tasa de clasificación explicada arriba usando el clasificador
 3-knn con la selección de características indicada por la máscara.
-\item Generación de solución inicial: en el caso del 3-NN, la solución inciial es la máscara trivial (todos los valores a 1).
+
+\small\texttt{\input{tasa_clasificacion}}
+
+\item Generación de solución inicial: en el caso del 3-NN, la solución inicial es la máscara trivial (todos los valores a 1).
 En SFS, la solución inicial es la máscara nula (todos los valores a 0). En el resto de algoritmos, la solución inicial se
 generará de manera aleatoria (depende por tanto de la semilla empleada en cada aplicación del algoritmo).
 \item Esquema de generación de vecinos: En las metaheaurísticas empleadas (Búsqueda Local, Enfriamiento Simulado, Búsqueda
@@ -252,5 +257,5 @@ soluciones. Como criterios particulares se contemplan las siguientes condiciones
     \item Enfriamiento simulado: se parará la ejecución cuando la temperatura actual se quede por debajo de la escogida
     inicialmente.
   \end{itemize}
-
+\end{itemize}
 \end{document}

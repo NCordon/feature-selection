@@ -6,8 +6,9 @@ BIN=./bin
 SRC=./pscode
 DATA=./data
 PLOT=./plots
+TEX=./tex
 
-all: $(patsubst $(SRC)/%.rb, $(SRC)/%.tex, $(wildcard $(SRC)/*.rb))
+all: $(patsubst $(SRC)/%.rb, $(TEX)/%.tex, $(wildcard $(SRC)/*.rb))
 
-$(SRC)/%.tex: $(SRC)/%.rb
+$(TEX)/%.tex: $(SRC)/%.rb
 	source-highlight -f latexcolor -i $< -o $@
