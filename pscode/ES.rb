@@ -7,8 +7,8 @@ def ES(){
             vecino = flip(mascara, random({1...n}))
             generados++
             evs_hechas++
-            tasa_vecino = tasa_acierto(vecino)
-            mejora = tasa_vecino - tasa_acierto(mascara)
+            tasa_vecino = tasa(vecino)
+            mejora = tasa_vecino - tasa(mascara)
             u = random between 0.0 and 1.0
 
             if (mejora > 0 || u <= e^{mejora/t_actual})

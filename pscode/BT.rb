@@ -6,13 +6,13 @@ def BT(){
 
         foreach mov in vecinos_generado
             if mov is not tabu or criterio_asp(flip(mascara,mov))
-                if tasa_acierto(mascara) > tasa_acierto(mejor_vecino)
+                if tasa(mascara) > tasa(mejor_vecino)
                     mejor_vecino = mascara
                     tabu = mov
 
         mascara = mejor_vecino
 
-        if tasa_acierto(mascara) > tasa_acierto(mejor_mascara)
+        if tasa(mascara) > tasa(mejor_mascara)
             mejor_mascara = mascara
 
         tabu_list[ind_tabu] = tabu

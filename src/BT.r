@@ -1,7 +1,7 @@
 ##########################################################################
-### Función búsqueda tabú básica
+### Funcion busqueda tabu basica
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
-###     de características que se obtienen de aplicar la tabú con memoria
+###     de caracteristicas que se obtienen de aplicar la tabu con memoria
 ###     a corto plazo
 ##########################################################################
 
@@ -13,20 +13,20 @@ BT <- function(data){
   tasa.best <- tasa.clas(data, mask.best)
   n <- length(mask)
   
-  tenencia.tabu <- BT.tenencia.tabu
-  # Tamaño máximo de la lista tabú
-  max.tabu <- n*BT.coef.max.tabu
+  max.vecinos <- BT.max.vecinos
+  # Tamaño maximo de la lista tabu
+  tenencia.tabu <- n*BT.coef.tenencia.tabu
   
-  # Lista tabú
+  # Lista tabu
   tabu.list <- c()
   
-  # Posición a escribir de la lista tabú
+  # Posicion a escribir de la lista tabu
   tl.pos <- 1
   n.eval <- 0
   
   while(n.eval < max.eval){
     tasa.mejor.vecino <- 0
-    pos.vecinos <- sample(1:n, min(c(tenencia.tabu, max.eval-n.eval)))
+    pos.vecinos <- sample(1:n, min(c(max.vecinos, max.eval-n.eval)))
     
     evs <- sapply(pos.vecinos, function(j){
       m <- mask
@@ -35,7 +35,7 @@ BT <- function(data){
       tasa.actual <- tasa.clas(data, m)
       
       if (j %in% tabu.list){
-        # Si el criterio de aspiración no se cumple
+        # Si el criterio de aspiracion no se cumple
         #   Asignamos un valor basura a la tasa para
         #   que no sea escogida como la mejor
         if (tasa.actual <= tasa.best){
@@ -49,7 +49,7 @@ BT <- function(data){
     j <- which.max(evs)
     tasa.mejor.vecino <- evs[j]
     tabu.elem <- pos.vecinos[j]
-    # Esto asigna a la solución actual el mejor vecino
+    # Esto asigna a la solucion actual el mejor vecino
     mask[tabu.elem] <- (mask[tabu.elem]+1)%%2
     
     if (tasa.mejor.vecino > tasa.best){
@@ -57,12 +57,12 @@ BT <- function(data){
       tasa.best <- tasa.mejor.vecino
     }
     
-    # Introducimos en la lista tabú el elemento que ha dado lugar
-    # a la mejor solución del vecindario anterior
+    # Introducimos en la lista tabu el elemento que ha dado lugar
+    # a la mejor solucion del vecindario anterior
     tabu.list[tl.pos] <- tabu.elem
-    tl.pos <- (tl.pos %% max.tabu) + 1
+    tl.pos <- (tl.pos %% tenencia.tabu) + 1
     
-    # Actualizamos el número de evaluaciones
+    # Actualizamos el numero de evaluaciones
     n.eval <- n.eval + length(pos.vecinos)
   }
   mask.best

@@ -1,7 +1,7 @@
 ##########################################################################
-### Función enfriamiento simulado
+### Funcion enfriamiento simulado
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
-###     de características que se obtienen de aplicar enfriamiento simulado
+###     de caracteristicas que se obtienen de aplicar enfriamiento simulado
 ###
 ##########################################################################
 
@@ -12,11 +12,11 @@ ES <- function(data){
   mask.best <- mask
   tasa.best <- tasa.clas(data, mask.best)
   
-  # Parámetros del enfriamiento simulado
+  # Parametros del enfriamiento simulado
   #max.eval <- 15000
   max.vecinos <- ES.coef.max.vecinos*n
   max.exitos <- ES.coef.max.exitos*max.vecinos
-  # Nota: los mejores valores probados para estos parámetros han sido 0.05 y 0.05
+  # Nota: los mejores valores probados para estos parametros han sido 0.05 y 0.05
   
   
   t.actual <- ES.mu*tasa.best/-log(ES.phi, base=exp(1))
@@ -34,8 +34,8 @@ ES <- function(data){
   n.vecinos <- 0
   n.exitos <- 1
   
-  # Nueva iteración
-  # print ("Nueva iteración")
+  # Nueva iteracion
+  # print ("Nueva iteracion")
   
   while(n.eval < max.eval & n.exitos>0 & t.actual > t.final){
     n.vecinos <- 0
@@ -71,10 +71,10 @@ ES <- function(data){
       n.eval <- n.eval + 1
     }
     t.actual <- t.actual/(1 + beta*t.actual)
-    # Depuración
+    # Depuracion
     #cat("\n Temperatura actual: ", t.actual)
-    #cat("\n Número de éxitos: ", n.exitos)
-    #cat("\n Número de vecinos generados ", n.vecinos)
+    #cat("\n Numero de exitos: ", n.exitos)
+    #cat("\n Numero de vecinos generados ", n.vecinos)
   }
   mask.best
 }

@@ -32,12 +32,12 @@ arrhythmia <- read.arff("../data/arrhythmia.arff")
 wdbc <- read.arff("../data/wdbc.arff")
 
 
-# Función de normalización de datasets
+# Funcion de normalizacion de datasets
 normalize <- function(data){
   colnames(data) <- tolower(colnames(data))
   names <- colnames(data)[ colnames(data) != "class" ]
   
-  # La última columna es la de clase, y quitamos columnas con un único valor
+  # La ultima columna es la de clase, y quitamos columnas con un unico valor
   data <- data[,c(names, "class")]
   data <- Filter(function(x){ length(unique(x))>1 }, data)
   
@@ -57,7 +57,7 @@ wdbc <- normalize(wdbc)
 
 
 ##########################################################################
-# Función de generación de particiones
+# Funcion de generacion de particiones
 ##########################################################################
 make.partition <- function(data,per){
   rows <- sample(1:nrow(data), nrow(data)*per)
@@ -67,29 +67,29 @@ make.partition <- function(data,per){
 
 
 ##########################################################################
-### Función tasa clasificación
+### Funcion tasa clasificacion
 ##########################################################################
 
 tasa.clas <- function (train, mask){
-  # Aplicamos la máscara
+  # Aplicamos la mascara
   cl <- train$class
   train <- subset(train, select = which(mask==1))
   
-  # Obtenemos el fit que se haría del conjunto test para el 3-knn
+  # Obtenemos el fit que se haria del conjunto test para el 3-knn
   fit <- knn.cv(train, cl, k=3, use.all = TRUE)
   
-  # Tasa de clasificación
+  # Tasa de clasificacion
   return (100 * length(which(cl == fit)) / length(cl))
 }
 
 
 #########################################################################
-### Función evaluación calidad algoritmo
+### Funcion evaluacion calidad algoritmo
 ###     Para un algoritmo devuelve valores que permiten medir su calidad
 ###     como algoritmo, haciendo un 5x2 cross validation
-###     Tasa clasificación en media para el clasificador 3-knn
-###     Tasa reducción de características en media
-###     Media del tiempo de ejecución
+###     Tasa clasificacion en media para el clasificador 3-knn
+###     Tasa reduccion de caracteristicas en media
+###     Media del tiempo de ejecucion
 ##########################################################################
 
 cross.eval <- function(algorithm){
@@ -119,7 +119,7 @@ cross.eval <- function(algorithm){
       test <- rbindlist(test)
       
       
-      # Primero usando la máscara dada por el train
+      # Primero usando la mascara dada por el train
       t.inicial <- proc.time()[3]
       mask <- algorithm(train)
       t.final <- proc.time()[3]
@@ -130,7 +130,7 @@ cross.eval <- function(algorithm){
       tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
       
       
-      # Usando ahora la máscara dada por el test
+      # Usando ahora la mascara dada por el test
       t.inicial <- proc.time()[3]
       mask <- algorithm(test)
       t.final <- proc.time()[3]
@@ -182,7 +182,7 @@ source(file="./BT.r")
 source(file="./BText.r")
 
 ##########################################################################
-### Obtención de resultados
+### Obtencion de resultados
 ##########################################################################
 # Semillas aleatorias
 
@@ -203,7 +203,7 @@ save.my.image <- function(){
 }
 #load(file = data.file)
 
-# Después de ejecutar cada algoritmo, guardamos la imagen para poderla recuperar
+# Despues de ejecutar cada algoritmo, guardamos la imagen para poderla recuperar
 
 NN3.results <- cross.eval(NN3)
 save.my.image()

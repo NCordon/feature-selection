@@ -1,7 +1,7 @@
 ##########################################################################
-### Función búsqueda local del primer mejor
+### Funcion busqueda local del primer mejor
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
-###     de características que se obtienen de aplicar la búsqueda local del
+###     de caracteristicas que se obtienen de aplicar la busqueda local del
 ###     primer mejor
 ##########################################################################
 

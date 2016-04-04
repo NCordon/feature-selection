@@ -1,7 +1,7 @@
 ##########################################################################
-### Función 3NN
+### Funcion 3NN
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
-###     de características triviales, esto es todas
+###     de caracteristicas triviales, esto es todas
 ###
 ##########################################################################
 

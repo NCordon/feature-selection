@@ -1,8 +1,8 @@
 ##########################################################################
-### Función SFS
+### Funcion SFS
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
-###     de características que maximizan la tasa de clasificación de ese
-###     conjunto usando leaving one out en el knn euclídeo
+###     de caracteristicas que maximizan la tasa de clasificacion de ese
+###     conjunto usando leaving one out en el knn euclideo
 ##########################################################################
 
 SFS <- function(data){
