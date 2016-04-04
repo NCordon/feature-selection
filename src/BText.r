@@ -15,7 +15,7 @@ BT.ext <- function(data){
   
   max.vecinos <- BT.ext.max.vecinos
   # Tamaño máximo de la lista tabú
-  max.tabu <- n/3
+  max.tabu <- n*BT.coef.max.tabu 
   
   # Lista tabú
   tabu.list <- c()
@@ -34,7 +34,7 @@ BT.ext <- function(data){
   
   while(n.eval < max.eval){
     # Reinicialización
-    if ((n.sin.mejora %% tope.reinic == 0)){
+    if (n.sin.mejora == tope.reinic){
       u <- runif(1, 0.0, 1.0)
       
       if (u < prob.diversif){

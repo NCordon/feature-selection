@@ -23,6 +23,7 @@ BT.max.vecinos <- 30
 BT.coef.max.tabu <- 1/3
 
 # Parámetros de la Búsqueda Tabú extendida
+BT.ext.coef.max.tabu <- 1/3
 BT.ext.tope.reinic <- 10
 BT.ext.coef.frec <- 1
 BT.ext.max.vecinos <- 30
