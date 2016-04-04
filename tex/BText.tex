@@ -1,0 +1,125 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textit{\textcolor{Brown}{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}} \\
+\mbox{}\textit{\textcolor{Brown}{\#\#\#\ Función\ búsqueda\ tabú\ extendida}} \\
+\mbox{}\textit{\textcolor{Brown}{\#\#\#\ \ \ \ \ Para\ un\ data\ frame\ devuelve\ para\ el\ clasificador\ 3-knn\ el\ conjunto}} \\
+\mbox{}\textit{\textcolor{Brown}{\#\#\#\ \ \ \ \ de\ características\ que\ se\ obtienen\ de\ aplicar\ la\ tabú\ con\ memoria}} \\
+\mbox{}\textit{\textcolor{Brown}{\#\#\#\ \ \ \ \ a\ corto\ y\ largo\ plazo}} \\
+\mbox{}\textit{\textcolor{Brown}{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}} \\
+\mbox{} \\
+\mbox{}BT\textcolor{BrickRed}{.}ext\ \textcolor{BrickRed}{\textless{}-}\ function\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ n\ \textcolor{BrickRed}{\textless{}-}\ ncol\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)} \\
+\mbox{}\ \ n\ \textcolor{BrickRed}{\textless{}-}\ n\textcolor{BrickRed}{-}\textcolor{Purple}{1} \\
+\mbox{}\ \ mask\ \textcolor{BrickRed}{\textless{}-}\ sample\textcolor{BrickRed}{(}\textcolor{Purple}{0}\textcolor{BrickRed}{:}\textcolor{Purple}{1}\textcolor{BrickRed}{,}\ n\textcolor{BrickRed}{,}\ replace\textcolor{BrickRed}{=}TRUE\textcolor{BrickRed}{)} \\
+\mbox{}\ \ mask\textcolor{BrickRed}{.}best\ \textcolor{BrickRed}{\textless{}-}\ mask \\
+\mbox{}\ \ tasa\textcolor{BrickRed}{.}best\ \textcolor{BrickRed}{\textless{}-}\ tasa\textcolor{BrickRed}{.}clas\textcolor{BrickRed}{(}data\textcolor{BrickRed}{,}\ mask\textcolor{BrickRed}{.}best\textcolor{BrickRed}{)} \\
+\mbox{}\ \ n\ \textcolor{BrickRed}{\textless{}-}\ length\textcolor{BrickRed}{(}mask\textcolor{BrickRed}{)} \\
+\mbox{}\ \  \\
+\mbox{}\ \ max\textcolor{BrickRed}{.}vecinos\ \textcolor{BrickRed}{\textless{}-}\ BT\textcolor{BrickRed}{.}ext\textcolor{BrickRed}{.}max\textcolor{BrickRed}{.}vecinos \\
+\mbox{}\ \ \textit{\textcolor{Brown}{\#\ Tamaño\ máximo\ de\ la\ lista\ tabú}} \\
+\mbox{}\ \ max\textcolor{BrickRed}{.}tabu\ \textcolor{BrickRed}{\textless{}-}\ n\textcolor{BrickRed}{/}\textcolor{Purple}{3} \\
+\mbox{}\ \  \\
+\mbox{}\ \ \textit{\textcolor{Brown}{\#\ Lista\ tabú}} \\
+\mbox{}\ \ tabu\textcolor{BrickRed}{.}list\ \textcolor{BrickRed}{\textless{}-}\ c\textcolor{BrickRed}{()} \\
+\mbox{}\ \ \textit{\textcolor{Brown}{\#\ Lista\ de\ frecuencias}} \\
+\mbox{}\ \ frec\ \textcolor{BrickRed}{\textless{}-}\ rep\textcolor{BrickRed}{(}\textcolor{Purple}{0}\textcolor{BrickRed}{,}n\textcolor{BrickRed}{*}BT\textcolor{BrickRed}{.}ext\textcolor{BrickRed}{.}coef\textcolor{BrickRed}{.}frec\textcolor{BrickRed}{)} \\
+\mbox{}\ \ tope\textcolor{BrickRed}{.}reinic\ \textcolor{BrickRed}{\textless{}-}\ BT\textcolor{BrickRed}{.}ext\textcolor{BrickRed}{.}tope\textcolor{BrickRed}{.}reinic \\
+\mbox{}\ \ n\textcolor{BrickRed}{.}sin\textcolor{BrickRed}{.}mejora\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{Purple}{0} \\
+\mbox{}\ \  \\
+\mbox{}\ \ \textit{\textcolor{Brown}{\#\ Posición\ a\ escribir\ de\ la\ lista\ tabú}} \\
+\mbox{}\ \ tl\textcolor{BrickRed}{.}pos\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{Purple}{1} \\
+\mbox{}\ \ n\textcolor{BrickRed}{.}eval\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{Purple}{0} \\
+\mbox{}\ \  \\
+\mbox{}\ \ \textit{\textcolor{Brown}{\#\ Probabilidades\ límite\ de\ intensificación\ y\ diversificación}} \\
+\mbox{}\ \ prob\textcolor{BrickRed}{.}diversif\ \textcolor{BrickRed}{\textless{}-}\ BT\textcolor{BrickRed}{.}ext\textcolor{BrickRed}{.}prob\textcolor{BrickRed}{.}diversif \\
+\mbox{}\ \ prob\textcolor{BrickRed}{.}intensif\ \textcolor{BrickRed}{\textless{}-}\ BT\textcolor{BrickRed}{.}ext\textcolor{BrickRed}{.}prob\textcolor{BrickRed}{.}intensif\ \textcolor{BrickRed}{+}\ BT\textcolor{BrickRed}{.}ext\textcolor{BrickRed}{.}prob\textcolor{BrickRed}{.}diversif \\
+\mbox{}\ \  \\
+\mbox{}\ \ \textbf{\textcolor{Blue}{while}}\textcolor{BrickRed}{(}n\textcolor{BrickRed}{.}eval\ \textcolor{BrickRed}{\textless{}}\ max\textcolor{BrickRed}{.}eval\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ Reinicialización}} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{((}n\textcolor{BrickRed}{.}sin\textcolor{BrickRed}{.}mejora\ \textcolor{BrickRed}{\%\%}\ tope\textcolor{BrickRed}{.}reinic\ \textcolor{BrickRed}{==}\ \textcolor{Purple}{0}\textcolor{BrickRed}{))}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ u\ \textcolor{BrickRed}{\textless{}-}\ runif\textcolor{BrickRed}{(}\textcolor{Purple}{1}\textcolor{BrickRed}{,}\ \textcolor{Purple}{0.0}\textcolor{BrickRed}{,}\ \textcolor{Purple}{1.0}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \  \\
+\mbox{}\ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}u\ \textcolor{BrickRed}{\textless{}}\ prob\textcolor{BrickRed}{.}diversif\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ mask\ \textcolor{BrickRed}{\textless{}-}\ sample\textcolor{BrickRed}{(}\textcolor{Purple}{0}\textcolor{BrickRed}{:}\textcolor{Purple}{1}\textcolor{BrickRed}{,}\ n\textcolor{BrickRed}{,}\ replace\textcolor{BrickRed}{=}TRUE\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}u\ \textcolor{BrickRed}{\textless{}}\ prob\textcolor{BrickRed}{.}intensif\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ mask\ \textcolor{BrickRed}{\textless{}-}\ mask\textcolor{BrickRed}{.}best \\
+\mbox{}\ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ n\textcolor{BrickRed}{.}soluciones\ \textcolor{BrickRed}{\textless{}-}\ sum\textcolor{BrickRed}{(}frec\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \  \\
+\mbox{}\ \ \ \ \ \ \ \ mask\ \textcolor{BrickRed}{\textless{}-}\ sapply\textcolor{BrickRed}{(}frec\textcolor{BrickRed}{,}\ function\textcolor{BrickRed}{(}f\textcolor{BrickRed}{,}n\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ u\ \textcolor{BrickRed}{\textless{}-}\ runif\textcolor{BrickRed}{(}\textcolor{Purple}{1}\textcolor{BrickRed}{,}\ \textcolor{Purple}{0.0}\textcolor{BrickRed}{,}\ \textcolor{Purple}{1.0}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ x\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{Purple}{0} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Evita\ que\ falle\ cuando\ todas\ las\ frecuencias\ están\ a\ 0}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ n\ \textcolor{BrickRed}{\textless{}-}\ max\textcolor{BrickRed}{(}n\textcolor{BrickRed}{,}\textcolor{Purple}{1}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \  \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}u\ \textcolor{BrickRed}{\textless{}}\ \textcolor{Purple}{1}\ \textcolor{BrickRed}{-}\ f\textcolor{BrickRed}{/}n\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ x\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{Purple}{1} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ x \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}}\textcolor{BrickRed}{,}\ n\ \textcolor{BrickRed}{=}\ n\textcolor{BrickRed}{.}soluciones\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Cambio\ de\ tamaño\ de\ la\ lista\ tabú}} \\
+\mbox{}\ \ \ \ \ \ u\ \textcolor{BrickRed}{\textless{}-}\ runif\textcolor{BrickRed}{(}\textcolor{Purple}{1}\textcolor{BrickRed}{,}\ \textcolor{Purple}{0.0}\textcolor{BrickRed}{,}\ \textcolor{Purple}{1.0}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}u\ \textcolor{BrickRed}{\textless{}}\ \textcolor{Purple}{0.5}\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Aumenta\ de\ tamaño\ en\ un\ 50\%}} \\
+\mbox{}\ \ \ \ \ \ \ \ max\textcolor{BrickRed}{.}tabu\ \textcolor{BrickRed}{\textless{}-}\ ceiling\textcolor{BrickRed}{(}max\textcolor{BrickRed}{.}tabu\textcolor{BrickRed}{*}\textcolor{Purple}{1.5}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Disminuye\ en\ un\ 50\%}} \\
+\mbox{}\ \ \ \ \ \ \ \ max\textcolor{BrickRed}{.}tabu\ \textcolor{BrickRed}{\textless{}-}\ ceiling\textcolor{BrickRed}{(}max\textcolor{BrickRed}{.}tabu\textcolor{BrickRed}{*}\textcolor{Purple}{0.5}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \  \\
+\mbox{}\ \ \ \ \ \ tl\textcolor{BrickRed}{.}pos\ \textcolor{BrickRed}{\textless{}-}\ min\textcolor{BrickRed}{(}tl\textcolor{BrickRed}{.}pos\textcolor{BrickRed}{,}\ max\textcolor{BrickRed}{.}tabu\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ n\textcolor{BrickRed}{.}sin\textcolor{BrickRed}{.}mejora\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{Purple}{0} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \  \\
+\mbox{}\ \ \ \ tasa\textcolor{BrickRed}{.}mejor\textcolor{BrickRed}{.}vecino\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{Purple}{0} \\
+\mbox{}\ \ \ \ pos\textcolor{BrickRed}{.}vecinos\ \textcolor{BrickRed}{\textless{}-}\ sample\textcolor{BrickRed}{(}\textcolor{Purple}{1}\textcolor{BrickRed}{:}n\textcolor{BrickRed}{,}\ min\textcolor{BrickRed}{(}c\textcolor{BrickRed}{(}max\textcolor{BrickRed}{.}vecinos\textcolor{BrickRed}{,}\ max\textcolor{BrickRed}{.}eval\textcolor{BrickRed}{-}n\textcolor{BrickRed}{.}eval\textcolor{BrickRed}{)))} \\
+\mbox{}\ \ \ \  \\
+\mbox{}\ \ \ \ evs\ \textcolor{BrickRed}{\textless{}-}\ sapply\textcolor{BrickRed}{(}pos\textcolor{BrickRed}{.}vecinos\textcolor{BrickRed}{,}\ function\textcolor{BrickRed}{(}j\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ m\ \textcolor{BrickRed}{\textless{}-}\ mask \\
+\mbox{}\ \ \ \ \ \  \\
+\mbox{}\ \ \ \ \ \ m\textcolor{BrickRed}{[}j\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{BrickRed}{(}m\textcolor{BrickRed}{[}j\textcolor{BrickRed}{]+}\textcolor{Purple}{1}\textcolor{BrickRed}{)\%\%}\textcolor{Purple}{2} \\
+\mbox{}\ \ \ \ \ \ tasa\textcolor{BrickRed}{.}actual\ \textcolor{BrickRed}{\textless{}-}\ tasa\textcolor{BrickRed}{.}clas\textcolor{BrickRed}{(}data\textcolor{BrickRed}{,}\ m\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \  \\
+\mbox{}\ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}j\ \textcolor{BrickRed}{\%}\textbf{\textcolor{Blue}{in}}\textcolor{BrickRed}{\%}\ tabu\textcolor{BrickRed}{.}list\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Si\ el\ criterio\ de\ aspiración\ no\ se\ cumple}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ \ \ Asignamos\ un\ valor\ basura\ a\ la\ tasa\ para}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ \ \ que\ no\ sea\ escogida\ como\ la\ mejor}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}tasa\textcolor{BrickRed}{.}actual\ \textcolor{BrickRed}{\textless{}=}\ tasa\textcolor{BrickRed}{.}best\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ tasa\textcolor{BrickRed}{.}actual\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{Purple}{0} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \  \\
+\mbox{}\ \ \ \ \ \ tasa\textcolor{BrickRed}{.}actual \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \  \\
+\mbox{}\ \ \ \ j\ \textcolor{BrickRed}{\textless{}-}\ which\textcolor{BrickRed}{.}max\textcolor{BrickRed}{(}evs\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ tasa\textcolor{BrickRed}{.}mejor\textcolor{BrickRed}{.}vecino\ \textcolor{BrickRed}{\textless{}-}\ evs\textcolor{BrickRed}{[}j\textcolor{BrickRed}{]} \\
+\mbox{}\ \ \ \ tabu\textcolor{BrickRed}{.}elem\ \textcolor{BrickRed}{\textless{}-}\ pos\textcolor{BrickRed}{.}vecinos\textcolor{BrickRed}{[}j\textcolor{BrickRed}{]} \\
+\mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ Esto\ asigna\ a\ la\ solución\ actual\ el\ mejor\ vecino}} \\
+\mbox{}\ \ \ \ mask\textcolor{BrickRed}{[}tabu\textcolor{BrickRed}{.}elem\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{BrickRed}{(}mask\textcolor{BrickRed}{[}tabu\textcolor{BrickRed}{.}elem\textcolor{BrickRed}{]+}\textcolor{Purple}{1}\textcolor{BrickRed}{)\%\%}\textcolor{Purple}{2} \\
+\mbox{}\ \ \ \  \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}tasa\textcolor{BrickRed}{.}mejor\textcolor{BrickRed}{.}vecino\ \textcolor{BrickRed}{\textgreater{}}\ tasa\textcolor{BrickRed}{.}best\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ mask\textcolor{BrickRed}{.}best\ \textcolor{BrickRed}{\textless{}-}\ mask \\
+\mbox{}\ \ \ \ \ \ tasa\textcolor{BrickRed}{.}best\ \textcolor{BrickRed}{\textless{}-}\ tasa\textcolor{BrickRed}{.}mejor\textcolor{BrickRed}{.}vecino \\
+\mbox{}\ \ \ \ \ \ frec\ \textcolor{BrickRed}{\textless{}-}\ frec\ \textcolor{BrickRed}{+}\ mask \\
+\mbox{}\ \ \ \ \ \ n\textcolor{BrickRed}{.}sin\textcolor{BrickRed}{.}mejora\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{Purple}{0} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{else}}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ n\textcolor{BrickRed}{.}sin\textcolor{BrickRed}{.}mejora\ \textcolor{BrickRed}{\textless{}-}\ n\textcolor{BrickRed}{.}sin\textcolor{BrickRed}{.}mejora\ \textcolor{BrickRed}{+}\ \textcolor{Purple}{1} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \  \\
+\mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ Introducimos\ en\ la\ lista\ tabú\ el\ elemento\ que\ ha\ dado\ lugar}} \\
+\mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ a\ la\ mejor\ solución\ del\ vecindario\ anterior}} \\
+\mbox{}\ \ \ \ tabu\textcolor{BrickRed}{.}list\textcolor{BrickRed}{[}tl\textcolor{BrickRed}{.}pos\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{\textless{}-}\ tabu\textcolor{BrickRed}{.}elem \\
+\mbox{}\ \ \ \ tl\textcolor{BrickRed}{.}pos\ \textcolor{BrickRed}{\textless{}-}\ \textcolor{BrickRed}{(}tl\textcolor{BrickRed}{.}pos\ \textcolor{BrickRed}{\%\%}\ max\textcolor{BrickRed}{.}tabu\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{+}\ \textcolor{Purple}{1} \\
+\mbox{}\ \ \ \  \\
+\mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ Actualizamos\ el\ número\ de\ evaluaciones}} \\
+\mbox{}\ \ \ \ n\textcolor{BrickRed}{.}eval\ \textcolor{BrickRed}{\textless{}-}\ n\textcolor{BrickRed}{.}eval\ \textcolor{BrickRed}{+}\ length\textcolor{BrickRed}{(}pos\textcolor{BrickRed}{.}vecinos\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ mask\textcolor{BrickRed}{.}best \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}

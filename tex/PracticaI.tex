@@ -231,7 +231,7 @@ a 1. A una representación de esta forma, la denominamos máscara: $$ mask =\beg
 \end{matrix}$$
 
 
-\section{Descripción de los algoritmos empleados}
+\section{Descripción elementos comunes de los algoritmos}
 Los algoritmos considerados tienen las siguientes componentes:
 
 \begin{itemize} 
@@ -251,8 +251,8 @@ escogido a no escogido y viceversa.
 
 \small\texttt{\input{flip}}
 
-\item Criterio de aceptación de solución: se considera una función mejor cuando aumenta la función objetivo (tasa de clasificación del 3-knn para la máscara
-dada por esa solución).
+\item Criterio de aceptación de solución: se considera una función mejor cuando aumenta la función objetivo (tasa de 
+clasificación del 3-knn para la máscara dada por esa solución).
 \item Criterio de parada: el criterio de parada común en las 4 metaheaurísticas empleadas es la evaluación de 15000 posibles
 soluciones. Como criterios particulares se contemplan las siguientes condiciones de parada:
   \begin{itemize}
@@ -260,5 +260,35 @@ soluciones. Como criterios particulares se contemplan las siguientes condiciones
     \item Enfriamiento simulado: se parará la ejecución cuando la temperatura actual se quede por debajo de la escogida
     inicialmente.
   \end{itemize}
+  
+\item Número de evaluaciones máximas: $tope_{evs}$ queda fijado en todos los algoritmos a 15000.
+
 \end{itemize}
+\section{Profundización en los algoritmos}
+\subsection{Búsqueda local}
+Efectúa las siguientes operaciones:\\
+\ \\
+\scriptsize{\texttt{\input{BL}}}
+\normalsize
+\subsection{Enfriamiento Simulado}
+Efectúa las siguientes operaciones:\\
+\ \\
+\scriptsize{\texttt{\input{ES}}}
+\normalsize
+En el caso de este problema $tope_{vecinos} = 10\cdot n$ donde $n$ es el tamaño de la máscara.
+Y $tope_{exitosos}$ queda fijado a  $0.1\cdot tope_{vecinos}$
+
+La temperatura inicial se toma como $T_{0}=\frac{\mu \cdot tasa(mascara\:inicial)}{-ln(\phi)}$
+\\donde $\mu = 0.3$ y $\phi=0.3$. 
+\ \\ \ \\
+Es decir, un 30\% de probabilidad de que la solución escogida sea
+un 30\% peor que la inicial.
+
+La temperatura final se toma como $T_f = 10^{-3}$. En caso de ser esta temperatura mayor que la inicial,
+se hará $T_f = 10^{-3k}$ con $k$ el primer natural para el que $t_i < t_f$
+
+El esquema de enfriamiento consiste en calcular: 
+$$T_{actual+1} = \frac{T_{actual}}{1+T_{actual}\cdot \frac{T_0 - T_f}{M\cdot T_0\cdot T_f}}$$
+donde $tope_{enfriamientos}=M = 15000/max_{vecinos}$ es el número de enfriamientos a realizar.  
+
 \end{document}
