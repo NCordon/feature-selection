@@ -266,12 +266,10 @@ soluciones. Como criterios particulares se contemplan las siguientes condiciones
 \end{itemize}
 \section{Profundización en los algoritmos}
 \subsection{Búsqueda local}
-Efectúa las siguientes operaciones:\\
 \ \\
 \scriptsize{\texttt{\input{BL}}}
 \normalsize
 \subsection{Enfriamiento Simulado}
-Efectúa las siguientes operaciones:\\
 \ \\
 \scriptsize{\texttt{\input{ES}}}
 \normalsize
@@ -290,5 +288,15 @@ se hará $T_f = 10^{-3k}$ con $k$ el primer natural para el que $t_i < t_f$
 El esquema de enfriamiento consiste en calcular: 
 $$T_{actual+1} = \frac{T_{actual}}{1+T_{actual}\cdot \frac{T_0 - T_f}{M\cdot T_0\cdot T_f}}$$
 donde $tope_{enfriamientos}=M = 15000/max_{vecinos}$ es el número de enfriamientos a realizar.  
+
+\subsection{Búsqueda Tabú}
+\ \\
+\scriptsize{\texttt{\input{BT}}}
+\ \\
+El criterio de aspiración en este caso consiste en tener mejor tasa de clasificación que la mejor
+solución hasta el momento.
+
+\subsection{Búsqueda Tabú extendida}
+\ \\
 
 \end{document}
