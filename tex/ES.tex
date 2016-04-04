@@ -1,29 +1,31 @@
 % Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
 \noindent
 \mbox{}\textbf{\textcolor{Blue}{def}}\ ES\textcolor{BrickRed}{()}\textcolor{Red}{\{} \\
-\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{do}} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{do}}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ \ \ \ \ vecinos$\_$generados\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{0} \\
 \mbox{}\ \ \ \ \ \ \ \ exitosos\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{0} \\
 \mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Un\ enfriamiento}} \\
-\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{do}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{do}}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ vecino\ \textcolor{BrickRed}{=}\ flip\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}\ random\textcolor{BrickRed}{(}\textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}n\textcolor{Red}{\}}\textcolor{BrickRed}{))} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ generados\textcolor{BrickRed}{++} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ evs$\_$hechas\textcolor{BrickRed}{++} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ tasa$\_$vecino\ \textcolor{BrickRed}{=}\ tasa$\_$acierto\textcolor{BrickRed}{(}vecino\textcolor{BrickRed}{)} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mejora\ \textcolor{BrickRed}{=}\ tasa$\_$vecino\ \textcolor{BrickRed}{-}\ tasa$\_$acierto\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ tasa$\_$vecino\ \textcolor{BrickRed}{=}\ tasa\textcolor{BrickRed}{(}vecino\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mejora\ \textcolor{BrickRed}{=}\ tasa$\_$vecino\ \textcolor{BrickRed}{-}\ tasa\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ u\ \textcolor{BrickRed}{=}\ random\ between\ \textcolor{Purple}{0.0}\ \textbf{\textcolor{Blue}{and}}\ \textcolor{Purple}{1.0} \\
 \mbox{} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}mejora\ \textcolor{BrickRed}{\textgreater{}}\ \textcolor{Purple}{0}\ \textcolor{BrickRed}{$|$$|$}\ u\ \textcolor{BrickRed}{\textless{}=}\ e\textcolor{BrickRed}{\textasciicircum{}}\textcolor{Red}{\{}mejora\textcolor{BrickRed}{/}t$\_$actual\textcolor{Red}{\}}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}mejora\ \textcolor{BrickRed}{\textgreater{}}\ \textcolor{Purple}{0}\ \textcolor{BrickRed}{$|$$|$}\ u\ \textcolor{BrickRed}{\textless{}=}\ e\textcolor{BrickRed}{\textasciicircum{}}\textcolor{Red}{\{}mejora\textcolor{BrickRed}{/}t$\_$actual\textcolor{Red}{\}}\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mascara\ \textcolor{BrickRed}{=}\ vecino \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ exitosos\textcolor{BrickRed}{++} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}mejora\ \textcolor{BrickRed}{\textgreater{}}\ \textcolor{Purple}{0}\textcolor{BrickRed}{)}\ mejor$\_$mascara\ \textcolor{BrickRed}{=}\ mascara \\
-\mbox{} \\
-\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{while}}\ generados\ \textcolor{BrickRed}{\textless{}}\ max$\_$vecinos\ \textbf{\textcolor{Blue}{and}}\ evs\ \textcolor{BrickRed}{\textless{}}\ tope$\_$evs\ \textbf{\textcolor{Blue}{and}}\ exitosos\ \textcolor{BrickRed}{\textless{}}\ tope$\_$exitosos \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}}\textbf{\textcolor{Blue}{while}}\ generados\ \textcolor{BrickRed}{\textless{}}\ max$\_$vecinos\ \textbf{\textcolor{Blue}{and}}\ evs\ \textcolor{BrickRed}{\textless{}}\ tope$\_$evs \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{and}}\ exitosos\ \textcolor{BrickRed}{\textless{}}\ tope$\_$exitosos\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ t$\_$actual\ \textcolor{BrickRed}{=}\ enfriar\textcolor{BrickRed}{(}t$\_$actual\textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ enfriamientos\textcolor{BrickRed}{++} \\
-\mbox{} \\
-\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{while}}\ \ \ evs$\_$hechas\ \textcolor{BrickRed}{\textless{}}\ tope$\_$evs\ \textbf{\textcolor{Blue}{and}}\ enfriamientos\ \textcolor{BrickRed}{\textless{}}\ tope$\_$enfriam\ \textbf{\textcolor{Blue}{and}}\ exitosos\ \textcolor{BrickRed}{!=}\ \textcolor{Purple}{0} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}}\textbf{\textcolor{Blue}{while}}\ evs$\_$hechas\ \textcolor{BrickRed}{\textless{}}\ tope$\_$evs\ \textbf{\textcolor{Blue}{and}}\ enfriamientos\ \textcolor{BrickRed}{\textless{}}\ tope$\_$enfriam \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{and}}\ exitosos\ \textcolor{BrickRed}{!=}\ \textcolor{Purple}{0} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ mejor$\_$mascara \\
 \mbox{}\textcolor{Red}{\}} \\

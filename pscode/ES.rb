@@ -1,9 +1,9 @@
 def ES(){
-    do
+    do{
         vecinos_generados = 0
         exitosos = 0
         # Un enfriamiento
-        do
+        do{
             vecino = flip(mascara, random({1...n}))
             generados++
             evs_hechas++
@@ -11,17 +11,19 @@ def ES(){
             mejora = tasa_vecino - tasa(mascara)
             u = random between 0.0 and 1.0
 
-            if (mejora > 0 || u <= e^{mejora/t_actual})
+            if (mejora > 0 || u <= e^{mejora/t_actual}){
                 mascara = vecino
                 exitosos++
 
                 if (mejora > 0) mejor_mascara = mascara
-
-        while generados < max_vecinos and evs < tope_evs and exitosos < tope_exitosos
+            }
+        }while generados < max_vecinos and evs < tope_evs
+               and exitosos < tope_exitosos{
             t_actual = enfriar(t_actual)
             enfriamientos++
-
-    while   evs_hechas < tope_evs and enfriamientos < tope_enfriam and exitosos != 0
+        }
+    }while evs_hechas < tope_evs and enfriamientos < tope_enfriam
+           and exitosos != 0
 
     return mejor_mascara
 }

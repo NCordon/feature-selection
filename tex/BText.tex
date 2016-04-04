@@ -1,39 +1,47 @@
 % Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
 \noindent
 \mbox{}\textbf{\textcolor{Blue}{def}}\ BText\textcolor{BrickRed}{()}\textcolor{Red}{\{} \\
-\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{while}}\textcolor{BrickRed}{(}evs$\_$hechas\ \textcolor{BrickRed}{\textless{}}\ tope$\_$evs\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{while}}\textcolor{BrickRed}{(}evs$\_$hechas\ \textcolor{BrickRed}{\textless{}}\ tope$\_$evs\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Reinicialización}} \\
-\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ iteraciones$\_$sin$\_$mejora\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{10} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ sin$\_$mejora\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{10}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ u\ \textcolor{BrickRed}{=}\ aleatorio\ entre\ \textcolor{Purple}{0.0}\ y\ \textcolor{Purple}{1.0} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ n\ \textcolor{BrickRed}{=}\ sum\textcolor{BrickRed}{(}frecuencias\textcolor{BrickRed}{)} \\
 \mbox{} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mascara\ \textcolor{BrickRed}{=}\ \textbf{\textcolor{Blue}{if}}\ u\ \textcolor{BrickRed}{\textless{}}\ prob$\_$diversificacion\ \textbf{\textcolor{Blue}{then}}\ mascara\ aleatoria \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ elif\ u\ \textcolor{BrickRed}{\textless{}}\ \textcolor{BrickRed}{(}prob$\_$div\ \textcolor{BrickRed}{+}\ prob$\_$intensificacion\textcolor{BrickRed}{)}\ \textbf{\textcolor{Blue}{then}}\ mejor$\_$mascara \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\ \textcolor{Red}{\{}v\textcolor{BrickRed}{:}\ v\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]=}\textcolor{Purple}{1}\ \textbf{\textcolor{Blue}{if}}\ aleatorio\textcolor{BrickRed}{(}\textcolor{Purple}{0}\textcolor{BrickRed}{,}\textcolor{Purple}{1}\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textless{}}\ \textcolor{Purple}{1}\ \textcolor{BrickRed}{-}\ frecuencias\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]/}n\ \textbf{\textcolor{Blue}{else}}\ \textcolor{Purple}{0}\textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mascara\ \textcolor{BrickRed}{=}\ \textbf{\textcolor{Blue}{if}}\ u\ \textcolor{BrickRed}{\textless{}}\ prob$\_$diversificacion \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{then}}\ mascara\ aleatoria \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ elif\ u\ \textcolor{BrickRed}{\textless{}}\ \textcolor{BrickRed}{(}prob$\_$div\ \textcolor{BrickRed}{+}\ prob$\_$intensificacion\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{then}}\ mejor$\_$mascara \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{Red}{\{}v\textcolor{BrickRed}{:}\ v\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ \textbf{\textcolor{Blue}{if}}\ aleatorio\textcolor{BrickRed}{(}\textcolor{Purple}{0}\textcolor{BrickRed}{,}\textcolor{Purple}{1}\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textless{}}\ \textcolor{Purple}{1}\ \textcolor{BrickRed}{-}\ frecuencias\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]/}n \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{then}}\ \textcolor{Purple}{1} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\ \textcolor{Purple}{0}\textcolor{Red}{\}} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ tenencia$\_$tabu\ \textcolor{BrickRed}{=}\ \textbf{\textcolor{Blue}{if}}\ aleatorio\textcolor{BrickRed}{(}\textcolor{Purple}{0}\textcolor{BrickRed}{,}\textcolor{Purple}{1}\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textless{}}\ \textcolor{Purple}{0.5}\ \textbf{\textcolor{Blue}{then}}\ tenencia$\_$tabu\textcolor{BrickRed}{*}\textcolor{Purple}{1.5} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\ tenencia$\_$tabu\textcolor{BrickRed}{*}\textcolor{Purple}{0.5} \\
 \mbox{} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ reajusta\ ind$\_$tabu \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ iteraciones$\_$sin$\_$mejora\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{0} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ reajusta\textcolor{BrickRed}{(}ind$\_$tabu\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ sin$\_$mejora\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{0} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ vecinos\ \textcolor{BrickRed}{=}\ sample\textcolor{BrickRed}{(}\textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}n\textcolor{Red}{\}}\textcolor{BrickRed}{,}\ size\textcolor{BrickRed}{=}\textcolor{Purple}{30}\textcolor{BrickRed}{)} \\
 \mbox{} \\
-\mbox{}\ \ \ \ \ \ \ \ vecinos$\_$generados\ \textcolor{BrickRed}{=}\ sample\textcolor{BrickRed}{(}\textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}n\textcolor{Red}{\}}\textcolor{BrickRed}{,}\ size\textcolor{BrickRed}{=}\textcolor{Purple}{30}\textcolor{BrickRed}{)} \\
-\mbox{} \\
-\mbox{}\ \ \ \ \ \ \ \ foreach\ mov\ \textbf{\textcolor{Blue}{in}}\ vecinos$\_$generado \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ mov\ is\ \textbf{\textcolor{Blue}{not}}\ tabu\ \textbf{\textcolor{Blue}{or}}\ criterio$\_$asp\textcolor{BrickRed}{(}flip\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}mov\textcolor{BrickRed}{))} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ tasa$\_$acierto\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textgreater{}}\ tasa$\_$acierto\textcolor{BrickRed}{(}mejor$\_$vecino\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ foreach\ mov\ \textbf{\textcolor{Blue}{in}}\ vecinos\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ mov\ is\ \textbf{\textcolor{Blue}{not}}\ tabu\ \textbf{\textcolor{Blue}{or}}\ criterio$\_$asp\textcolor{BrickRed}{(}flip\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}mov\textcolor{BrickRed}{))}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ tasa\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textgreater{}}\ tasa\textcolor{BrickRed}{(}mejor$\_$vecino\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mejor$\_$vecino\ \textcolor{BrickRed}{=}\ mascara \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tabu\ \textcolor{BrickRed}{=}\ mov \\
-\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
 \mbox{}\ \ \ \ \ \ \ \ mascara\ \textcolor{BrickRed}{=}\ mejor$\_$vecino \\
 \mbox{} \\
-\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ tasa$\_$acierto\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textgreater{}}\ tasa$\_$acierto\textcolor{BrickRed}{(}mejor$\_$mascara\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ tasa\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textgreater{}}\ tasa\textcolor{BrickRed}{(}mejor$\_$mascara\textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mejor$\_$mascara\ \textcolor{BrickRed}{=}\ mascara \\
-\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\ iteraciones$\_$sin$\_$mejora\textcolor{BrickRed}{++} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\ sin$\_$mejora\textcolor{BrickRed}{++} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \ \ \ \ tabu$\_$list\textcolor{BrickRed}{[}ind$\_$tabu\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ tabu \\
 \mbox{}\ \ \ \ \ \ \ \ ind$\_$tabu\ \textcolor{BrickRed}{=}\ ind$\_$tabu\ \textcolor{BrickRed}{\%}\ tenencia$\_$tabu \\
 \mbox{}\ \ \ \ \ \ \ \ evs$\_$hechas\ \textcolor{BrickRed}{=}\ evs$\_$hechas\ \textcolor{BrickRed}{+}\ \textcolor{Purple}{30} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
 \mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ mejor$\_$mascara \\
 \mbox{}\textcolor{Red}{\}} \\
 \mbox{}

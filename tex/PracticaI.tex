@@ -266,10 +266,10 @@ soluciones. Como criterios particulares se contemplan las siguientes condiciones
 \end{itemize}
 \section{Profundización en los algoritmos}
 \subsection{Búsqueda local}
-\scriptsize{\texttt{\input{BL}}}
+\small{\texttt{\input{BL}}}
 \normalsize
 \subsection{Enfriamiento Simulado}
-\scriptsize{\texttt{\input{ES}}}
+\small{\texttt{\input{ES}}}
 \normalsize\\
 En el caso de este problema $tope_{vecinos} = 10\cdot n$ donde $n$ es el tamaño de la máscara.
 Y $tope_{exitosos}$ queda fijado a  $0.1\cdot tope_{vecinos}$
@@ -288,12 +288,11 @@ $$T_{actual+1} = \frac{T_{actual}}{1+T_{actual}\cdot \frac{T_0 - T_f}{M\cdot T_0
 donde $tope_{enfriamientos}=M = 15000/max_{vecinos}$ es el número de enfriamientos a realizar.  
 
 \subsection{Búsqueda Tabú}
-\scriptsize{\texttt{\input{BT}}}
-\normalsize\\ 
+\small{\texttt{\input{BT}}}
 El criterio de aspiración en este caso consiste en tener mejor tasa de clasificación que la mejor
 solución hasta el momento. La tenencia tabú es de $n/3$ con $n$ el número de características totales.
 \subsection{Búsqueda Tabú extendida}
-\scriptsize{\texttt{\input{BText}}}
+\small{\texttt{\input{BText}}}
 \normalsize\\
 La probabilidad de diversificación considerada en este caso es la misma que la intensificación, 0.25.
 La tenencia tabú es de $n/3$ con $n$ el número de características totales.
