@@ -283,7 +283,7 @@ un 30\% peor que la inicial.
 La temperatura final se toma como $T_f = 10^{-3}$. En caso de ser esta temperatura mayor que la inicial,
 se hará $T_f = 10^{-3k}$ con $k$ el primer natural para el que $t_i < t_f$
 
-El esquema de enfriamiento consiste en calcular: 
+El esquema de enfriamiento de Cauchy usado ha sido: 
 $$T_{actual+1} = \frac{T_{actual}}{1+T_{actual}\cdot \frac{T_0 - T_f}{M\cdot T_0\cdot T_f}}$$
 donde $tope_{enfriamientos}=M = 15000/max_{vecinos}$ es el número de enfriamientos a realizar.  
 

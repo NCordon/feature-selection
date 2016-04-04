@@ -12,20 +12,20 @@ semilla <- c(
 max.eval <- 15000
 
 # Parámetros del Enfriamiento Simulado
-ES.coef.max.vecinos <- 10
+ES.coef.tenencia.tabu <- 10
 ES.coef.max.exitos <- 0.1
 ES.mu <- 0.3
 ES.phi <- 0.3
 
 
 # Parámetros de la Búsqueda Tabú
-BT.max.vecinos <- 30
+BT.tenencia.tabu <- 30
 BT.coef.max.tabu <- 1/3
 
 # Parámetros de la Búsqueda Tabú extendida
 BT.ext.coef.max.tabu <- 1/3
 BT.ext.tope.reinic <- 10
 BT.ext.coef.frec <- 1
-BT.ext.max.vecinos <- 30
+BT.ext.tenencia.tabu <- 30
 BT.ext.prob.diversif <- 0.25
 BT.ext.prob.intensif <- 0.25

@@ -13,7 +13,7 @@ BT <- function(data){
   tasa.best <- tasa.clas(data, mask.best)
   n <- length(mask)
   
-  max.vecinos <- BT.max.vecinos
+  tenencia.tabu <- BT.tenencia.tabu
   # Tamaño máximo de la lista tabú
   max.tabu <- n*BT.coef.max.tabu
   
@@ -26,7 +26,7 @@ BT <- function(data){
   
   while(n.eval < max.eval){
     tasa.mejor.vecino <- 0
-    pos.vecinos <- sample(1:n, min(c(max.vecinos, max.eval-n.eval)))
+    pos.vecinos <- sample(1:n, min(c(tenencia.tabu, max.eval-n.eval)))
     
     evs <- sapply(pos.vecinos, function(j){
       m <- mask

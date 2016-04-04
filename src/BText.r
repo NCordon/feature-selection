@@ -15,7 +15,7 @@ BT.ext <- function(data){
   
   max.vecinos <- BT.ext.max.vecinos
   # Tamaño máximo de la lista tabú
-  max.tabu <- n*BT.coef.max.tabu 
+  tenencia.tabu <- n*BT.coef.tenencia.tabu 
   
   # Lista tabú
   tabu.list <- c()
@@ -62,14 +62,14 @@ BT.ext <- function(data){
       u <- runif(1, 0.0, 1.0)
       if (u < 0.5){
         # Aumenta de tamaño en un 50%
-        max.tabu <- ceiling(max.tabu*1.5)
+        tenencia.tabu <- ceiling(tenencia.tabu*1.5)
       }
       else{
         # Disminuye en un 50%
-        max.tabu <- ceiling(max.tabu*0.5)
+        tenencia.tabu <- ceiling(tenencia.tabu*0.5)
       }
       
-      tl.pos <- min(tl.pos, max.tabu)
+      tl.pos <- min(tl.pos, tenencia.tabu)
       n.sin.mejora <- 0
     }
     
@@ -113,7 +113,7 @@ BT.ext <- function(data){
     # Introducimos en la lista tabú el elemento que ha dado lugar
     # a la mejor solución del vecindario anterior
     tabu.list[tl.pos] <- tabu.elem
-    tl.pos <- (tl.pos %% max.tabu) + 1
+    tl.pos <- (tl.pos %% tenencia.tabu) + 1
     
     # Actualizamos el número de evaluaciones
     n.eval <- n.eval + length(pos.vecinos)
