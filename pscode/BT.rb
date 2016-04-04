@@ -1,22 +1,18 @@
 def BT (data){
-    while(evs_hechas < tope_evs){
-        tasa.mejor.vecino <- 0
-        pos.vecinos <- sample(1:n, min(c(max.vecinos, max.eval-n.eval)))
+    def criterio_asp(mascara){
+        return tasa_acierto(mascara) > tasa_acierto(mejor_mascara)
+    }
 
-    evs <- sapply(pos.vecinos, function(j){
-      m <- mask
+    while evs_hechas < tope_evs {
+        vecinos_generados = sample({1...n}, size=30)
 
-      m[j] <- (m[j]+1)%%2
-      tasa.actual <- tasa.clas(data, m)
+        foreach mov in vecinos_generado{
+            if mov is tabu{
+                if criterio_asp(flip(mascara,mov)){
 
-      if (j %in% tabu.list){
-        # Si el criterio de aspiración no se cumple
-        #   Asignamos un valor basura a la tasa para
-        #   que no sea escogida como la mejor
-        if (tasa.actual <= tasa.best){
-          tasa.actual <- 0
+                }
+            }
         }
-      }
 
       tasa.actual
     })
@@ -40,5 +36,5 @@ def BT (data){
     # Actualizamos el número de evaluaciones
     n.eval <- n.eval + length(pos.vecinos)
   }
-    mejor_mascara
+    return mejor_mascara
 }
