@@ -49,7 +49,7 @@ tasa.clas <- function (train, mask){
 
 
 #########################################################################
-### Funcion evaluacion calidad algoritmo
+### Funcion de validacion cruzada 
 ###     Para un algoritmo devuelve valores que permiten medir su calidad
 ###     como algoritmo, haciendo un 5x2 cross validation
 ###     Tasa clasificacion en media para el clasificador 3-knn

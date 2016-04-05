@@ -106,7 +106,7 @@
 \usepackage{enumitem}
 %Sections don't get numbered
 %\setcounter{secnumdepth}{0}
-
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % University Assignment Title Page 
@@ -308,12 +308,51 @@ solución hasta el momento. La tenencia tabú es de $n/3$ con $n$ el número de 
 La probabilidad de diversificación considerada en este caso es la misma que la intensificación, 0.25.
 La tenencia tabú es de $n/3$ con $n$ el número de características totales.
 
-\subsection{Algoritmo de comparación}
+\subsection{Algoritmo de comparación: SFS}
 \small{\texttt{\input{SFS}}}
 
 Partiendo de una selección de características vacía (máscara nula), va añadiendo a cada paso la característica
 de las no escogidas hasta el momento que maximiza la tasa de clasificación añadiéndola a la solución, hasta
-que la característica escogida no mejore a la solución mejor hasta el momento
+que la característica escogida no mejore a la mejor solución hasta el momento
 
+\subsection{Implementación de la práctica}
+Para la implementación de la práctica, se ha optado por usar el lenguaje de programación R. 
 
+El clasificador \texttt{3nn} leaving one out empleado es el incluido en el paquete \texttt{class}, de nombre
+\texttt{knn.cv}. Para su uso, se le pasa como argumento el número de vecinos a considerar (3). El argumento 
+\texttt{use.all=TRUE} indica que en caso de empate considere todas las etiquetas de las instancias con distancias 
+iguales a la mayoritaria (en este caso las tres), y escoja la etiqueta mayoritaria de entre todas. 
+
+A la hora del desarrollo de la práctica se ha planteado el problema de que en caso de empate aún intentando 
+resolver los conflictos de la manera anteriormente descrita, el clasificador escoge la etiqueta que
+asignar de manera aleatoria. Esto lleva a problemas diversos, como que dos llamadas sucesivas con los mismos
+parámetros a la función \texttt{tasa.clas}, que es la función objetivo de nuestra práctica, podrían producir resultados 
+distintos. O incluso que si inicializaramos las soluciones iniciales de otra metaheurística, a saber, por ejemplo la
+Búsqueda Local, con la del algoritmo greedy, a pesar de que esta no sustituye a la mejor solución hasta el momento a 
+no ser que encuentre otra con mayor tasa de clasificación, como después esta máscara se aplica al conjunto 
+\texttt{test} y se le haya la tasa de clasificación, podríamos encontrarnos que la SFS produce mejores tasas
+de clasificación que la Búsqueda Local para un mismo conjunto de entrenamiento y con una misma semilla aleatoria, por
+el número distinto de llamadas al generador de números aleatorios que hace cada algoritmo.
+
+Para normalizar los datasets se ha creado una función (\texttt{normalize(data.frame)}) que los limpia de columnas con
+un único valor, establece los nombres de los atributos todos a minúsculas, reordena los atributos del dataset para que
+la clase sea el último de todos, y hace una transformación con las columnas para que todos los valores estén comprendidos
+entre 0 y 1.
+
+Se describe a continuación un esquema de los ficheros de código:
+\begin{itemize}
+ \item \texttt{\blue{main.r}}: de arriba a abajo, carga los paquetes necesarios, incluye el código fuente de otros ficheros
+  (\texttt{\blue{aux.r, NN3.r, SFS.r, BL.r,}\ldots} y lee los parámetros necesarios, entre ellos las semillas aleatorias
+  (12345678, 23456781, 34567812, 45678123, 56781234) del fichero \texttt{params.r}
+  
+  Se ejecuta la función \texttt{cross.eval(algoritmo)}, guardando los resultados en la lista \texttt{algoritmo.results}
+  Esta lista contendrá 3 dataframes con los datos del 5x2 cross validation, uno por dataset, con 10 filas cada uno 
+  y columnas las tasas de clasificación de test y train, la tasa de reducción y el tiempo de ejecución. 
+  Incluye también 3 datasets más con la media de los datos anteriores para cada conjunto de datos.
+ 
+ \item \texttt{\blue{aux.r}}: contiene las implementaciones de la función de normalización de datasets, la función de
+ particionado de \texttt{data.frames}, la función objetivo \texttt{tasa.clas} y la función \texttt{cross.eval}
+ descrita arriba.
+  
+\end{itemize}
 \end{document}
