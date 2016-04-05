@@ -308,14 +308,14 @@ solución hasta el momento. La tenencia tabú es de $n/3$ con $n$ el número de 
 La probabilidad de diversificación considerada en este caso es la misma que la intensificación, 0.25.
 La tenencia tabú es de $n/3$ con $n$ el número de características totales.
 
-\subsection{Algoritmo de comparación: SFS}
+\section{Algoritmo de comparación: SFS}
 \small{\texttt{\input{SFS}}}
 
 Partiendo de una selección de características vacía (máscara nula), va añadiendo a cada paso la característica
 de las no escogidas hasta el momento que maximiza la tasa de clasificación añadiéndola a la solución, hasta
 que la característica escogida no mejore a la mejor solución hasta el momento
 
-\subsection{Implementación de la práctica}
+\section{Implementación de la práctica}
 Para la implementación de la práctica, se ha optado por usar el lenguaje de programación R. 
 
 El clasificador \texttt{3nn} leaving one out empleado es el incluido en el paquete \texttt{class}, de nombre
@@ -342,7 +342,7 @@ entre 0 y 1.
 Se describe a continuación un esquema de los ficheros de código:
 \begin{itemize}
  \item \texttt{\blue{main.r}}: de arriba a abajo, carga los paquetes necesarios, incluye el código fuente de otros ficheros
-  (\texttt{\blue{aux.r, NN3.r, SFS.r, BL.r,}\ldots} y lee los parámetros necesarios, entre ellos las semillas aleatorias
+  (\texttt{\blue{aux.r, NN3.r, SFS.r, BL.r,}\ldots}) y lee los parámetros necesarios, entre ellos las semillas aleatorias
   (12345678, 23456781, 34567812, 45678123, 56781234) del fichero \texttt{params.r}
   
   Se ejecuta la función \texttt{cross.eval(algoritmo)}, guardando los resultados en la lista \texttt{algoritmo.results}
@@ -353,6 +353,21 @@ Se describe a continuación un esquema de los ficheros de código:
  \item \texttt{\blue{aux.r}}: contiene las implementaciones de la función de normalización de datasets, la función de
  particionado de \texttt{data.frames}, la función objetivo \texttt{tasa.clas} y la función \texttt{cross.eval}
  descrita arriba.
-  
-\end{itemize}
+ 
+ \item \texttt{\blue{NN3.r, SFS.r, BL.r, ES.r, }\ldots}: contiene la implementación de los algoritmos de nombre 
+ homónimo.
+ 
+ \item \texttt{params.r}: fichero del que se leen los parámetros:
+  \begin{itemize}
+    \item \texttt{semilla}: vector de semillas aleatorias para poder reproducir los análisis hechos.
+    \item \texttt{ES.coef.max.vecinos, ES.coef.max.exitos, ES.mu, ES.phi, \\BT.max.vecinos, BT.coef.tenencia.tabu,\ldots}:
+    son parámetros propios de cada metaheurística, descritos en dicho fichero encima de cada bloque de parámetros.
+    Por defecto están seteados para que se empleen los valores aportados en la documentación de la práctica.
+  \end{itemize}
+ \end{itemize}
+ 
+ Para verificar los datos aportados para el algoritmo \texttt{algx}, a saber, basta ejecutar todo el fichero \texttt{main.r}
+ hasta justo antes de la sección \textit{Obtención de resultados}. A continuación, si se ejecuta la línea 
+ \texttt{algx.results <- cross.eval(algx)} se obtienen almacenados en una lista los valores de tasas y tiempos de ejecución
+ aportados en la presente memoria.
 \end{document}
