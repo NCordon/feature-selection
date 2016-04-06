@@ -8,10 +8,11 @@ rm(list = ls())
 # data.table: rbindinglist
 # class: kknn
 # base: logaritmo
+# ggplot2: gráficas
 ##########################################################################
 # Cargamos pkgs
 load.my.packages <- function(){
-  pkgs = c("foreign", "data.table", "class", "base")
+  pkgs = c("foreign", "data.table", "class", "base", "ggplot2")
   to.install <- pkgs[ ! pkgs %in% installed.packages() ]
   
   if ( length(to.install) > 0 )
@@ -60,7 +61,7 @@ datasets.names <- c("wdbc", "mlibras", "arrhythmia")
 ### Obtencion de resultados
 ##########################################################################
 data.file <- "seleccion-caracteristicas.RData"
-#load(file = data.file)
+load(file = data.file)
 save.image(file = data.file, safe=TRUE)  
 
 NN3.results <- cross.eval(NN3)
