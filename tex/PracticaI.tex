@@ -86,6 +86,7 @@
   \end{wrapfigure}
 }
 
+
 \newcommand{\imagen}[4]{
   \begin{minipage}{\linewidth}
     \centering
@@ -505,5 +506,30 @@ Se describe a continuación un esquema de los ficheros de código:
     \label{BText}
   \end{table}  
   
+  
+  \begin{table}[htbp]
+  \caption*{Resultados globales}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{ 1}{|c|}{} & \multicolumn{1}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textbf{\textit{Arrhytmia}}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} \\ \cline{ 2- 13}
+  & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{3-NN} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
+  \textbf{SFS} & 94.09402 & 96.52100 & 0.84000 & 0.17420 & 64.88889 & 72.55556 & 0.89111 & 1.01910 & 69.23002 & 75.75816 & 0.97905 & 2.35900 \\ \hline
+  \textbf{BL} & 95.64183 & 97.64505 & 0.48667 & 0.23150 & 66.66667 & 68.66667 & 0.52111 & 0.98410 & 62.90217 & 64.55756 & 0.50000 & 19.60270 \\ \hline
+  \textbf{ES} & 95.50186 & 98.59402 & 0.50333 & 30.45330 & 66.88889 & 70.50000 & 0.51556 & 25.48140 & 63.26085 & 68.91591 & 0.51462 & 373.45210 \\ \hline
+  \textbf{BT básica} & 96.02792 & 98.91055 & 0.52667 & 44.06440 & 67.38889 & 74.11111 & 0.53444 & 70.71810 & 63.57013 & 72.54564 & 0.53755 & 514.00300 \\ \hline
+  \textbf{BT extendida} & 95.64196 & 98.84025 & 0.50667 & 53.01520 & 67.44444 & 72.05556 & 0.49333 & 99.33300 & 62.79693 & 69.58763 & 0.47391 & 3135.18590 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{}
+  \end{table}
+
+  
+  
+  Los algoritmos deberían analizarse por dataset, ya que cada uno posee unas características muy determinadas: \texttt{wdbc} tiene muy pocos atributos(30), pero muchas observaciones(569),
+  \texttt{movemente libras} tiene menos observaciones(360) pero el triple de atributos(90). Y \texttt{arrhythmia} es de todos el dataset más duro de procesar (386 instancias por 253 atributos
+  significativos). Aunque recordamos que para calcular la selección de características se hace con una partición al 50\% estratificada, lo que nos lleva a considerar la mitad de instancias.
+  Por tanto analizaremos los resultados por dataset.
 
 \end{document}
