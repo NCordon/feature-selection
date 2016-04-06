@@ -64,7 +64,7 @@ cross.eval <- function(algorithm){
   
   for (j in 1:length(datasets)){
     x <- datasets[[j]]
-    num.variables <- length(colnames(x))
+    num.variables <- length(colnames(x))-1
     tiempo.exec = c()
     train.tasas = c()
     test.tasas = c()
