@@ -218,9 +218,10 @@ conjunto de atributos. El proceso se repite intercambiando los conjuntos de entr
 metaheaurística/algoritmo se calculará como la media de todas las tasas de clasificación obtenidas sobre el conjunto test
 (10 en total). Otras medidas que se tendrán en cuenta a la hora de evaluar la bondad de un algoritmo empleado serán:
 \begin{itemize}
- \item Tasa de reducción: Número de características que contiene seleccionadas la máscara sobre el total que podía 
- seleccionar. 
+ \item Tasa de reducción: Porcentaje de características que ha eliminado la máscara sobre el total que podía 
+ seleccionar. Mejor cuanto más alta.
  \item Tiempo de ejecución: Tiempo en segundos que tarda el algoritmo en devolver un conjunto de características.
+ Se busca el menor tiempo de ejecución posible.
 \end{itemize}
 
 
@@ -288,7 +289,7 @@ Es decir, un 30\% de probabilidad de que la solución escogida sea
 un 30\% peor que la inicial.
 
 La temperatura final se toma como $T_f = 10^{-3}$. En caso de ser esta temperatura mayor que la inicial,
-se hará $T_f = 10^{-3k}$ con $k$ el primer natural para el que $t_i < t_f$
+se hará $T_f = 10^{-3k}$ con $k$ el primer natural para el que $t_i > t_f$
 
 El esquema de enfriamiento de Cauchy usado ha sido: 
 $$T_{actual+1} = \frac{T_{actual}}{1+T_{actual}\cdot \frac{T_0 - T_f}{M\cdot T_0\cdot T_f}}$$
@@ -332,7 +333,7 @@ parámetros a la función \texttt{tasa.clas}, que es la función objetivo de nue
 distintos. O incluso que si inicializaramos las soluciones iniciales de otra metaheurística, a saber, por ejemplo la
 Búsqueda Local, con la del algoritmo greedy, a pesar de que esta no sustituye a la mejor solución hasta el momento a 
 no ser que encuentre otra con mayor tasa de clasificación, como después esta máscara se aplica al conjunto 
-\texttt{test} y se le haya la tasa de clasificación, podríamos encontrarnos que la SFS produce mejores tasas
+\texttt{test} y se le halla la tasa de clasificación, podríamos encontrarnos que la SFS produce mejores tasas
 de clasificación que la Búsqueda Local para un mismo conjunto de entrenamiento y con una misma semilla aleatoria, por
 el número distinto de llamadas al generador de números aleatorios que hace cada algoritmo.
 
@@ -583,9 +584,24 @@ Se describe a continuación un esquema de los ficheros de código:
   
   La búsqueda local produce unos resultados muy similares a los de la SFS excepto en tasa de reducción. Podemos pensar que
   lo que la hace no obtener resultados tan buenos como las tabú es que tiene en cuenta un paso de temporalidad (a cada momento
-  se coge la característica que mejora la solución que tiene, escogiendo esta aleatoriamente), en vez de tener en cuenta varios
+  se coge la característica que mejora la solución que tiene, escogiendo ésta aleatoriamente), en vez de tener en cuenta varios
   pasos de temporalidad que es lo que hace la tabú al llevar su lista tabú (esto es, la suma de varias características en conjunción
   podría caracterizar muy bien las instancias, mientras que la BL las intenta caracterizar con una sola característica a cada paso).
  
-
+  \subsection{Movement libras}
+  
+  Se trata de un problema de clasficación multiclase (más de 2).
+  
+  \imagen{../data/mlibras.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
+  
+  Dado el elevado número de clases, no podemos analizar un boxplot para ver las diferencias entre los atributos que escogen unos
+  algoritmos y otros, pero parece que hay cierta estabilidad en las soluciones y que es difícil pasar del 70\% de acierto. Dicho lo
+  cual, es claro que en igualdad de condiciones deberíamos tomar la solución que menos tiempo tarde en efectuar los cálculos y
+  mayor tasa de reducción tenga (el SFS). Si escogiéramos un algoritmo por su tasa clasificatoria, nos iríamos a la tabú search
+  extendida, aunque es bastante lenta (1 minuto y 40 por partición).
+  
+  Además, todos los algoritmos tienen particiones en las que efectúan bastante overfitting (de diferencias de un 10\% o más).
+  Esto lo podemos explicar porque tenemos muchos más atributos que en el caso del \texttt{wdbc}, concretamente el triple, y
+  casi la mitad de instancias. Por tanto hay poca densidad de datos y las tasas en entrenamiento son mejores que las de 
+  prueba (7\% en las medias de la búsqueda tabú por ejemplo).
 \end{document}

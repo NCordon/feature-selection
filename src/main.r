@@ -60,21 +60,16 @@ datasets.names <- c("wdbc", "mlibras", "arrhythmia")
 ##########################################################################
 ### Obtencion de resultados
 ##########################################################################
-data.file <- "seleccion-caracteristicas.RData"
-load(file = data.file)
-save.image(file = data.file, safe=TRUE)  
+#data.file <- "seleccion-caracteristicas.RData"
+#load(file = data.file)
 
 NN3.results <- cross.eval(NN3)
-save.image(file = data.file, safe=TRUE)  
 SFS.results <- cross.eval(SFS)
-save.image(file = data.file, safe=TRUE)  
 BL.results <- cross.eval(BL)
-save.image(file = data.file, safe=TRUE)  
 ES.results <- cross.eval(ES)
-save.image(file = data.file, safe=TRUE)  
 BT.results <- cross.eval(BT)
-save.image(file = data.file, safe=TRUE)  
 BT.ext.results <-cross.eval(BT.ext)
 
 
-#write.csv2(NN3.results,file="NN3.csv", quote=FALSE, row.names = FALSE)
+#save.image(file = data.file, safe=TRUE)  
+
