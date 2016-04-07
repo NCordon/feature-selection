@@ -219,7 +219,7 @@ metaheaurística/algoritmo se calculará como la media de todas las tasas de cla
 (10 en total). Otras medidas que se tendrán en cuenta a la hora de evaluar la bondad de un algoritmo empleado serán:
 \begin{itemize}
  \item Tasa de reducción: Porcentaje de características que ha eliminado la máscara sobre el total que podía 
- seleccionar. Mejor cuanto más alta.
+ seleccionar. Mejor cuanto más alta. En nuestros resultados lo hemos expresado como un tanto por uno.
  \item Tiempo de ejecución: Tiempo en segundos que tarda el algoritmo en devolver un conjunto de características.
  Se busca el menor tiempo de ejecución posible.
 \end{itemize}
@@ -372,7 +372,10 @@ Se describe a continuación un esquema de los ficheros de código:
  Para verificar los datos aportados para el algoritmo \texttt{algx}, a saber, basta ejecutar todo el fichero \texttt{main.r}
  hasta justo antes de la sección \textit{Obtención de resultados}. A continuación, si se ejecuta la línea 
  \texttt{algx.results <- cross.eval(algx)} se obtienen almacenados en una lista los valores de tasas y tiempos de ejecución
- aportados en la presente memoria.
+ aportados en la presente memoria. El working path debe estar seteado a la carpeta de códigos fuente.
+ 
+ Cuando se cambia algo en algún algoritmo o en \texttt{params.r} hay que recargar en \texttt{main.r}
+ la línea del \texttt{source(file=)} correspondiente.
  
  \section{Experimentos y análisis de resultados}
  \subsection{Tablas de resultados}
@@ -382,7 +385,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
     \hline
     \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
-    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
     \textbf{Partición 1-1} & 95.78947 & 97.53521 & 0.00000 & 0.00000 & 65.00000 & 66.66667 & 0.00000 & 0.00000 & 65.46392 & 65.62500 & 0.00000 & 0.00000 \\ \hline
     \textbf{Partición 1-2} & 97.53521 & 95.78947 & 0.00000 & 0.00000 & 66.11111 & 67.77778 & 0.00000 & 0.00000 & 65.62500 & 65.97938 & 0.00000 & 0.00000 \\ \hline
     \textbf{Partición 2-1} & 97.19298 & 95.77465 & 0.00000 & 0.00000 & 72.22222 & 64.44444 & 0.00000 & 0.00000 & 62.88660 & 61.45833 & 0.00000 & 0.00000 \\ \hline
@@ -405,7 +408,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
     \hline
     \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
-    \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+    \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
     \textbf{Partición 1-1} & 94.38596 & 97.53521 & 0.83333 & 0.17600 & 60.00000 & 70.00000 & 0.87778 & 1.16600 & 59.79381 & 75.52083 & 0.98024 & 2.07900 \\ \hline
     \textbf{Partición 1-2} & 96.83099 & 97.89474 & 0.76667 & 0.25900 & 63.88889 & 75.00000 & 0.88889 & 1.03700 & 76.04167 & 78.35052 & 0.96838 & 4.11800 \\ \hline
     \textbf{Partición 2-1} & 95.43860 & 97.88732 & 0.83333 & 0.23800 & 67.22222 & 69.44444 & 0.92222 & 0.66000 & 64.94845 & 77.60417 & 0.98024 & 2.16100 \\ \hline
@@ -428,7 +431,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
     \hline
     \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
-    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
     \textbf{Partición 1-1} & 93.33333 & 98.59155 & 0.53333 & 0.17200 & 63.88889 & 66.66667 & 0.57778 & 1.17800 & 66.49485 & 65.62500 & 0.50988 & 26.86000 \\ \hline
     \textbf{Partición 1-2} & 96.12676 & 97.54386 & 0.60000 & 0.26800 & 68.88889 & 65.55556 & 0.53333 & 0.83700 & 64.06250 & 67.52577 & 0.48221 & 14.32000 \\ \hline
     \textbf{Partición 2-1} & 97.89474 & 96.83099 & 0.43333 & 0.26100 & 67.77778 & 63.88889 & 0.46667 & 0.79000 & 59.79381 & 64.58333 & 0.46640 & 30.74100 \\ \hline
@@ -452,7 +455,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
     \hline
     \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
-    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
     \textbf{Partición 1-1} & 93.68421 & 99.64789 & 0.50000 & 35.58500 & 67.77778 & 70.00000 & 0.56667 & 12.99100 & 64.94845 & 70.83333 & 0.53755 & 449.82300 \\ \hline
     \textbf{Partición 1-2} & 96.83099 & 98.59649 & 0.63333 & 35.42600 & 65.55556 & 67.22222 & 0.50000 & 14.26000 & 66.14583 & 73.71134 & 0.52174 & 425.73900 \\ \hline
     \textbf{Partición 2-1} & 97.19298 & 97.88732 & 0.46667 & 27.98400 & 70.00000 & 66.66667 & 0.57778 & 16.65700 & 67.52577 & 77.60417 & 0.54150 & 487.35200 \\ \hline
@@ -475,7 +478,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
     \hline
     \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
-    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
     \textbf{Partición 1-1} & 96.14035 & 100.00000 & 0.60000 & 44.67000 & 67.22222 & 72.77778 & 0.52222 & 69.74100 & 63.40206 & 73.43750 & 0.56126 & 536.40500 \\ \hline
     \textbf{Partición 1-2} & 95.42254 & 98.59649 & 0.60000 & 42.80600 & 66.11111 & 69.44444 & 0.56667 & 68.23700 & 66.66667 & 74.74227 & 0.64032 & 471.66200 \\ \hline
     \textbf{Partición 2-1} & 96.84211 & 98.59155 & 0.60000 & 44.06600 & 70.00000 & 72.77778 & 0.43333 & 67.80100 & 67.52577 & 75.00000 & 0.54941 & 541.27700 \\ \hline
@@ -498,7 +501,7 @@ Se describe a continuación un esquema de los ficheros de código:
    \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
     \hline
     \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
-    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
     \textbf{Partición 1-1} & 92.98246 & 99.29577 & 0.56667 & 50.95900 & 64.44444 & 72.77778 & 0.50000 & 98.72200 & 68.55670 & 69.27083 & 0.51383 & 789.91800 \\ \hline
     \textbf{Partición 1-2} & 95.07042 & 98.59649 & 0.50000 & 51.50100 & 67.77778 & 70.00000 & 0.50000 & 95.03200 & 63.54167 & 69.07216 & 0.11067 & 851.94300 \\ \hline
     \textbf{Partición 2-1} & 96.84211 & 98.59155 & 0.53333 & 52.51600 & 70.00000 & 69.44444 & 0.47778 & 96.74700 & 62.37113 & 75.00000 & 0.54545 & 762.49600 \\ \hline
@@ -522,7 +525,7 @@ Se describe a continuación un esquema de los ficheros de código:
   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
   \hline
   \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
-  & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
   \textbf{3-NN} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
   \textbf{SFS} & 94.09402 & 96.52100 & 0.84000 & 0.17420 & 64.88889 & 72.55556 & 0.89111 & 1.01910 & 69.23002 & 75.75816 & 0.97905 & 2.35900 \\ \hline
   \textbf{BL} & 95.64183 & 97.64505 & 0.48667 & 0.23150 & 66.66667 & 68.66667 & 0.52111 & 0.98410 & 62.90217 & 64.55756 & 0.50000 & 19.60270 \\ \hline
@@ -536,7 +539,7 @@ Se describe a continuación un esquema de los ficheros de código:
 
   
   Los algoritmos deberían analizarse por dataset, ya que cada uno posee unas características muy determinadas: \texttt{wdbc} tiene muy pocos atributos(30), pero muchas observaciones(569),
-  \texttt{movemente libras} tiene menos observaciones(360) pero el triple de atributos(90). Y \texttt{arrhythmia} es de todos el dataset más duro de procesar (386 instancias por 253 atributos
+  \texttt{movement libras} tiene menos observaciones(360) pero el triple de atributos(90). Y \texttt{arrhythmia} es de todos el dataset más duro de procesar (386 instancias por 253 atributos
   significativos). Aunque recordamos que para calcular la selección de características se hace con una partición al 50\% estratificada, lo que nos lleva a considerar la mitad de instancias.
   Por tanto analizaremos los resultados por dataset.
   
@@ -550,7 +553,7 @@ Se describe a continuación un esquema de los ficheros de código:
   son similares, y por tanto no está efectuando overfitting. Cuando hacemos un boxplot de las variables que aporta el SFS
   ejecutado sobre ese dataset, nos encontramos que en la mayoría de esas variables los rangos intercuartílicos de ambas
   clases son disjuntos, por lo que las variables caracterizan muy bien a una clase o a otra, y por tanto cuando tomamos los
-  vecinos más cercanos, podemos inferir que la distancia entre las características de la isntancia a clasificar y la ya 
+  vecinos más cercanos, podemos inferir que cuando la distancia entre las características de la instancia a clasificar y la ya 
   clasificada de entre las que nos da la máscara será muy pequeña, y por lo explicado sobre el boxplot, es muy probable que
   ambas instancias tengan la misma clase.
   
@@ -586,13 +589,14 @@ Se describe a continuación un esquema de los ficheros de código:
   lo que la hace no obtener resultados tan buenos como las tabú es que tiene en cuenta un paso de temporalidad (a cada momento
   se coge la característica que mejora la solución que tiene, escogiendo ésta aleatoriamente), en vez de tener en cuenta varios
   pasos de temporalidad que es lo que hace la tabú al llevar su lista tabú (esto es, la suma de varias características en conjunción
-  podría caracterizar muy bien las instancias, mientras que la BL las intenta caracterizar con una sola característica a cada paso).
+  podría caracterizar muy bien las instancias, mientras que la BL las intenta caracterizar mejor modificando una sola característica 
+  a cada paso). En definitiva, la búsqueda tabú tiene más en cuenta el histórico de la exploración.
  
   \subsection{Movement libras}
   
-  Se trata de un problema de clasficación multiclase (más de 2).
+  Se trata de un problema de clasficación multiclase (15 clases después de normalizar el dataset).
   
-  \imagen{../data/mlibras.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
+  \imagen{../data/mlibras.png}{Tasas de clasificación en Movement Libras}{wdbcgraph}{0.7}
   
   Dado el elevado número de clases, no podemos analizar un boxplot para ver las diferencias entre los atributos que escogen unos
   algoritmos y otros, pero parece que hay cierta estabilidad en las soluciones y que es difícil pasar del 70\% de acierto. Dicho lo
@@ -604,4 +608,50 @@ Se describe a continuación un esquema de los ficheros de código:
   Esto lo podemos explicar porque tenemos muchos más atributos que en el caso del \texttt{wdbc}, concretamente el triple, y
   casi la mitad de instancias. Por tanto hay poca densidad de datos y las tasas en entrenamiento son mejores que las de 
   prueba (7\% en las medias de la búsqueda tabú por ejemplo).
+  
+  \subsection{Arrhythmia}
+  
+  Se trata de un problema de clasficación multiclase (5 clases después de normalizar el dataset).
+  
+  \imagen{../data/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
+  
+  Es un problema muy complejo, pues tenemos menos instancias que variables para predecir (193 instancias que tendrán
+  los conjuntos de entrenamiento por 253 variables). La SFS ya nos está diciendo, obteniendo datos mejores de clasificación
+  que el propio 3-knn, que la mayoría de variables no son estadísticamente significativas (reduce casi un 98\% el conjunto de variables)
+  para efectuar la clasificación.
+  
+  En el resto de casos las tasas de reducción son mucho más bajas (en torno al 50\%), pero con porcentajes de clasificación
+  mucho menores. Probablemente, en el caso de las búsquedas tabú falten iteraciones para hacer converger la solución a una mejor
+  tasa de clasificación. En general se observa una gran dependencia de las 4 metaheaurísticas empleadas de la solución aleatoria
+  inicial, que parece ser bastante mala (de hecho, al ser aleatoria, tendrá un número equiparable de 0s y de 1s, aunque la mayoría
+  de variables no son estadísticamente significativas para determinar la clasificación, y nos deberíamos centrar en aquellas
+  que sí lo son y intentar modificar la solución desde ahí. Una posible solución sería tomar como solución inicial para las metaheurísticas
+  la del propio algoritmo greedy.
+  
+  Observamos en la tabla de resultados de la tabú extendida que hay una partición que tarda casi el doble que el resto.
+  A juzgar por cómo hemos programado el algoritmo, sólo cabe la posibilidad de que tarde más porque entra más veces a la
+  reinicialización, y concretamente a la diversificación, aunque el dato puede ser simplemente un outlier.
+  
+  Un porcentaje del 75\% de diversificar(de las dos formas posibles) en este caso parece bastante
+  elevado para partir de una solución aleatoria o generada a partir de frecuencias que será bastante mala en la mayoría de los casos. Maxime cuando el problema
+  tiene 253 posibles variables. Como por el operador de generación de vecino que hemos montado, y eso se observa en la tabla
+  resumen, tenemos la misma probabilidad de unos que de ceros en una solución, y hay en este caso $\binom{253}{50}$ posibles
+  máscaras que obtendremos, por $\binom{30}{15}$, en el que las búsquedas tabú sí eran muy buenas,
+  del caso del \texttt{movement libras}, podemos afirmar que quizá falten iteraciones para poder hacer esta búsqueda tabú 
+  converger a soluciones mejores. Pero si cada tabú extendida está tardando del orden de 50-60 minutos por partición,
+  un número mayor de iteraciones es insostenible para un computador doméstico.
+  
+  \subsection{Notas finales}
+  
+  Una posible solución a nuestros problemas de convergencia sería programar otro operador de generación de vecino, que
+  no tuviese la misma probabilidad de generar unos que de ceros. Como las tasas de reducción de la SFS en todos los casos
+  es superior al 80\%, llegando al 97\% en el caso de arrhythmia, podríamos intentar programar un operador de vecino que
+  tuviese un 70-75\% de posibilidades de generar un 0 en la posición escogida, y un 1 con un 0.3-0.25 de probabilidad.
+  
+  Otra mejora que podría implementarse es partir en todos los casos como solución inicial de la greedy.
+  
+  En el caso del dataset \texttt{mlibras}, modificando la tenencia tabú a $2/3*n$ (esto es\texttt{BT.coef.tenencia.tabu <- 2/3}
+  en \texttt{params.r}) se ha llegado a un 68\% de tasa de acierto.
+  
+  
 \end{document}
