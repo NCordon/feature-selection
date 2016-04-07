@@ -45,7 +45,7 @@ ggplot(data=data [data$Dataset==dataset,], aes(x=Algoritmo, y=Tasa.test)) +
       geom_bar(stat="identity", colour="black", position = "dodge", aes(fill=unique(data$Algoritmo))) +
       #scale_fill_discrete(breaks=c("NN3","SFS","BL","ES", "BT", "BText"), name="Algoritmo") +
       scale_fill_discrete(guide=FALSE)+
-      theme(axis.text.y=element_text(size=12), 
-            axis.text.x=element_text(size=12),
-            axis.title.y=element_text(size=15))
+      theme(axis.text.y=element_text(size=15), 
+            axis.text.x=element_text(size=15),
+            axis.title.y=element_text(size=20))
 

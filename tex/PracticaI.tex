@@ -96,6 +96,14 @@
   \end{minipage} 
 }
 
+\newcommand{\imgn}[3]{
+  \begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=#3\textwidth]{#1}
+    \captionof{figure}{#2}
+  \end{minipage} 
+}
+
 %Customize enumerate tag
 \usepackage{enumitem}
 %Sections don't get numbered
@@ -367,7 +375,7 @@ Se describe a continuación un esquema de los ficheros de código:
  
  \section{Experimentos y análisis de resultados}
  \subsection{Tablas de resultados}
- \begin{table}[htbp]	
+ \begin{table}[H]	
     \caption*{Resultados del 3NN}
     \begin{adjustbox}{width=1.1\textwidth}
     \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
@@ -390,7 +398,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \label{NN3}
   \end{table}
   
-   \begin{table}[htbp]	
+   \begin{table}[H]	
     \caption*{Resultados del SFS}
     \begin{adjustbox}{width=1.1\textwidth}
     \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
@@ -413,7 +421,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \label{SFS}
   \end{table}
   
-   \begin{table}[htbp]	
+   \begin{table}[H]	
     \caption*{Resultados de la BL}
     \begin{adjustbox}{width=1.1\textwidth} 
     \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
@@ -437,7 +445,7 @@ Se describe a continuación un esquema de los ficheros de código:
   \end{table}  
 
     
-   \begin{table}[htbp]	
+   \begin{table}[H]	
     \caption*{Resultados del ES}
     \begin{adjustbox}{width=1.1\textwidth}
     \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
@@ -460,7 +468,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \label{ES}
   \end{table}  
 
-  \begin{table}[htbp]	
+  \begin{table}[H]	
     \caption*{Resultados de la BT}
     \begin{adjustbox}{width=1.1\textwidth}
     \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
@@ -483,7 +491,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \label{BT}
   \end{table}  
   
-  \begin{table}[htbp]	
+  \begin{table}[H]	
     \caption*{Resultados de la BT extendida}
     \begin{adjustbox}{width=1.1\textwidth}
    \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
@@ -507,13 +515,13 @@ Se describe a continuación un esquema de los ficheros de código:
   \end{table}  
   
   
-  \begin{table}[htbp]
+  \begin{table}[H]
   \caption*{Resultados globales}
   \begin{adjustbox}{width=1.1\textwidth}
   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
   \hline
-  \multicolumn{ 1}{|c|}{} & \multicolumn{1}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textbf{\textit{Arrhytmia}}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} & \multicolumn{1}{c|}{\textit{}} \\ \cline{ 2- 13}
-  & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
+  & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
   \textbf{3-NN} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
   \textbf{SFS} & 94.09402 & 96.52100 & 0.84000 & 0.17420 & 64.88889 & 72.55556 & 0.89111 & 1.01910 & 69.23002 & 75.75816 & 0.97905 & 2.35900 \\ \hline
   \textbf{BL} & 95.64183 & 97.64505 & 0.48667 & 0.23150 & 66.66667 & 68.66667 & 0.52111 & 0.98410 & 62.90217 & 64.55756 & 0.50000 & 19.60270 \\ \hline
@@ -526,10 +534,58 @@ Se describe a continuación un esquema de los ficheros de código:
   \end{table}
 
   
-  
   Los algoritmos deberían analizarse por dataset, ya que cada uno posee unas características muy determinadas: \texttt{wdbc} tiene muy pocos atributos(30), pero muchas observaciones(569),
   \texttt{movemente libras} tiene menos observaciones(360) pero el triple de atributos(90). Y \texttt{arrhythmia} es de todos el dataset más duro de procesar (386 instancias por 253 atributos
   significativos). Aunque recordamos que para calcular la selección de características se hace con una partición al 50\% estratificada, lo que nos lleva a considerar la mitad de instancias.
   Por tanto analizaremos los resultados por dataset.
+  
+  \subsection{Wdbc}
+  
+  Es un problema de clasificación binaria.
+  
+  \imagen{../data/wdbc.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
+  
+  Observamos que el algoritmo que mejores tasas de clasificación obtiene es el 3NN. Las tasas que obtiene en test y train
+  son similares, y por tanto no está efectuando overfitting. Cuando hacemos un boxplot de las variables que aporta el SFS
+  ejecutado sobre ese dataset, nos encontramos que en la mayoría de esas variables los rangos intercuartílicos de ambas
+  clases son disjuntos, por lo que las variables caracterizan muy bien a una clase o a otra, y por tanto cuando tomamos los
+  vecinos más cercanos, podemos inferir que la distancia entre las características de la isntancia a clasificar y la ya 
+  clasificada de entre las que nos da la máscara será muy pequeña, y por lo explicado sobre el boxplot, es muy probable que
+  ambas instancias tengan la misma clase.
+  
+  \imgn{../data/wdbc3nn.png}{Selección de características del SFS}{1}
+  
+  La SFS aporta una tasa de clasificación media del 94\% en test, y aunque es la más baja de todos los algoritmos considerados,
+  tiene la tasa de reducción más alta (del 84\%). Por tanto si tuviéramos muchísimas más instancias de este dataset, dependiendo
+  de las necesidades y siempre que busquemos rapidez de cálculo, no sería una mala alternativa frente al resto de algoritmos.
+  
+  De las otras metaheurísticas la que mejor funciona es la búsqueda tabú. De hecho, podríamos observar que hace algo de overfitting
+  en las tasas de clasificación del conjunto de entrenamiento, llegando a obtener 100\% de tasa de clasificación en un caso.
+  Si tomamos un boxplot de todas las variables que tiene el dataset (normalizadas, claro está), podemos inferir que la búsqueda
+  tabú a corto plazo funciona tan bien porque hay variables cuya intersección de rangos intercuartílicos es bastante grande,
+  como se puede apreciar en la figura aportada, y otras cuyos rangos intercuartílicos son completamente disjuntos. El mecanismo
+  de la tabú hace que si hacemos un flip de una variable que no mejora la tasa de clasificación (a saber, es probable que
+  sea una con los rangos intercuartílicos de ambas clases poco separados), ese movimiento no se vuelva a hacer en un tiempo,
+  y por tanto nos vamos a ir quedando con variables que caracterizan muy bien a las clases, y la lista tabú va a estar repleta
+  de movimientos para variables que no aportan información relevante sobre la clase. Además, en caso de que el movimiento
+  sí sea bueno y entre en la lista tabú, será porque caracteriza bien a las clases, y agregándole otro movimiento bueno podríamos
+  tener una buena regla de asociación que caracterizase bien las instancias.
+  
+  \imgn{../data/wdbctabu.png}{Boxplot de variables del wdbc}{1}
+  
+  Podemos afirmar a raíz de los resultados que la tabú con memoria a largo plazo también funciona muy bien para el dataset,
+  obteniéndose unos resultados similares a la tabú con memoria a corto plazo, aunque efectúa un poco de overfitting en la
+  primera partición de todas.
+  
+  El enfriamiento simulado también aporta buenos resultados para el dataset. Tanto ES, como BT como BT extendida tienen un
+  porcentaje de reducción del 50\%, lejos del 80\% de la SFS, y tardan tiempos no superiores al minuto en ejecutarse por partición,
+  y por tanto asumibles.
+  
+  La búsqueda local produce unos resultados muy similares a los de la SFS excepto en tasa de reducción. Podemos pensar que
+  lo que la hace no obtener resultados tan buenos como las tabú es que tiene en cuenta un paso de temporalidad (a cada momento
+  se coge la característica que mejora la solución que tiene, escogiendo esta aleatoriamente), en vez de tener en cuenta varios
+  pasos de temporalidad que es lo que hace la tabú al llevar su lista tabú (esto es, la suma de varias características en conjunción
+  podría caracterizar muy bien las instancias, mientras que la BL las intenta caracterizar con una sola característica a cada paso).
+ 
 
 \end{document}
