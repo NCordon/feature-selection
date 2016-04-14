@@ -1,14 +1,23 @@
 ##########################################################################
+### Generador de soluciones iniciales aleatorias en selec. caracteristicas
+###     Para un tamaño determinado devuelve una seleccion de 
+###     caracteristicas aleatoria
+##########################################################################
+
+random.init <- function(n){ sample(0:1, n, replace=TRUE) }
+
+
+##########################################################################
 ### Funcion busqueda local del primer mejor
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
 ###     de caracteristicas que se obtienen de aplicar la busqueda local del
 ###     primer mejor
 ##########################################################################
 
-BL <- function(data){
+BL <- function(data, gen.init = random.init){
   n <- ncol(data)
   n <- n-1
-  mask <- sample(0:1, n, replace=TRUE)
+  mask <- gen.init(n)
   tasa.best <- tasa.clas(data, mask)
   mejora.found <- TRUE
   #max.eval <- 15000
@@ -45,3 +54,24 @@ BL <- function(data){
   }
   mask
 }
+
+
+##########################################################################
+### Funcion Busqueda Multiarranque
+###     Lanza la Busqueda local un numero determinado de veces
+###     para una solucion aleatoria generada, y se queda con la
+###     mejor solucion de todas las encontradas
+##########################################################################
+
+
+BMB <- function(data){
+  max.arranques <- BMB.num.sols.init
+  
+  masks <- lapply (1:max.arranques, function(x){ BL(data) })
+  tasas <- sapply(masks, function(x){ tasa.clas(data, x) })
+  
+  j <- which.max(tasas)
+  
+  masks[[j]]
+}
+

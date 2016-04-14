@@ -34,7 +34,6 @@ source(file="./BL.r")
 source(file="./ES.r")
 source(file="./BT.r")
 source(file="./BText.r")
-source(file="./BMB.r")
 
 ##########################################################################
 ### Lectura de datos
@@ -69,7 +68,6 @@ BL.results <- cross.eval(BL)
 ES.results <- cross.eval(ES)
 BT.results <- cross.eval(BT)
 BT.ext.results <-cross.eval(BT.ext)
-source(file="./BMB.r")
 BMB.results <- cross.eval(BMB)
 
 #save.image(file = data.file, safe=TRUE)  
