@@ -42,3 +42,9 @@ BT.ext.tope.reinic <- 10
 BT.ext.max.vecinos <- 30
 BT.ext.prob.diversif <- 0.25
 BT.ext.prob.intensif <- 0.25
+
+
+# Parametros de Busqueda Multiarranque Basica
+#### num.sols.init        numero de soluciones aleatorias desde las que
+####                      partira la busqueda local
+BMB.num.sols.init <- 25
