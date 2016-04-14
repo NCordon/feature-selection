@@ -48,3 +48,9 @@ BT.ext.prob.intensif <- 0.25
 #### num.sols.init        numero de soluciones aleatorias desde las que
 ####                      partira la busqueda local
 BMB.num.sols.init <- 25
+
+
+# Parametros de GRASP
+#### alpha                tolerancia de la lista de candidatos frente al mejor
+GRASP.alpha <- 0.3
+

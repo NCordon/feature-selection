@@ -4,7 +4,7 @@
 ###     caracteristicas aleatoria
 ##########################################################################
 
-random.init <- function(n){ sample(0:1, n, replace=TRUE) }
+random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
 
 
 ##########################################################################
@@ -12,12 +12,15 @@ random.init <- function(n){ sample(0:1, n, replace=TRUE) }
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
 ###     de caracteristicas que se obtienen de aplicar la busqueda local del
 ###     primer mejor
+###
+###
+###     get.init      Es el generador de soluciones iniciales (por defecto
+###                   aleatorias, pero puede pasarsele un GRASP p.e.)
 ##########################################################################
 
 BL <- function(data, gen.init = random.init){
   n <- ncol(data)
-  n <- n-1
-  mask <- gen.init(n)
+  mask <- gen.init(data)
   tasa.best <- tasa.clas(data, mask)
   mejora.found <- TRUE
   #max.eval <- 15000
@@ -74,4 +77,49 @@ BMB <- function(data){
   
   masks[[j]]
 }
+
+
+##########################################################################
+### Funcion de generacion de soluciones iniciales GRASP
+##########################################################################
+
+
+GRASP.init <- function(data){
+  alpha <- GRASP.alpha
+  n <- ncol(data)
+  n <- n-1
+  mask <- rep(0,n)
+  non.selected <- seq(1,n)
+  fin <- FALSE
+  
+  while(!fin){
+    masks <- lapply (non.selected, function(x){
+      m <- mask
+      m[x] <- 1
+      m
+    } )
+    
+    
+    tasas <- sapply(masks, function(x){ tasa.clas(data, x) })
+    tasas.max <- max(tasas)
+    tasas.min <- min(tasas)
+    umbral <- alpha * (tasas.max - tasas.min)
+    
+    
+    cur.selection <- which(tasas.max - tasas <= umbral)
+    masks <- masks[cur.selection]
+    
+    
+    sel <- non.selected[sample(cur.selection,1)]
+    mask [sel] <- 1
+    non.selected <- non.selected[non.selected != sel]
+    
+    if (length(non.selected)==0){
+      fin <- TRUE
+    }
+  }
+  
+  mask
+}
+
 
