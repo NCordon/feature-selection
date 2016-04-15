@@ -145,3 +145,42 @@ GRASP <- function(data){
   
   masks[[j]]
 }
+
+
+##########################################################################
+### Funcion Busqueda Local Reiterada (ILS)
+###     Lanza la Busqueda local un numero determinado de veces
+###     para una solucion aleatoria generada la primera vez, y las 
+###     sucesivas veces sobre una solucion mutada
+##########################################################################
+
+
+ILS <- function(data){
+  n <- ncol(data)
+  n <- n-1
+  n.a.mutar <- ILS.coef.mutacion*n
+  
+  max.arranques <- ILS.num.sols.init
+  n.eval <- 1
+  
+  mask <- random.init(data)
+  mask.best <- mask
+  tasa.best <- tasa.clas(data, mask.best)
+  
+  while(n.eval < max.arranques){
+    mask <- BL(data, function(x){ mask })
+    tasa.mask <- tasa.clas(data, mask)
+    
+    if (tasa.mask > tasa.best){
+      mask.best <- mask
+      tasa.best <- tasa.mask
+    }
+    
+    a.mutar <- sample(1:n, n.a.mutar)
+    mask[a.mutar] <- (mask[a.mutar]+1) %% 2
+    
+    n.eval <- n.eval + 1
+  }
+  
+  mask.best
+}

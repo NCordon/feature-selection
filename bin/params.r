@@ -58,3 +58,11 @@ GRASP.alpha <- 0.3
 GRASP.num.sols.init <- 25
 
 
+# Parametros de ILS
+#### coef.mutacion        *n, numero de caracteristicas a mutar aleatoriamente
+#### num.sols.init        numero de soluciones aleatorias desde las que
+####                      partira la busqueda local
+ILS.coef.mutacion <- 0.1 
+ILS.num.sols.init <- 25
+
+
