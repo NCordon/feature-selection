@@ -20,6 +20,7 @@ random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
 
 BL <- function(data, gen.init = random.init){
   n <- ncol(data)
+  n <- n-1
   mask <- gen.init(data)
   tasa.best <- tasa.clas(data, mask)
   mejora.found <- TRUE
@@ -39,6 +40,7 @@ BL <- function(data, gen.init = random.init){
       non.selected <- non.selected[non.selected!=j]
       
       m[j] <- (m[j]+1)%%2
+      
       tasa.actual <- tasa.clas(data, m)
       n.eval <- n.eval + 1
       
@@ -119,7 +121,6 @@ random.greedy.init <- function(data){
       fin <- TRUE
     }
   }
-  
   mask
 }
 
