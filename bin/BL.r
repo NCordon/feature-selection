@@ -60,7 +60,7 @@ BL <- function(data, gen.init = random.init){
 
 
 ##########################################################################
-### Funcion Busqueda Multiarranque
+### Funcion Busqueda Multiarranque Basica
 ###     Lanza la Busqueda local un numero determinado de veces
 ###     para una solucion aleatoria generada, y se queda con la
 ###     mejor solucion de todas las encontradas
@@ -84,13 +84,14 @@ BMB <- function(data){
 ##########################################################################
 
 
-GRASP.init <- function(data){
+random.greedy.init <- function(data){
   alpha <- GRASP.alpha
   n <- ncol(data)
   n <- n-1
   mask <- rep(0,n)
   non.selected <- seq(1,n)
   fin <- FALSE
+  mask.tasa <- 0
   
   while(!fin){
     masks <- lapply (non.selected, function(x){
@@ -99,21 +100,24 @@ GRASP.init <- function(data){
       m
     } )
     
-    
     tasas <- sapply(masks, function(x){ tasa.clas(data, x) })
     tasas.max <- max(tasas)
     tasas.min <- min(tasas)
     umbral <- alpha * (tasas.max - tasas.min)
     
-    
     cur.selection <- which(tasas.max - tasas <= umbral)
     masks <- masks[cur.selection]
     
+    sel <- sample(cur.selection,1)
     
-    sel <- non.selected[sample(cur.selection,1)]
-    mask [sel] <- 1
-    non.selected <- non.selected[non.selected != sel]
-    
+    if (tasas [sel] > mask.tasa){
+      mask[non.selected[sel]] <- 1
+      mask.tasa <- tasas[sel]
+      non.selected <- non.selected[-sel]
+    }
+    else{
+      fin <- TRUE
+    }
     if (length(non.selected)==0){
       fin <- TRUE
     }
@@ -123,3 +127,21 @@ GRASP.init <- function(data){
 }
 
 
+##########################################################################
+### Funcion Busqueda Multiarranque GRASP
+###     Lanza la Busqueda local un numero determinado de veces
+###     para una solucion greedy-aleatoria generada, y se queda con la
+###     mejor solucion de todas las encontradas
+##########################################################################
+
+
+GRASP <- function(data){
+  max.arranques <- GRASP.num.sols.init
+  
+  masks <- lapply (1:max.arranques, function(x){ BL(data, random.greedy.init) })
+  tasas <- sapply(masks, function(x){ tasa.clas(data, x) })
+  
+  j <- which.max(tasas)
+  
+  masks[[j]]
+}

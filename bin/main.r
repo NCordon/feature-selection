@@ -69,6 +69,6 @@ ES.results <- cross.eval(ES)
 BT.results <- cross.eval(BT)
 BT.ext.results <-cross.eval(BT.ext)
 BMB.results <- cross.eval(BMB)
-
+GRASP.results <- cross.eval(GRASP)
 #save.image(file = data.file, safe=TRUE)  
 

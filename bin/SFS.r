@@ -23,11 +23,12 @@ SFS <- function(data){
     if (max(evs) <= max || length(evs)==0){
       fin <- TRUE
     }
-    
-    sel <- non.selected[which.max (evs)]
-    mask [sel] <- 1
-    non.selected <- non.selected[non.selected != sel]
-    max <- max(evs)
+    else{
+      sel <- non.selected[which.max (evs)]
+      mask [sel] <- 1
+      non.selected <- non.selected[non.selected != sel]
+      max <- max(evs)
+    }
   }
   
   mask
