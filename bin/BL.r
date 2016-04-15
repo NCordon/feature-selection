@@ -23,7 +23,6 @@ BL <- function(data, gen.init = random.init){
   mask <- gen.init(data)
   tasa.best <- tasa.clas(data, mask)
   mejora.found <- TRUE
-  #max.eval <- 15000
   n.eval <- 0
   
   while(mejora.found && (n.eval < max.eval)){
@@ -73,9 +72,7 @@ BMB <- function(data){
   masks <- lapply (1:max.arranques, function(x){ BL(data) })
   tasas <- sapply(masks, function(x){ tasa.clas(data, x) })
   
-  j <- which.max(tasas)
-  
-  masks[[j]]
+  masks[[which.max(tasas)]]
 }
 
 
@@ -141,9 +138,7 @@ GRASP <- function(data){
   masks <- lapply (1:max.arranques, function(x){ BL(data, random.greedy.init) })
   tasas <- sapply(masks, function(x){ tasa.clas(data, x) })
   
-  j <- which.max(tasas)
-  
-  masks[[j]]
+  masks[[which.max(tasas)]]
 }
 
 
