@@ -1,0 +1,541 @@
+\documentclass[a4paper,11pt]{article}
+% Símbolo del euro
+\usepackage[gen]{eurosym}
+% Codificación
+\usepackage[utf8]{inputenc}
+% Idioma
+\usepackage[spanish]{babel} % English language/hyphenation
+\selectlanguage{spanish}
+% Hay que pelearse con babel-spanish para el alineamiento del punto decimal
+\decimalpoint
+\usepackage{dcolumn}
+\newcolumntype{d}[1]{D{.}{\esperiod}{#1}}
+\makeatletter
+\addto\shorthandsspanish{\let\esperiod\es@period@code}
+\makeatother
+
+\usepackage[usenames,dvipsnames]{color} % Coloring code
+
+\usepackage{csvsimple}
+\usepackage{adjustbox}
+\newsavebox\ltmcbox
+
+
+% Para matrices
+\usepackage{amsmath}
+
+% Símbolos matemáticos
+\usepackage{amssymb}
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+% Hipervínculos
+\usepackage{url}
+
+\usepackage[section]{placeins} % Para gráficas en su sección.
+\usepackage{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Required for accented characters
+\newenvironment{allintypewriter}{\ttfamily}{\par}
+\setlength{\parindent}{0pt}
+\parskip=8pt
+\linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
+
+
+% Imágenes
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{wrapfig} % Allows in-line images
+
+
+
+% Márgenes
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={210mm,297mm},
+ left=30mm,
+ right=30mm,
+ top=25mm,
+ bottom=25mm,
+ }
+
+
+% Referencias
+\usepackage{fncylab}
+\labelformat{figure}{\textit{\figurename\space #1}}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks   = true, %Colours links instead of ugly boxes
+  urlcolor     = blue, %Colour for external hyperlinks
+  linkcolor    = blue, %Colour of internal links
+  citecolor   = red %Colour of citations
+}
+
+
+\makeatletter
+\renewcommand{\@listI}{\itemsep=0pt} % Reduce the space between items in the itemize and enumerate environments and the bibliography
+\newcommand{\imagent}[4]{
+  \begin{wrapfigure}{#4}{0.7\textwidth}
+    \begin{center}
+    \includegraphics[width=0.7\textwidth]{#1}
+    \end{center}
+    \caption{#3}
+    \label{#4}
+  \end{wrapfigure}
+}
+
+
+\newcommand{\imagen}[4]{
+  \begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=#4\textwidth]{#1}
+    \captionof{figure}{#2}
+    \label{#3}
+  \end{minipage} 
+}
+
+\newcommand{\imgn}[3]{
+  \begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=#3\textwidth]{#1}
+    \captionof{figure}{#2}
+  \end{minipage} 
+}
+
+%Customize enumerate tag
+\usepackage{enumitem}
+%Sections don't get numbered
+%\setcounter{secnumdepth}{0}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University Assignment Title Page 
+% LaTeX Template
+% Version 1.0 (27/12/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% WikiBooks (http://en.wikibooks.org/wiki/LaTeX/Title_Creation)
+% Modified by: NCordon (https://github.com/NCordon)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+% Instructions for using this template:
+% This title page is capable of being compiled as is. This is not useful for 
+% including it in another document. To do this, you have two options: 
+%
+% 1) Copy/paste everything between \begin{document} and \end{document} 
+% starting at \begin{titlepage} and paste this into another LaTeX file where you 
+% want your title page.
+% OR
+% 2) Remove everything outside the \begin{titlepage} and \end{titlepage} and 
+% move this file to the same directory as the LaTeX file you wish to add it to. 
+% Then add \input{./title_page_1.tex} to your LaTeX file where you want your
+% title page.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+\textsc{\LARGE Universidad de Granada}\\[1.5cm]
+\textsc{\Large Metaheaurísticas}\\[0.5cm] 
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+\bigskip
+\HRule \\[0.4cm]
+{ \huge \bfseries Práctica I}\\[0.4cm] % Title of your document
+{ \huge \bfseries Selección de características}\\
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{\textwidth}
+\begin{center} \large
+\emph{Búsqueda Local,esquema de primer mejor}\\
+\emph{Enfriamiento Simulado}\\
+\emph{Búsqueda tabú básica}\\
+\emph{Búsqueda tabú extendida}\\
+\end{center}
+\end{minipage}
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{center}
+\includegraphics[width=8cm]{../data/ugr.jpg}
+\end{center}
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{\textwidth}
+\begin{center} \large
+Ignacio Cordón Castillo, 25352973G\\
+\url{nachocordon@correo.ugr.es}\\
+\ \\
+$4^{\circ}$ Doble Grado Matemáticas Informática\\
+Grupo Prácticas Viernes
+\end{center}
+\end{minipage}
+
+
+\vspace{\fill}% Fill the rest of the page with whitespace
+\large\today
+\end{titlepage}  
+
+\newpage
+\tableofcontents
+\newpage
+% Examples of inclussion of images
+%\imagent{ugr.jpg}{Logo de prueba}{ugr}
+%\imagen{ugr.jpg}{Logo de prueba}{ugr2}{size relative to the \textwidth}
+
+\section{Descripción del problema}
+Dado un \textit{dataset} de instancias ya clasificadas, con una serie de atributos, se pretende comparar las distintas 
+metaheaurísticas disponibles para comprobar cuál produce el conjunto de atributos que sirven para obtener una mayor 
+tasa de clasificación (número de instancias bien clasificadas sobre el total) usando un clasificador de instancias.
+
+Se considera la tasa de clasificación en el problema usando un clasificador \textit{3-knn} leaving one-out. Para cada 
+instancia de un conjunto, toma las 3 más cercanas usando la distancia euclídea entre sus atributos, y etiqueta la nueva
+instancia en función de la etiqueta mayoritaria de entre esas tres. Se efectúan 5 particiones al 50\% estratificadas
+por clase en \textit{train - test}, de modo que la metaheurística proporcionará un conjunto de atributos para el conjunto de
+entrenamiento, y se calculará la tasa de clasificación que produce sobre el conjunto de prueba para el \textit{3-knn} dicho
+conjunto de atributos. El proceso se repite intercambiando los conjuntos de entrenamiento y de test. La calidad de la 
+metaheaurística/algoritmo se calculará como la media de todas las tasas de clasificación obtenidas sobre el conjunto test
+(10 en total). Otras medidas que se tendrán en cuenta a la hora de evaluar la bondad de un algoritmo empleado serán:
+\begin{itemize}
+ \item Tasa de reducción: Porcentaje de características que ha eliminado la máscara sobre el total que podía 
+ seleccionar. Mejor cuanto más alta. En nuestros resultados lo hemos expresado como un tanto por uno.
+ \item Tiempo de ejecución: Tiempo en segundos que tarda el algoritmo en devolver un conjunto de características.
+ Se busca el menor tiempo de ejecución posible.
+\end{itemize}
+
+
+La tasa de clasificación del clasificador se mide (en tanto por uno) como: $$tasa\: clasificacion = \frac{instancias\: 
+bien\: clasificadas}{total\: instancias}$$
+
+La representación usada es la binaria (1 o 0 por característica), donde tenemos un vector de tamaño $n$, con $n$ el número 
+de atributos (exceptuando la clase), y la metaheaurística/algoritmo ha seleccionado el atributo si y solo si lo ha marcado 
+a 1. A una representación de esta forma, la denominamos máscara: $$ mask =\begin{matrix} (0 & 1\ldots 1 & 1 & 0\ldots) 
+\end{matrix}$$
+
+
+\section{Descripción elementos comunes de los algoritmos}
+Los algoritmos considerados tienen las siguientes componentes:
+
+\begin{itemize} 
+\item Esquema de representación: se usarán máscaras, sucesiones de unos y ceros de tanta longitud como atributos haya,
+exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa característica se ha escogido, y un $0$ que no.
+
+\item Función objetivo: la función a maximizar será la tasa de clasificación explicada arriba usando el clasificador
+3-knn con la selección de características indicada por la máscara.
+
+\small\texttt{\input{tasa_clasificacion}}
+
+\item Generación de solución inicial: 
+  \begin{itemize}
+   \item BMB: se generarán iterativamente 25 soluciones aleatorias sobre las que se aplicará búsqueda local
+   para refinarlas.
+   \item GRASP: la solución inicial se generará mediante un \textit{greedy} aleatorizado, y se refinará mediante
+   la búsqueda local, quedándonos con la mejor de entre 25 generadas.
+  \end{itemize}
+
+
+\item Algoritmo Búsqueda Local (BL) empleado:
+  
+  El operador de \textbf{generación de vecino} usado ha sido:
+  
+  \small\texttt{\input{flip}}
+  
+  El algoritmo, propiamente dicho, que se ha empleado ha sido:
+  
+  \small\texttt{\input{BL}}
+
+\item Criterio de aceptación de solución: se considera una función mejor cuando aumenta la función objetivo (tasa de 
+clasificación del 3-knn para la máscara dada por esa solución).
+  
+\item Número de evaluaciones de refinamientos de la solución: se empleará la búsqueda local sobre 25
+máscaras en el BMB, GRASP e ILS.
+
+\end{itemize}
+
+\section{Profundización en los algoritmos}
+\subsection{Búsqueda multiarranque básica}
+
+%\small{\texttt{\input{BL}}}
+%\normalsize
+
+\subsection{GRASP}
+
+%\small{\texttt{\input{ES}}}
+%\normalsize
+
+\subsection{Búsqueda Local Reiterada (ILS)}
+
+%\small{\texttt{\input{ES}}}
+%\normalsize
+
+\section{Algoritmo de comparación: SFS}
+\small{\texttt{\input{SFS}}}
+
+Partiendo de una selección de características vacía (máscara nula), va añadiendo a cada paso la característica
+de las no escogidas hasta el momento que maximiza la tasa de clasificación añadiéndola a la solución, hasta
+que la característica escogida no mejore a la mejor solución hasta el momento
+
+\section{Implementación de la práctica}
+Para la implementación de la práctica, se ha optado por usar el lenguaje de programación R. 
+
+El clasificador \texttt{3nn} leaving one out empleado es el incluido en el paquete \texttt{class}, de nombre
+\texttt{knn.cv}. Para su uso, se le pasa como argumento el número de vecinos a considerar (3). El argumento 
+\texttt{use.all=TRUE} indica que en caso de empate considere todas las etiquetas de las instancias con distancias 
+iguales a la mayoritaria (en este caso las tres), y escoja la etiqueta mayoritaria de entre todas. 
+
+A la hora del desarrollo de la práctica se ha planteado el problema de que en caso de empate aún intentando 
+resolver los conflictos de la manera anteriormente descrita, el clasificador escoge la etiqueta que
+asignar de manera aleatoria. Esto lleva a problemas diversos, como que dos llamadas sucesivas con los mismos
+parámetros a la función \texttt{tasa.clas}, que es la función objetivo de nuestra práctica, podrían producir resultados 
+distintos. O incluso que si inicializaramos las soluciones iniciales de otra metaheurística, a saber, por ejemplo la
+Búsqueda Local, con la del algoritmo greedy, a pesar de que esta no sustituye a la mejor solución hasta el momento a 
+no ser que encuentre otra con mayor tasa de clasificación, como después esta máscara se aplica al conjunto 
+\texttt{test} y se le halla la tasa de clasificación, podríamos encontrarnos que la SFS produce mejores tasas
+de clasificación que la Búsqueda Local para un mismo conjunto de entrenamiento y con una misma semilla aleatoria, por
+el número distinto de llamadas al generador de números aleatorios que hace cada algoritmo.
+
+Para normalizar los datasets se ha creado una función (\texttt{normalize(data.frame)}) que los limpia de columnas con
+un único valor, establece los nombres de los atributos todos a minúsculas, reordena los atributos del dataset para que
+la clase sea el último de todos, y hace una transformación con las columnas para que todos los valores estén comprendidos
+entre 0 y 1.
+
+Se describe a continuación un esquema de los ficheros de código:
+\begin{itemize}
+ \item \texttt{\blue{main.r}}: de arriba a abajo, carga los paquetes necesarios, incluye el código fuente de otros ficheros
+  (\texttt{\blue{aux.r, NN3.r, SFS.r, BL.r,}\ldots}) y lee los parámetros necesarios, entre ellos las semillas aleatorias
+  (12345678, 23456781, 34567812, 45678123, 56781234) del fichero \texttt{params.r}
+  
+  Se ejecuta la función \texttt{cross.eval(algoritmo)}, guardando los resultados en la lista \texttt{algoritmo.results}
+  Esta lista contendrá 3 dataframes con los datos del 5x2 cross validation, uno por dataset, con 10 filas cada uno 
+  y columnas las tasas de clasificación de test y train, la tasa de reducción y el tiempo de ejecución. 
+  Incluye también 3 datasets más con la media de los datos anteriores para cada conjunto de datos.
+ 
+ \item \texttt{\blue{aux.r}}: contiene las implementaciones de la función de normalización de datasets, la función de
+ particionado de \texttt{data.frames}, la función objetivo \texttt{tasa.clas} y la función \texttt{cross.eval}
+ descrita arriba.
+ 
+ \item \texttt{\blue{NN3.r, SFS.r, BL.r, ES.r, }\ldots}: contiene la implementación de los algoritmos de nombre 
+ homónimo.
+ 
+ \item \texttt{params.r}: fichero del que se leen los parámetros:
+  \begin{itemize}
+    \item \texttt{semilla}: vector de semillas aleatorias para poder reproducir los análisis hechos.
+    \item \texttt{ES.coef.max.vecinos, ES.coef.max.exitos, ES.mu, ES.phi, \\BT.max.vecinos, BT.coef.tenencia.tabu,\ldots}:
+    son parámetros propios de cada metaheurística, descritos en dicho fichero encima de cada bloque de parámetros.
+    Por defecto están seteados para que se empleen los valores aportados en la documentación de la práctica.
+  \end{itemize}
+ \end{itemize}
+ 
+ Para verificar los datos aportados para el algoritmo \texttt{algx}, a saber, basta ejecutar todo el fichero \texttt{main.r}
+ hasta justo antes de la sección \textit{Obtención de resultados}. A continuación, si se ejecuta la línea 
+ \texttt{algx.results <- cross.eval(algx)} se obtienen almacenados en una lista los valores de tasas y tiempos de ejecución
+ aportados en la presente memoria. El working path debe estar seteado a la carpeta de códigos fuente.
+ 
+ Cuando se cambia algo en algún algoritmo o en \texttt{params.r} hay que recargar en \texttt{main.r}
+ la línea del \texttt{source(file=)} correspondiente.
+ 
+ \section{Experimentos y análisis de resultados}
+ \subsection{Tablas de resultados}
+ \begin{table}[H]	
+    \caption*{Resultados del 3NN}
+    \begin{adjustbox}{width=1.1\textwidth}
+    \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+    \hline
+    \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
+    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+    \textbf{Partición 1-1} & 95.78947 & 97.53521 & 0.00000 & 0.00000 & 65.00000 & 66.66667 & 0.00000 & 0.00000 & 65.46392 & 65.62500 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Partición 1-2} & 97.53521 & 95.78947 & 0.00000 & 0.00000 & 66.11111 & 67.77778 & 0.00000 & 0.00000 & 65.62500 & 65.97938 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Partición 2-1} & 97.19298 & 95.77465 & 0.00000 & 0.00000 & 72.22222 & 64.44444 & 0.00000 & 0.00000 & 62.88660 & 61.45833 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Partición 2-2} & 95.77465 & 97.19298 & 0.00000 & 0.00000 & 63.33333 & 70.00000 & 0.00000 & 0.00000 & 63.02083 & 63.91753 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Partición 3-1} & 96.14035 & 96.47887 & 0.00000 & 0.00000 & 72.77778 & 65.00000 & 0.00000 & 0.00000 & 62.37113 & 64.06250 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Partición 3-2} & 96.47887 & 96.14035 & 0.00000 & 0.00000 & 63.33333 & 75.00000 & 0.00000 & 0.00000 & 63.54167 & 62.88660 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Partición 4-1} & 95.43860 & 97.88732 & 0.00000 & 0.00000 & 74.44444 & 66.66667 & 0.00000 & 0.00000 & 64.94845 & 62.50000 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Partición 4-2} & 97.88732 & 95.43860 & 0.00000 & 0.00000 & 64.44444 & 72.77778 & 0.00000 & 0.00000 & 61.45833 & 62.88660 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Partición 5-1} & 96.49123 & 96.83099 & 0.00000 & 0.00000 & 63.33333 & 68.33333 & 0.00000 & 0.00000 & 61.85567 & 61.45833 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Partición 5-2} & 96.83099 & 96.49123 & 0.00000 & 0.00000 & 67.77778 & 65.55556 & 0.00000 & 0.00000 & 60.41667 & 62.37113 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Media} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
+    \end{tabular}
+    \end{adjustbox}
+    \label{NN3}
+  \end{table}
+  
+   \begin{table}[H]	
+    \caption*{Resultados del SFS}
+    \begin{adjustbox}{width=1.1\textwidth}
+    \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+    \hline
+    \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
+    \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+    \textbf{Partición 1-1} & 94.38596 & 97.53521 & 0.83333 & 0.17600 & 60.00000 & 70.00000 & 0.87778 & 1.16600 & 59.79381 & 75.52083 & 0.98024 & 2.07900 \\ \hline
+    \textbf{Partición 1-2} & 96.83099 & 97.89474 & 0.76667 & 0.25900 & 63.88889 & 75.00000 & 0.88889 & 1.03700 & 76.04167 & 78.35052 & 0.96838 & 4.11800 \\ \hline
+    \textbf{Partición 2-1} & 95.43860 & 97.88732 & 0.83333 & 0.23800 & 67.22222 & 69.44444 & 0.92222 & 0.66000 & 64.94845 & 77.60417 & 0.98024 & 2.16100 \\ \hline
+    \textbf{Partición 2-2} & 92.25352 & 96.14035 & 0.80000 & 0.22100 & 61.11111 & 73.88889 & 0.88889 & 1.03100 & 71.35417 & 71.64948 & 0.97628 & 3.07200 \\ \hline
+    \textbf{Partición 3-1} & 94.38596 & 95.77465 & 0.90000 & 0.09600 & 67.77778 & 71.11111 & 0.87778 & 1.20800 & 71.64948 & 80.72917 & 0.97628 & 2.57300 \\ \hline
+    \textbf{Partición 3-2} & 91.90141 & 96.14035 & 0.86667 & 0.13700 & 68.33333 & 76.66667 & 0.86667 & 1.31900 & 68.75000 & 70.61856 & 0.98814 & 1.19600 \\ \hline
+    \textbf{Partición 4-1} & 93.68421 & 97.88732 & 0.86667 & 0.13400 & 71.66667 & 73.88889 & 0.87778 & 1.17300 & 74.22680 & 76.04167 & 0.97628 & 2.24800 \\ \hline
+    \textbf{Partición 4-2} & 94.71831 & 94.38596 & 0.86667 & 0.13500 & 62.77778 & 75.00000 & 0.92222 & 0.65600 & 67.70833 & 78.35052 & 0.98024 & 2.16500 \\ \hline
+    \textbf{Partición 5-1} & 95.08772 & 95.77465 & 0.83333 & 0.17200 & 62.22222 & 73.33333 & 0.90000 & 0.89900 & 68.55670 & 75.52083 & 0.98024 & 2.47500 \\ \hline
+    \textbf{Partición 5-2} & 92.25352 & 95.78947 & 0.83333 & 0.17400 & 63.88889 & 67.22222 & 0.88889 & 1.04200 & 69.27083 & 73.19588 & 0.98419 & 1.50300 \\ \hline
+    \textbf{Media} & 94.09402 & 96.52100 & 0.84000 & 0.17420 & 64.88889 & 72.55556 & 0.89111 & 1.01910 & 69.23002 & 75.75816 & 0.97905 & 2.35900 \\ \hline
+    \end{tabular}
+    \end{adjustbox}
+    \label{SFS}
+  \end{table}
+  \begin{table}[H]
+
+  \caption*{Resultados globales}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
+  & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{3-NN} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
+  \textbf{SFS} & 94.09402 & 96.52100 & 0.84000 & 0.17420 & 64.88889 & 72.55556 & 0.89111 & 1.01910 & 69.23002 & 75.75816 & 0.97905 & 2.35900 \\ \hline
+  \textbf{BL} & 95.64183 & 97.64505 & 0.48667 & 0.23150 & 66.66667 & 68.66667 & 0.52111 & 0.98410 & 62.90217 & 64.55756 & 0.50000 & 19.60270 \\ \hline
+  \textbf{ES} & 95.50186 & 98.59402 & 0.50333 & 30.45330 & 66.88889 & 70.50000 & 0.51556 & 25.48140 & 63.26085 & 68.91591 & 0.51462 & 373.45210 \\ \hline
+  \textbf{BT básica} & 96.02792 & 98.91055 & 0.52667 & 44.06440 & 67.38889 & 74.11111 & 0.53444 & 70.71810 & 63.57013 & 72.54564 & 0.53755 & 514.00300 \\ \hline
+  \textbf{BT extendida} & 95.64196 & 98.84025 & 0.50667 & 53.01520 & 67.44444 & 72.05556 & 0.49333 & 99.33300 & 62.79693 & 69.58763 & 0.47391 & 3135.18590 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{}
+  \end{table}
+
+  
+  Los algoritmos deberían analizarse por dataset, ya que cada uno posee unas características muy determinadas: \texttt{wdbc} tiene muy pocos atributos(30), pero muchas observaciones(569),
+  \texttt{movement libras} tiene menos observaciones(360) pero el triple de atributos(90). Y \texttt{arrhythmia} es de todos el dataset más duro de procesar (386 instancias por 253 atributos
+  significativos). Aunque recordamos que para calcular la selección de características se hace con una partición al 50\% estratificada, lo que nos lleva a considerar la mitad de instancias.
+  Por tanto analizaremos los resultados por dataset.
+  
+  \subsection{Wdbc}
+  
+  Es un problema de clasificación binaria.
+  
+  \imagen{../data/wdbc.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
+  
+  Observamos que el algoritmo que mejores tasas de clasificación obtiene es el 3NN. Las tasas que obtiene en test y train
+  son similares, y por tanto no está efectuando overfitting. Cuando hacemos un boxplot de las variables que aporta el SFS
+  ejecutado sobre ese dataset, nos encontramos que en la mayoría de esas variables los rangos intercuartílicos de ambas
+  clases son disjuntos, por lo que las variables caracterizan muy bien a una clase o a otra, y por tanto cuando tomamos los
+  vecinos más cercanos, podemos inferir que cuando la distancia entre las características de la instancia a clasificar y la ya 
+  clasificada de entre las que nos da la máscara será muy pequeña, y por lo explicado sobre el boxplot, es muy probable que
+  ambas instancias tengan la misma clase.
+  
+  \imgn{../data/wdbc3nn.png}{Selección de características del SFS}{1}
+  
+  La SFS aporta una tasa de clasificación media del 94\% en test, y aunque es la más baja de todos los algoritmos considerados,
+  tiene la tasa de reducción más alta (del 84\%). Por tanto si tuviéramos muchísimas más instancias de este dataset, dependiendo
+  de las necesidades y siempre que busquemos rapidez de cálculo, no sería una mala alternativa frente al resto de algoritmos.
+  
+  De las otras metaheurísticas la que mejor funciona es la búsqueda tabú. De hecho, podríamos observar que hace algo de overfitting
+  en las tasas de clasificación del conjunto de entrenamiento, llegando a obtener 100\% de tasa de clasificación en un caso.
+  Si tomamos un boxplot de todas las variables que tiene el dataset (normalizadas, claro está), podemos inferir que la búsqueda
+  tabú a corto plazo funciona tan bien porque hay variables cuya intersección de rangos intercuartílicos es bastante grande,
+  como se puede apreciar en la figura aportada, y otras cuyos rangos intercuartílicos son completamente disjuntos. El mecanismo
+  de la tabú hace que si hacemos un flip de una variable que no mejora la tasa de clasificación (a saber, es probable que
+  sea una con los rangos intercuartílicos de ambas clases poco separados), ese movimiento no se vuelva a hacer en un tiempo,
+  y por tanto nos vamos a ir quedando con variables que caracterizan muy bien a las clases, y la lista tabú va a estar repleta
+  de movimientos para variables que no aportan información relevante sobre la clase. Además, en caso de que el movimiento
+  sí sea bueno y entre en la lista tabú, será porque caracteriza bien a las clases, y agregándole otro movimiento bueno podríamos
+  tener una buena regla de asociación que caracterizase bien las instancias.
+  
+  \imgn{../data/wdbctabu.png}{Boxplot de variables del wdbc}{1}
+  
+  Podemos afirmar a raíz de los resultados que la tabú con memoria a largo plazo también funciona muy bien para el dataset,
+  obteniéndose unos resultados similares a la tabú con memoria a corto plazo, aunque efectúa un poco de overfitting en la
+  primera partición de todas.
+  
+  El enfriamiento simulado también aporta buenos resultados para el dataset. Tanto ES, como BT como BT extendida tienen un
+  porcentaje de reducción del 50\%, lejos del 80\% de la SFS, y tardan tiempos no superiores al minuto en ejecutarse por partición,
+  y por tanto asumibles.
+  
+  La búsqueda local produce unos resultados muy similares a los de la SFS excepto en tasa de reducción. Podemos pensar que
+  lo que la hace no obtener resultados tan buenos como las tabú es que tiene en cuenta un paso de temporalidad (a cada momento
+  se coge la característica que mejora la solución que tiene, escogiendo ésta aleatoriamente), en vez de tener en cuenta varios
+  pasos de temporalidad que es lo que hace la tabú al llevar su lista tabú (esto es, la suma de varias características en conjunción
+  podría caracterizar muy bien las instancias, mientras que la BL las intenta caracterizar mejor modificando una sola característica 
+  a cada paso). En definitiva, la búsqueda tabú tiene más en cuenta el histórico de la exploración.
+ 
+  \subsection{Movement libras}
+  
+  Se trata de un problema de clasficación multiclase (15 clases después de normalizar el dataset).
+  
+  \imagen{../data/mlibras.png}{Tasas de clasificación en Movement Libras}{wdbcgraph}{0.7}
+  
+  Dado el elevado número de clases, no podemos analizar un boxplot para ver las diferencias entre los atributos que escogen unos
+  algoritmos y otros, pero parece que hay cierta estabilidad en las soluciones y que es difícil pasar del 70\% de acierto. Dicho lo
+  cual, es claro que en igualdad de condiciones deberíamos tomar la solución que menos tiempo tarde en efectuar los cálculos y
+  mayor tasa de reducción tenga (el SFS). Si escogiéramos un algoritmo por su tasa clasificatoria, nos iríamos a la tabú search
+  extendida, aunque es bastante lenta (1 minuto y 40 por partición).
+  
+  Además, todos los algoritmos tienen particiones en las que efectúan bastante overfitting (de diferencias de un 10\% o más).
+  Esto lo podemos explicar porque tenemos muchos más atributos que en el caso del \texttt{wdbc}, concretamente el triple, y
+  casi la mitad de instancias. Por tanto hay poca densidad de datos y las tasas en entrenamiento son mejores que las de 
+  prueba (7\% en las medias de la búsqueda tabú por ejemplo).
+  
+  \subsection{Arrhythmia}
+  
+  Se trata de un problema de clasficación multiclase (5 clases después de normalizar el dataset).
+  
+  \imagen{../data/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
+  
+  Es un problema muy complejo, pues tenemos menos instancias que variables para predecir (193 instancias que tendrán
+  los conjuntos de entrenamiento por 253 variables). La SFS ya nos está diciendo, obteniendo datos mejores de clasificación
+  que el propio 3-knn, que la mayoría de variables no son estadísticamente significativas (reduce casi un 98\% el conjunto de variables)
+  para efectuar la clasificación.
+  
+  En el resto de casos las tasas de reducción son mucho más bajas (en torno al 50\%), pero con porcentajes de clasificación
+  mucho menores. Probablemente, en el caso de las búsquedas tabú falten iteraciones para hacer converger la solución a una mejor
+  tasa de clasificación. En general se observa una gran dependencia de las 4 metaheaurísticas empleadas de la solución aleatoria
+  inicial, que parece ser bastante mala (de hecho, al ser aleatoria, tendrá un número equiparable de 0s y de 1s, aunque la mayoría
+  de variables no son estadísticamente significativas para determinar la clasificación, y nos deberíamos centrar en aquellas
+  que sí lo son y intentar modificar la solución desde ahí. Una posible solución sería tomar como solución inicial para las metaheurísticas
+  la del propio algoritmo greedy.
+  
+  Observamos en la tabla de resultados de la tabú extendida que hay una partición que tarda casi el doble que el resto.
+  A juzgar por cómo hemos programado el algoritmo, sólo cabe la posibilidad de que tarde más porque entra más veces a la
+  reinicialización, y concretamente a la diversificación, aunque el dato puede ser simplemente un outlier.
+  
+  Un porcentaje del 75\% de diversificar(de las dos formas posibles) en este caso parece bastante
+  elevado para partir de una solución aleatoria o generada a partir de frecuencias que será bastante mala en la mayoría de los casos. Maxime cuando el problema
+  tiene 253 posibles variables. Como por el operador de generación de vecino que hemos montado, y eso se observa en la tabla
+  resumen, tenemos la misma probabilidad de unos que de ceros en una solución, y hay en este caso $\binom{253}{50}$ posibles
+  máscaras que obtendremos, por $\binom{30}{15}$, en el que las búsquedas tabú sí eran muy buenas,
+  del caso del \texttt{movement libras}, podemos afirmar que quizá falten iteraciones para poder hacer esta búsqueda tabú 
+  converger a soluciones mejores. Pero si cada tabú extendida está tardando del orden de 50-60 minutos por partición,
+  un número mayor de iteraciones es insostenible para un computador doméstico.
+  
+  \subsection{Notas finales}
+  
+  Una posible solución a nuestros problemas de convergencia sería programar otro operador de generación de vecino, que
+  no tuviese la misma probabilidad de generar unos que de ceros. Como las tasas de reducción de la SFS en todos los casos
+  es superior al 80\%, llegando al 97\% en el caso de arrhythmia, podríamos intentar programar un operador de vecino que
+  tuviese un 70-75\% de posibilidades de generar un 0 en la posición escogida, y un 1 con un 0.3-0.25 de probabilidad.
+  
+  Otra mejora que podría implementarse es partir en todos los casos como solución inicial de la greedy.
+  
+  En el caso del dataset \texttt{mlibras}, modificando la tenencia tabú a $2/3*n$ (esto es\texttt{BT.coef.tenencia.tabu <- 2/3}
+  en \texttt{params.r}) se ha llegado a un 68\% de tasa de acierto.
+  
+  
+\end{document}
