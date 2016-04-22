@@ -14,8 +14,10 @@ random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
 ###     generacional
 ###
 ##########################################################################
-population[[c(5,2)]]
-population
+
+sorted <- function(population){
+  order(sapply(population, function(x){ x$fitness }))
+}
 
 make.OX.cruce <- function(mum, dad){
   n <- length(mum)
@@ -42,6 +44,7 @@ AGG <- function(data){
     mask.tasa <- tasa.clas(mask)
     list(mask = mask, fitness = mask.tasa)
   })
+  population <- sorted (population)
   
   while(n.eval < max.eval){
     mother <- sample(1:n.crom, n.crom)
@@ -78,6 +81,9 @@ AGG <- function(data){
     })
     
     new.population[crom.mutar] <- mutations
+    
+    # Elitismo
+    new.population <- sorted (new.population)
   }
   
   # Devolver algo
