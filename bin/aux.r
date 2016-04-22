@@ -36,15 +36,23 @@ make.partition <- function(data,per){
 ##########################################################################
 
 tasa.clas <- function (train, mask){
-  # Aplicamos la mascara
-  cl <- train$class
-  train <- subset(train, select = which(mask==1))
+  # Si la mascara es no nula...
   
-  # Obtenemos el fit que se haria del conjunto test para el 3-knn
-  fit <- knn.cv(train, cl, k=3, use.all = TRUE)
-  
-  # Tasa de clasificacion
-  return (100 * length(which(cl == fit)) / length(cl))
+  if (1 %in% mask){
+    # Aplicamos la mascara
+    cl <- train$class
+    train <- subset(train, select = which(mask==1))
+    
+    # Obtenemos el fit que se haria del conjunto test para el 3-knn
+    fit <- knn.cv(train, cl, k=3, use.all = TRUE)
+    
+    # Tasa de clasificacion
+    result <- (100 * length(which(cl == fit)) / length(cl))
+  }
+  else{
+    result <- 0
+  }
+  result
 }
 
 
