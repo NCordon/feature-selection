@@ -6,6 +6,21 @@
 
 random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
 
+##########################################################################
+#### Operador de cruce OX para los AGs
+####    Dada una madre y un padre se genera un nuevo cromosoma
+####    con una subcadena de la madre y rellenamos el resto con
+####    los genes del padre
+##########################################################################
+crossover.OX <- function(mum, dad){
+  n <- length(mum)
+  cortes <- sample(1:n,2)
+  mum.cromosomas <- seq(cortes[1],cortes[2])
+  
+  son <- dad$mask
+  son[mum.cromosomas] <- mum$mask[mum.cromosomas]
+  list(mask = son, fitness=tasa.clas(son))
+}  
 
 ##########################################################################
 ### Funcion AGG (algoritmo genetico generacional)
@@ -14,8 +29,7 @@ random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
 ###     generacional
 ###
 ##########################################################################
-
-AGG <- function(data){
+AGG <- function(data, crossover = crossover.OX){
   n <- ncol(data)
   n <- n-1
   n.eval <- 0
@@ -25,22 +39,18 @@ AGG <- function(data){
   n.cruces <- ceiling(n.crom*prob.cruce)
   n.mutations <- ceiling(n*prob.mutation)
 
-  # El mejor el ultimo. El peor el primero
+  ##########################################################
+  #### Ordena una pobacion de menor a mayor tasa
+  ##########################################################
   sorted <- function(population){
     order(sapply(population, function(x){ x$fitness }))
   }  
   
-  make.crossover.OX <- function(mum, dad){
-    n <- length(mum)
-    cortes <- sample(1:n,2)
-    mum.cromosomas <- seq(cortes[1],cortes[2])
-    
-    son <- dad$mask
-    son[mum.cromosomas] <- mum$mask[mum.cromosomas]
-    list(mask = son, fitness=tasa.clas(son))
-  }  
-  
+  ##########################################################
+  ### Operador de seleccion
+  ##########################################################  
   make.selection <- function(parents){
+    # Hace una seleccion por torneo binario
     lapply(parents, function(p){
       torneo <- population[p]  
       winner <- which.max(sapply(torneo, function(sol){ sol$fitness }))
@@ -48,18 +58,27 @@ AGG <- function(data){
     })
   }
   
-  make.crossover.OX <- function(new.population){
+  ##########################################################
+  #### Hace los cruces en la poblacion usando el operador
+  #### de cruce
+  ##########################################################  
+  make.crossover <- function(new.population){
     cruces <- lapply(1:n.cruces, function(i){
-      make.OX.cruce(new.population[[i]], new.population[[i%%n.cruces + 1]]) 
+      crossover(new.population[[i]], new.population[[i%%n.cruces + 1]]) 
     })
     
     new.population[1:n.cruces] <- cruces
+    new.population
   }
   
+  ##########################################################
+  #### Operador de mutacion
+  ##########################################################
   make.mutation <- function(new.population){
     crom.mutar <- sample(1:n.crom, n.mutations, replace=TRUE)
     gen.mutar <- sample(1:n, n.mutations, replace=TRUE) 
     
+    # Hacemos las mutaciones en los genes de las codificaciones
     mutations <- lapply(1:n.mutations, function(i){
       cromosoma <- new.population[[crom.mutar[i]]]
       gen <- cromosoma$mask[gen.mutar[i]]
@@ -75,8 +94,12 @@ AGG <- function(data){
     new.population
   }
   
+  ##########################################################
+  #### Mantiene el elitismo en la solucion
+  ##########################################################  
   keep.elitism <- function(new.population, old.best){
-    # Si el antiguo mejor no está en la población
+    # Si el antiguo mejor no está en la poblacion,
+    # lo cambiamos por el nuevo peor
     if (!TRUE %in% (sapply (new.population, 
                             function(x) { TRUE %in% (x$mask == old.best$mask) }))){
       
@@ -87,10 +110,10 @@ AGG <- function(data){
     new.population
   }
   
+  ##########################################################
+  #### Comienzo del algoritmo
+  ##########################################################
   
-  ##########################################################
-  ##### Comienzo del algoritmo
-  ##########################################################
   # Generación de la poblacion inicial
   population <- lapply(n.crom, function(i){
     mask <- gen.init(data)
@@ -100,7 +123,6 @@ AGG <- function(data){
   
   population <- sorted (population)
   
-  
   # Bucle principal
   while(n.eval < max.eval){
     mother <- sample(1:n.crom, n.crom)
@@ -109,13 +131,10 @@ AGG <- function(data){
     
     # Seleccion
     new.population <- make.selection(population)
-    
     # Cruce
-    new.population <- make.crossover.OX(new.population)
-    
+    new.population <- make.crossover(new.population)
     # Mutaciones
     new.population <- make.mutation(new.population)
-    
     # Elitismo
     new.population <- sorted (new.population)
     new.population <- keep.elitism (new.population, population[[n.crom]])
