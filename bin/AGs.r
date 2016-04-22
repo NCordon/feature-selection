@@ -15,6 +15,16 @@ random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
 ###
 ##########################################################################
 
+make.OX.cruce <- function(mum, dad){
+  n <- length(mum)
+  cortes <- sample(1:n,2)
+  mum.gen <- seq(cortes[1],cortes[2])
+  
+  son <- dad$mask
+  son[mum.gen] <- mum$mask[mum.gen]
+  list(mask = son, fitness=tasa.clas(son))
+}
+
 AGG <- function(data){
   n <- ncol(data)
   n <- n-1
@@ -26,23 +36,26 @@ AGG <- function(data){
   population <- lapply(n.crom, function(i){
     mask <- gen.init(data)
     mask.tasa <- tasa.clas(mask)
-    list(mask = mask, tasa = mask.tasa)
+    list(mask = mask, fitness = mask.tasa)
   })
   
   while(n.eval < max.eval){
-    # Tomamos los indices de los padres a los que se le aplicara torneo
-    mother <- sample(1:n.crom, ncrom)
-    father <- sample(1:n.crom, ncrom)
+    mother <- sample(1:n.crom, n.crom)
+    father <- sample(1:n.crom, n.crom)
     parents <- Map(c,mother,father)     
     
     new.population <- lapply(parents, function(p){
       torneo <- population[p]  
-      winner <- which.max(sapply(torneo, function(sol){ sol$tasa }))
+      winner <- which.max(sapply(torneo, function(sol){ sol$fitness }))
       torneo[[winner]]
     })
     
-    a.cruzar <- new.population[1:n.cruces]
     
+    cruces <- lapply(1:n.cruces, function(i){
+      make.OX.cruce(new.population[[i]], new.population[[i%%n.cruces + 1]]) 
+    })
+    
+    new.population[1:n.cruces] <- cruces
   }
   
   # Devolver algo
