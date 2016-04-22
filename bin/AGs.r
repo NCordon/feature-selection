@@ -14,12 +14,6 @@ random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
 ###     generacional
 ###
 ##########################################################################
-population <- lapply(1:5, function(i){
-  mask <- c(1,1)
-  
-  list(mask = mask, tasa = 38)
-})
-population[c(1,3)]$tasa
 
 AGG <- function(data){
   n <- ncol(data)
@@ -27,7 +21,8 @@ AGG <- function(data){
   n.eval <- 0
   n.crom <- AGG.n.crom
   prob.cruce <- AGG.prob.cruce
-  
+  n.cruces <- ceiling(n.crom*prob.cruce)
+
   population <- lapply(n.crom, function(i){
     mask <- gen.init(data)
     mask.tasa <- tasa.clas(mask)
@@ -40,10 +35,15 @@ AGG <- function(data){
     father <- sample(1:n.crom, ncrom)
     parents <- Map(c,mother,father)     
     
-    population.new <- lapply(parents, function(p){
-      
+    new.population <- lapply(parents, function(p){
+      torneo <- population[p]  
+      winner <- which.max(sapply(torneo, function(sol){ sol$tasa }))
+      torneo[[winner]]
     })
     
+    a.cruzar <- new.population[1:n.cruces]
+    
   }
-  mask
+  
+  # Devolver algo
 }
