@@ -37,7 +37,6 @@ AGG <- function(data, crossover = crossover.OX){
   prob.cruce <- AGG.prob.cruce
   prob.mutation <- AGG.prob.mutation
   n.cruces <- ceiling(n.crom*prob.cruce)
-  n.mutations <- ceiling(n*prob.mutation)
 
   ##########################################################
   #### Ordena una pobacion de menor a mayor tasa
@@ -75,6 +74,8 @@ AGG <- function(data, crossover = crossover.OX){
   #### Operador de mutacion
   ##########################################################
   make.mutation <- function(new.population){
+    n <- length(new.population)
+    n.mutations <- ceiling(n*prob.mutation)
     crom.mutar <- sample(1:n.crom, n.mutations, replace=TRUE)
     gen.mutar <- sample(1:n, n.mutations, replace=TRUE) 
     
@@ -187,6 +188,8 @@ AGE <- function(data, crossover = crossover.OX){
   #### Operador de mutacion
   ##########################################################
   make.mutation <- function(new.population){
+    n <- length(new.population)
+    n.mutations <- ceiling(n*prob.mutation)
     crom.mutar <- sample(1:n.crom, n.mutations, replace=TRUE)
     gen.mutar <- sample(1:n, n.mutations, replace=TRUE) 
     
@@ -218,10 +221,11 @@ AGE <- function(data, crossover = crossover.OX){
     list(mask = mask, fitness = mask.tasa)
   })
   
+  population <- sorted (population)
   
   # Bucle principal
   while(n.eval < max.eval){
-    
+    pairs <- Map(c, sample(1:n.crom, 2), sample(1:n.crom, 2))
     
     # Seleccion
     new.population <- make.selection(pairs)
@@ -229,9 +233,12 @@ AGE <- function(data, crossover = crossover.OX){
     new.population <- make.crossover(new.population)
     # Mutaciones
     new.population <- make.mutation(new.population)
-    # Elitismo
     new.population <- sorted (new.population)
-    new.population <- keep.elitism (new.population, population[[n.crom]])
+    
+    
+    # Falta hacer el reemplazamiento
+    
+    population <- new.population
   }
   
   # Como la poblacion esta ordenada por tasa de menor a mayor...
