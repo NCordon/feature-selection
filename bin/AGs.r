@@ -49,9 +49,9 @@ AGG <- function(data, crossover = crossover.OX){
   ##########################################################
   ### Operador de seleccion
   ##########################################################  
-  make.selection <- function(parents){
+  make.selection <- function(parents.paired){
     # Hace una seleccion por torneo binario
-    lapply(parents, function(p){
+    lapply(parents.paired, function(p){
       torneo <- population[p]  
       winner <- which.max(sapply(torneo, function(sol){ sol$fitness }))
       torneo[[winner]]
@@ -125,12 +125,106 @@ AGG <- function(data, crossover = crossover.OX){
   
   # Bucle principal
   while(n.eval < max.eval){
-    mother <- sample(1:n.crom, n.crom)
-    father <- sample(1:n.crom, n.crom)
-    parents <- Map(c,mother,father)     
+    pairs <- Map(c, sample(1:n.crom, n.crom), sample(1:n.crom, n.crom))
     
     # Seleccion
-    new.population <- make.selection(population)
+    new.population <- make.selection(pairs)
+    # Cruce
+    new.population <- make.crossover(new.population)
+    # Mutaciones
+    new.population <- make.mutation(new.population)
+    # Elitismo
+    new.population <- sorted (new.population)
+    new.population <- keep.elitism (new.population, population[[n.crom]])
+  }
+  
+  # Como la poblacion esta ordenada por tasa de menor a mayor...
+  population[[n.crom]]$mask
+}
+
+
+##########################################################################
+### Funcion AGE (algoritmo genetico estacionario)
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto
+###     de caracteristicas que se obtienen de aplicar el algoritmo genetico
+###     estacionario
+###
+##########################################################################
+AGE <- function(data, crossover = crossover.OX){
+  n <- ncol(data)
+  n <- n-1
+  n.eval <- 0
+  n.crom <- AGE.n.crom
+  prob.mutation <- AGE.prob.mutation
+  
+  
+  ##########################################################
+  ### Operador de seleccion
+  ##########################################################  
+  make.selection <- function(parents.paired){
+    # Hace una seleccion por torneo binario
+    lapply(parents.paired, function(p){
+      torneo <- population[p]  
+      winner <- which.max(sapply(torneo, function(sol){ sol$fitness }))
+      torneo[[winner]]
+    })
+  }
+  
+  ##########################################################
+  #### Hace los cruces en la poblacion usando el operador
+  #### de cruce
+  ##########################################################  
+  make.crossover <- function(new.population){
+    cruces <- lapply(1:n.cruces, function(i){
+      crossover(new.population[[i]], new.population[[i%%n.cruces + 1]]) 
+    })
+    
+    new.population[1:n.cruces] <- cruces
+    new.population
+  }
+  
+  ##########################################################
+  #### Operador de mutacion
+  ##########################################################
+  make.mutation <- function(new.population){
+    crom.mutar <- sample(1:n.crom, n.mutations, replace=TRUE)
+    gen.mutar <- sample(1:n, n.mutations, replace=TRUE) 
+    
+    # Hacemos las mutaciones en los genes de las codificaciones
+    mutations <- lapply(1:n.mutations, function(i){
+      cromosoma <- new.population[[crom.mutar[i]]]
+      gen <- cromosoma$mask[gen.mutar[i]]
+      gen <- (gen+1) %% 2
+      # Mutamos y recalculamos tasa
+      cromosoma$mask[[gen.mutar[i]]] <- gen
+      cromosoma$fitness <- tasa.clas(cromosoma$mask)
+      
+      cromosoma
+    })
+    
+    new.population[crom.mutar] <- mutations
+    new.population
+  }
+  
+  
+  ##########################################################
+  #### Comienzo del algoritmo
+  ##########################################################
+  
+  # Generación de la poblacion inicial
+  population <- lapply(n.crom, function(i){
+    mask <- gen.init(data)
+    mask.tasa <- tasa.clas(mask)
+    list(mask = mask, fitness = mask.tasa)
+  })
+  
+  
+  # Bucle principal
+  while(n.eval < max.eval){
+    
+    
+    # Seleccion
+    new.population <- make.selection(pairs)
     # Cruce
     new.population <- make.crossover(new.population)
     # Mutaciones
