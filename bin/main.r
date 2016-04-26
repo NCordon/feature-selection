@@ -42,8 +42,6 @@ source(file="./AGs.r")
 
 # Semillas aleatorias y parámetros de los algoritmos
 source(file="./params.r")
-
-
 # Fichero con la funcion objetivo, de particionado, de normalizacion...
 source(file="./aux.r")
 
@@ -63,18 +61,21 @@ datasets.names <- c("wdbc", "mlibras", "arrhythmia")
 #data.file <- "seleccion-caracteristicas.RData"
 #load(file = data.file)
 
+# Metodos de trayectorias simples
 NN3.results <- cross.eval(NN3)
 SFS.results <- cross.eval(SFS)
 BL.results <- cross.eval(BL)
 ES.results <- cross.eval(ES)
 BT.results <- cross.eval(BT)
 BT.ext.results <-cross.eval(BT.ext)
+
+# Metodos multiarranque
 BMB.results <- cross.eval(BMB)
-save.image(file = data.file, safe=TRUE) 
 GRASP.results <- cross.eval(GRASP)
-save.image(file = data.file, safe=TRUE) 
 ILS.results <- cross.eval(ILS)
-save.image(file = data.file, safe=TRUE) 
-#save.image(file = data.file, safe=TRUE)  
+
+# Algoritmos geneticos
 AGG.results <- cross.eval(AGG)
 AGE.results <- cross.eval(AGE)
+
+#save.image(file = data.file, safe=TRUE)  

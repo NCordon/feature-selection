@@ -72,27 +72,26 @@ cross.eval <- function(algorithm){
   
   with.decimals <- function(v){ format(v, nsmall=5) }
   
-  gather.results <- function(train, test){
+  
+  gather.results <- function(train, test, result){
     n.var <- length(colnames(train))-1
     
     t.ini <- proc.time()[3]
     mask <- algorithm(train)
     t.fin <- proc.time()[3]
+    result$tasa.test <- c( result$tasa.test, tasa.clas(test,mask) )
+    result$tasa.train <- c( result$tasa.train, tasa.clas(train,mask) )
+    result$tasa.red <- c( result$tasa.red, (n.var - sum(mask==1))/n.var )
+    result$t.exec <- c( result$t.exec, unname(t.fin - t.ini) )
     
-    attach(result)
-    tata.train <- c(tasa.train, tasa.clas(train,mask))
-    tasa.test <- c(tasa.test, tasa.clas(test,mask))
-    tasa.red <- c(tasa.red, (n.var - sum(mask==1))/n.var)
-    t.exec <- c(t.exec, t.fin - t.ini)
-    detach(result)
+    result
   }
-  
   
   for (d in 1:length(datasets)){
     x <- datasets[[d]]
     result <- list(tasa.test = NULL, tasa.train = NULL, tasa.red = NULL, t.exec = NULL)
     
-    cat("Procesando dataset", datasets.names[j], "\n")
+    cat("Procesando dataset", datasets.names[d], "\n")
     
     class.split <- split(x, x$class)
     
@@ -107,18 +106,19 @@ cross.eval <- function(algorithm){
       test <- rbindlist(test)
       
       # Primero usando la mascara dada por el train
-      result <- gather.results(train, test)
+      result <- gather.results(train, test, result)
       # Despues usando la mascara dada por el test
-      result <- gather.results(test, train)
+      result <- gather.results(test, train, result)
     }
-
-    result <- with.decimals(result)
+    
+    result <- data.frame(result)
     result.mean <- apply(result, 2, mean) 
-
-    all.results[[d]] <- result
-    mean.results[[d]] <- result.mean
+    
+    all.results[[d]] <- with.decimals(result)
+    mean.results[[d]] <- with.decimals(result.mean)
   }
   
   names(mean.results) <- paste(datasets.names, ".media", sep="")
+  # Salida
   append(all.results, mean.results)
 } 
