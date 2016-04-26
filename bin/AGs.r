@@ -59,55 +59,62 @@ AGG <- function(data, crossover = crossover.OX){
   #### Hace los cruces en la poblacion usando el operador
   #### de cruce
   ##########################################################  
-  make.crossover <- function(new.population){
+  make.crossover <- function(population){
     cruces <- lapply(1:n.cruces, function(i){
-      mask <- crossover(new.population[[i]], new.population[[i%%n.cruces + 1]]) 
+      mask <- crossover(population[[i]], population[[i%%n.cruces + 1]]) 
       list(mask = mask, fitness=tasa.clas(data, mask))
     })
     
-    new.population[1:n.cruces] <- cruces
-    new.population
+    population[1:n.cruces] <- cruces
+    population
   }
   
   ##########################################################
   #### Operador de mutacion
   ##########################################################
-  make.mutation <- function(new.population){
-    n <- length(new.population)
-    n.mutations <- ceiling(n*prob.mutation)
-    crom.mutar <- sample(1:n.crom, n.mutations, replace=TRUE)
-    gen.mutar <- sample(1:n, n.mutations, replace=TRUE) 
+  make.mutation <- function(population){
+    size.population <- length(population)
+    n.mutations <- ceiling(n*size*prob.mutation)
+    
+    crom.mutate <- sample(1:size.population, n.mutations, replace=TRUE)
+    gen.mutate <- sample(1:size.population, n.mutations, replace=TRUE) 
     
     # Hacemos las mutaciones en los genes de las codificaciones
     mutations <- lapply(1:n.mutations, function(i){
-      cromosoma <- new.population[[crom.mutar[i]]]
-      gen <- cromosoma$mask[gen.mutar[i]]
-      gen <- (gen+1) %% 2
-      # Mutamos y recalculamos tasa
-      cromosoma$mask[[gen.mutar[i]]] <- gen
-      cromosoma$fitness <- tasa.clas(cromosoma$mask)
+      chromosome <- population[[crom.mutate[i]]]
       
-      cromosoma
+      gen <- chromosome$mask[gen.mutate[i]]
+      gen <- (gen+1) %% 2
+      
+      # Mutamos y recalculamos tasa
+      chromosome$mask [[ gen.mutate[i] ]] <- gen
+      chromosome$fitness <- tasa.clas(data, chromosome$mask)
+      
+      chromosome
     })
     
-    new.population[crom.mutar] <- mutations
-    new.population
+    population[crom.mutate] <- mutations
+    population
   }
   
   ##########################################################
   #### Mantiene el elitismo en la solucion
   ##########################################################  
-  keep.elitism <- function(new.population, old.best){
+  keep.elitism <- function(population, old.best){
     # Si el antiguo mejor no está en la poblacion,
     # lo cambiamos por el nuevo peor
-    if (!TRUE %in% (sapply (new.population, 
-                            function(x) { TRUE %in% (x$mask == old.best$mask) }))){
+    
+    population <- sorted(population)
+    
+    if (!TRUE %in% (sapply (population, 
+          function(x) { !FALSE %in% (x$mask == old.best$mask) }))){
       
-      if(new.population[[1]]$fitness < old.best$fitness){
-        new.population[[1]] <- old.best$mask
+      if(population[[1]]$fitness < old.best$fitness){
+        population[[1]] <- old.best
       }
     }
-    new.population
+    
+    sorted(population)
   }
   
   ##########################################################
@@ -127,15 +134,17 @@ AGG <- function(data, crossover = crossover.OX){
   while(n.eval < max.eval){
     pairs <- Map(c, sample(1:n.crom, n.crom), sample(1:n.crom, n.crom))
     
+    # Conservamos el antiguo mejor de la poblacion
+    old.best <- population[[n.crom]]
+    
     # Seleccion
-    new.population <- make.selection(pairs)
+    population <- make.selection(pairs)
     # Cruce
-    new.population <- make.crossover(new.population)
+    population <- make.crossover(population)
     # Mutaciones
-    new.population <- make.mutation(new.population)
+    population <- make.mutation(population)
     # Elitismo
-    new.population <- sorted (new.population)
-    new.population <- keep.elitism (new.population, population[[n.crom]])
+    population <- keep.elitism (population)
   }  
   # Como la poblacion esta ordenada por tasa de menor a mayor...
   population[[n.crom]]$mask
