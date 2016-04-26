@@ -23,19 +23,15 @@ crossover.OX <- function(xx, xy){
 }  
 
 ##########################################################################
-### Funcion AGG (algoritmo genetico generacional)
-###     Para un data frame devuelve para el clasificador 3-knn el conjunto
-###     de caracteristicas que se obtienen de aplicar el algoritmo genetico
-###     generacional
+### Funcion de encapsulacion genetica
+###     Contiene la implementacion de los algoritmos geneticos generacional
+###     y estacionario
 ###
 ##########################################################################
-AGG <- function(data, crossover = crossover.OX){
+AG <- function(data, crossover = crossover.OX){
   n <- ncol(data)
   n <- n-1
-  n.crom <- AGG.n.crom
-  prob.cruce <- AGG.prob.cruce
-  prob.mutation <- AGG.prob.mutation
-  n.cruces <- ceiling(n.crom*prob.cruce)
+  n.crom <- AG.n.crom
   
   ##########################################################
   #### Ordena una pobacion de menor a mayor tasa
@@ -58,7 +54,10 @@ AGG <- function(data, crossover = crossover.OX){
   #### Hace los cruces en la poblacion usando el operador
   #### de cruce
   ##########################################################  
-  make.crossover <- function(population){
+  make.crossover <- function(population, prob.cruce){
+    size.population <- length(population)
+    n.cruces <- ceiling( size.population*prob.cruce )
+    
     cruces <- lapply(1:n.cruces, function(i){
       mask <- crossover(population[[i]], population[[i%%n.cruces + 1]]) 
       list(mask = mask, fitness=tasa.clas(data, mask))
@@ -71,9 +70,9 @@ AGG <- function(data, crossover = crossover.OX){
   ##########################################################
   #### Operador de mutacion
   ##########################################################
-  make.mutation <- function(population){
+  make.mutation <- function(population, prob.mutation){
     size.population <- length(population)
-    n.mutations <- ceiling( n*size.population*prob.mutation)
+    n.mutations <- ceiling( n*size.population*prob.mutation )
     
     crom.mutate <- sample(1:size.population, n.mutations, replace=TRUE)
     gen.mutate <- sample(1:size.population, n.mutations, replace=TRUE) 
@@ -97,11 +96,12 @@ AGG <- function(data, crossover = crossover.OX){
   }
   
   ##########################################################
-  #### Mantiene el elitismo en la solucion
+  #### Reemplaza el peor de la poblacion por otro dado
+  #### caso de ser mejor cromosoma que el
   ####    NOTA: Devuelve una poblacion ordenada
   ####          de menor a mayor en tasa
   ##########################################################  
-  keep.elitism <- function(population){
+  make.replacement <- function(population, old.best){
     # Si el antiguo mejor no está en la poblacion,
     # lo cambiamos por el nuevo peor
     
@@ -122,35 +122,80 @@ AGG <- function(data, crossover = crossover.OX){
   #### Comienzo del algoritmo
   ##########################################################
   
-  # Generación de la poblacion inicial
+  # Funcion de generacion de la poblacion inicial
   population <- lapply(1:n.crom, function(i){
     mask <- random.init(data)
     mask.tasa <- tasa.clas(data, mask)
     list(mask = mask, fitness = mask.tasa)
   })
+
+  population <- sorted (population)  
+
   
-  population <- sorted (population)
   
-  # Bucle principal
-  for(n.eval in 1:max.eval){
-    pairs <- Map(c, sample(1:n.crom, n.crom), sample(1:n.crom, n.crom))
+  generational <- function(){
+    prob.cruce <- AGG.prob.cruce
+    prob.mutation <- AGG.prob.mutation
+
+    # Bucle principal
+    for(n.eval in 1:max.eval){
+      pairs <- Map(c, sample(1:n.crom, n.crom), sample(1:n.crom, n.crom))
+      
+      # Conservamos el antiguo mejor de la poblacion
+      old.best <- population[[n.crom]]
+      
+      # Seleccion
+      population <- make.selection(pairs)
+      # Cruce
+      population <- make.crossover(population, prob.cruce)
+      # Mutaciones
+      population <- make.mutation(population, prob.mutation)
+      # Elitismo
+      population <- make.replacement (population, old.best)
+    }  
+    # Como la poblacion esta ordenada por tasa de menor a mayor...
+    population[[n.crom]]$mask
+  }
+  
+  stationary <- function(){
+    prob.cruce <- AGE.prob.cruce
+    prob.mutation <- AGE.prob.mutation
     
-    # Conservamos el antiguo mejor de la poblacion
-    old.best <- population[[n.crom]]
-    
-    # Seleccion
-    population <- make.selection(pairs)
-    # Cruce
-    population <- make.crossover(population)
-    # Mutaciones
-    population <- make.mutation(population)
-    # Elitismo
-    population <- keep.elitism (population)
-  }  
-  # Como la poblacion esta ordenada por tasa de menor a mayor...
-  population[[n.crom]]$mask
+    for(n.eval in 1:max.eval){
+      # Sacamos dos padres al azar
+      pairs <- sample(1:n.crom, n.crom)
+      
+      # Seleccion
+      new.generation <- make.selection(pairs)
+      # Cruce
+      new.generation <- make.crossover(new.generation, prob.cruce)
+      # Mutaciones
+      new.generation <- make.mutation(new.generation, prob.mutation)
+      
+      new.generation <- sorted(new.generation)
+      
+      # Introducimos en la nueva poblacion los dos hijos,
+      # caso de ser mejores que las de las peores soluciones
+      population <- make.replacement (population, new.generation[[2]])
+      population <- make.replacement (population, new.generation[[1]])
+    }  
+    # Como la poblacion esta ordenada por tasa de menor a mayor...
+    population[[n.crom]]$mask
+  }
+  
+  list (generational = generational, stationary = stationary)
 }
 
+##########################################################################
+### Funcion AGG (algoritmo genetico generacional)
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto
+###     de caracteristicas que se obtienen de aplicar el algoritmo genetico
+###     generacional
+###
+##########################################################################
+AGG <- function(data){
+  AG(data)$generational()
+}
 
 ##########################################################################
 ### Funcion AGE (algoritmo genetico estacionario)
@@ -159,95 +204,6 @@ AGG <- function(data, crossover = crossover.OX){
 ###     estacionario
 ###
 ##########################################################################
-AGE <- function(data, crossover = crossover.OX){
-  n <- ncol(data)
-  n <- n-1
-  n.crom <- AGE.n.crom
-  prob.mutation <- AGE.prob.mutation
-  
-  
-  ##########################################################
-  ### Operador de seleccion
-  ##########################################################  
-  make.selection <- function(parents.paired){
-    # Hace una seleccion por torneo binario
-    lapply(parents.paired, function(p){
-      torneo <- population[p]  
-      winner <- which.max(sapply(torneo, function(sol){ sol$fitness }))
-      torneo[[winner]]
-    })
-  }
-  
-  ##########################################################
-  #### Hace los cruces en la poblacion usando el operador
-  #### de cruce
-  ##########################################################  
-  make.crossover <- function(new.population){
-    cruces <- lapply(1:n.cruces, function(i){
-      crossover(new.population[[i]], new.population[[i%%n.cruces + 1]]) 
-    })
-    
-    new.population[1:n.cruces] <- cruces
-    new.population
-  }
-  
-  ##########################################################
-  #### Operador de mutacion
-  ##########################################################
-  make.mutation <- function(new.population){
-    n <- length(new.population)
-    n.mutations <- ceiling(n*prob.mutation)
-    crom.mutar <- sample(1:n.crom, n.mutations, replace=TRUE)
-    gen.mutar <- sample(1:n, n.mutations, replace=TRUE) 
-    
-    # Hacemos las mutaciones en los genes de las codificaciones
-    mutations <- lapply(1:n.mutations, function(i){
-      cromosoma <- new.population[[crom.mutar[i]]]
-      gen <- cromosoma$mask[gen.mutar[i]]
-      gen <- (gen+1) %% 2
-      # Mutamos y recalculamos tasa
-      cromosoma$mask[[gen.mutar[i]]] <- gen
-      cromosoma$fitness <- tasa.clas(cromosoma$mask)
-      
-      cromosoma
-    })
-    
-    new.population[crom.mutar] <- mutations
-    new.population
-  }
-  
-  
-  ##########################################################
-  #### Comienzo del algoritmo
-  ##########################################################
-  
-  # Generación de la poblacion inicial
-  population <- lapply(n.crom, function(i){
-    mask <- gen.init(data)
-    mask.tasa <- tasa.clas(mask)
-    list(mask = mask, fitness = mask.tasa)
-  })
-  
-  population <- sorted (population)
-  
-  # Bucle principal
-  while(n.eval < max.eval){
-    pairs <- Map(c, sample(1:n.crom, 2), sample(1:n.crom, 2))
-    
-    # Seleccion
-    new.population <- make.selection(pairs)
-    # Cruce
-    new.population <- make.crossover(new.population)
-    # Mutaciones
-    new.population <- make.mutation(new.population)
-    new.population <- sorted (new.population)
-    
-    
-    # Falta hacer el reemplazamiento
-    
-    population <- new.population
-  }
-  
-  # Como la poblacion esta ordenada por tasa de menor a mayor...
-  population[[n.crom]]$mask
+AGE <- function(data){
+  AG(data)$stationary()
 }
