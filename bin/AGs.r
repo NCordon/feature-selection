@@ -12,14 +12,14 @@ random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
 ####    con una subcadena de la madre y rellenamos el resto con
 ####    los genes del padre
 ##########################################################################
-crossover.OX <- function(mum, dad){
-  n <- length(mum)
-  cortes <- sample(1:n,2)
-  mum.cromosomas <- seq(cortes[1],cortes[2])
+crossover.OX <- function(xx, xy){
+  n <- length(xx$mask)
+  bounds <- sample(1:n,2)
+  bounds <- bounds[1]:bounds[2]
   
-  son <- dad$mask
-  son[mum.cromosomas] <- mum$mask[mum.cromosomas]
-  list(mask = son, fitness=tasa.clas(son))
+  chromosome <- xx$mask
+  chromosome[bounds] <- xy$mask[bounds]
+  chromosome
 }  
 
 ##########################################################################
@@ -37,12 +37,12 @@ AGG <- function(data, crossover = crossover.OX){
   prob.cruce <- AGG.prob.cruce
   prob.mutation <- AGG.prob.mutation
   n.cruces <- ceiling(n.crom*prob.cruce)
-
+  
   ##########################################################
   #### Ordena una pobacion de menor a mayor tasa
   ##########################################################
   sorted <- function(population){
-    order(sapply(population, function(x){ x$fitness }))
+    population[ order(sapply(population, function(x){ x$fitness })) ]
   }  
   
   ##########################################################
@@ -51,9 +51,7 @@ AGG <- function(data, crossover = crossover.OX){
   make.selection <- function(parents.paired){
     # Hace una seleccion por torneo binario
     lapply(parents.paired, function(p){
-      torneo <- population[p]  
-      winner <- which.max(sapply(torneo, function(sol){ sol$fitness }))
-      torneo[[winner]]
+      sorted( population[p] ) [[length(p)]]  
     })
   }
   
@@ -63,7 +61,8 @@ AGG <- function(data, crossover = crossover.OX){
   ##########################################################  
   make.crossover <- function(new.population){
     cruces <- lapply(1:n.cruces, function(i){
-      crossover(new.population[[i]], new.population[[i%%n.cruces + 1]]) 
+      mask <- crossover(new.population[[i]], new.population[[i%%n.cruces + 1]]) 
+      list(mask = mask, fitness=tasa.clas(data, mask))
     })
     
     new.population[1:n.cruces] <- cruces
@@ -116,9 +115,9 @@ AGG <- function(data, crossover = crossover.OX){
   ##########################################################
   
   # Generación de la poblacion inicial
-  population <- lapply(n.crom, function(i){
-    mask <- gen.init(data)
-    mask.tasa <- tasa.clas(mask)
+  population <- lapply(1:n.crom, function(i){
+    mask <- random.init(data)
+    mask.tasa <- tasa.clas(data, mask)
     list(mask = mask, fitness = mask.tasa)
   })
   
@@ -137,8 +136,7 @@ AGG <- function(data, crossover = crossover.OX){
     # Elitismo
     new.population <- sorted (new.population)
     new.population <- keep.elitism (new.population, population[[n.crom]])
-  }
-  
+  }  
   # Como la poblacion esta ordenada por tasa de menor a mayor...
   population[[n.crom]]$mask
 }
