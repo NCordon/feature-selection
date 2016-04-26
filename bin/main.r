@@ -34,6 +34,7 @@ source(file="./BL.r")
 source(file="./ES.r")
 source(file="./BT.r")
 source(file="./BText.r")
+source(file="./AGs.r")
 
 ##########################################################################
 ### Lectura de datos
@@ -75,4 +76,5 @@ save.image(file = data.file, safe=TRUE)
 ILS.results <- cross.eval(ILS)
 save.image(file = data.file, safe=TRUE) 
 #save.image(file = data.file, safe=TRUE)  
-
+#source(file="./AGs.r")
+AGG.results <- cross.eval(AGG)

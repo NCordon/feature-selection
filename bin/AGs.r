@@ -32,7 +32,6 @@ crossover.OX <- function(xx, xy){
 AGG <- function(data, crossover = crossover.OX){
   n <- ncol(data)
   n <- n-1
-  n.eval <- 0
   n.crom <- AGG.n.crom
   prob.cruce <- AGG.prob.cruce
   prob.mutation <- AGG.prob.mutation
@@ -74,7 +73,7 @@ AGG <- function(data, crossover = crossover.OX){
   ##########################################################
   make.mutation <- function(population){
     size.population <- length(population)
-    n.mutations <- ceiling(n*size*prob.mutation)
+    n.mutations <- ceiling( n*size.population*prob.mutation)
     
     crom.mutate <- sample(1:size.population, n.mutations, replace=TRUE)
     gen.mutate <- sample(1:size.population, n.mutations, replace=TRUE) 
@@ -99,8 +98,10 @@ AGG <- function(data, crossover = crossover.OX){
   
   ##########################################################
   #### Mantiene el elitismo en la solucion
+  ####    NOTA: Devuelve una poblacion ordenada
+  ####          de menor a mayor en tasa
   ##########################################################  
-  keep.elitism <- function(population, old.best){
+  keep.elitism <- function(population){
     # Si el antiguo mejor no está en la poblacion,
     # lo cambiamos por el nuevo peor
     
@@ -131,7 +132,7 @@ AGG <- function(data, crossover = crossover.OX){
   population <- sorted (population)
   
   # Bucle principal
-  while(n.eval < max.eval){
+  for(n.eval in 1:max.eval){
     pairs <- Map(c, sample(1:n.crom, n.crom), sample(1:n.crom, n.crom))
     
     # Conservamos el antiguo mejor de la poblacion
@@ -161,7 +162,6 @@ AGG <- function(data, crossover = crossover.OX){
 AGE <- function(data, crossover = crossover.OX){
   n <- ncol(data)
   n <- n-1
-  n.eval <- 0
   n.crom <- AGE.n.crom
   prob.mutation <- AGE.prob.mutation
   

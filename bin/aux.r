@@ -70,74 +70,55 @@ cross.eval <- function(algorithm){
   all.results <- list()
   mean.results <- list()
   
-  for (j in 1:length(datasets)){
-    x <- datasets[[j]]
-    num.variables <- length(colnames(x))-1
-    tiempo.exec = c()
-    train.tasas = c()
-    test.tasas = c()
-    tasa.red = c()
+  with.decimals <- function(v){ format(v, nsmall=5) }
+  
+  gather.results <- function(train, test){
+    n.var <- length(colnames(train))-1
+    
+    t.ini <- proc.time()[3]
+    mask <- algorithm(train)
+    t.fin <- proc.time()[3]
+    
+    attach(result)
+    tata.train <- c(tasa.train, tasa.clas(train,mask))
+    tasa.test <- c(tasa.test, tasa.clas(test,mask))
+    tasa.red <- c(tasa.red, (n.var - sum(mask==1))/n.var)
+    t.exec <- c(t.exec, t.fin - t.ini)
+    detach(result)
+  }
+  
+  
+  for (d in 1:length(datasets)){
+    x <- datasets[[d]]
+    result <- list(tasa.test = NULL, tasa.train = NULL, tasa.red = NULL, t.exec = NULL)
     
     cat("Procesando dataset", datasets.names[j], "\n")
     
     class.split <- split(x, x$class)
-    i <- 1
     
-    while (i <= n.eval){
+    for (i in 1:n.eval){
       set.seed(semilla[i])
-      partitioned <- lapply(class.split, make.partition, per=0.5 )
-      train <- lapply (partitioned, function(x){ x$train } )
+      
+      # Hacemos las particiones de entrenamiento y prueba
+      partition <- lapply(class.split, make.partition, per=0.5 )
+      train <- lapply (partition, function(x){ x$train } )
       train <- rbindlist(train)
-      test <- lapply (partitioned, function(x){ x$test } )
+      test <- lapply (partition, function(x){ x$test } )
       test <- rbindlist(test)
       
-      
       # Primero usando la mascara dada por el train
-      t.inicial <- proc.time()[3]
-      mask <- algorithm(train)
-      t.final <- proc.time()[3]
-      
-      tiempo.exec <- c(tiempo.exec, t.final - t.inicial)
-      test.tasas <- c(test.tasas, tasa.clas(test,mask))
-      train.tasas <- c(train.tasas, tasa.clas(train,mask))
-      tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
-      
-      
-      # Usando ahora la mascara dada por el test
-      t.inicial <- proc.time()[3]
-      mask <- algorithm(test)
-      t.final <- proc.time()[3]
-      
-      tiempo.exec <- c(tiempo.exec, t.final - t.inicial)
-      test.tasas <- c(test.tasas, tasa.clas(train,mask))
-      train.tasas <- c(train.tasas, tasa.clas(test,mask))
-      tasa.red <- c(tasa.red, (num.variables - sum(mask==1))/num.variables)
-      
-      i <- i+1
+      result <- gather.results(train, test)
+      # Despues usando la mascara dada por el test
+      result <- gather.results(test, train)
     }
-    with.decimals <- function(v){ format(v, nsmall=5) }
-    result <- data.frame(
-      with.decimals(test.tasas),
-      with.decimals(train.tasas),
-      with.decimals(tasa.red),
-      with.decimals(tiempo.exec)
-    )
-    
-    result.medias <- data.frame(
-      with.decimals(mean(test.tasas)),
-      with.decimals(mean(train.tasas)),
-      with.decimals(mean(tasa.red)),
-      with.decimals(mean(tiempo.exec))
-    )
-    
-    names.result <- c("Tasa.test", "Tasa.train", "Tasa.red", "T.exec")
-    colnames(result) <- names.result
-    colnames(result.medias) <- names.result    
-    
-    all.results[[j]] <- result
-    mean.results[[j]] <- result.medias
+
+    result <- with.decimals(result)
+    result.mean <- apply(result, 2, mean) 
+
+    all.results[[d]] <- result
+    mean.results[[d]] <- result.mean
   }
-  names(all.results) <- datasets.names
+  
   names(mean.results) <- paste(datasets.names, ".media", sep="")
   append(all.results, mean.results)
 } 
