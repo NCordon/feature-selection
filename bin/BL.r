@@ -156,15 +156,13 @@ ILS <- function(data){
   n <- ncol(data)
   n <- n-1
   n.a.mutar <- ILS.coef.mutacion*n
-  
   max.arranques <- ILS.num.sols.init
-  n.eval <- 1
   
   mask <- random.init(data)
   mask.best <- mask
   tasa.best <- tasa.clas(data, mask.best)
   
-  while(n.eval < max.arranques){
+  for(n.eval in 1:max.arranques){
     # Aplicamos busqueda local sobre la solucion
     mask <- BL(data, function(x){ mask })
     tasa.mask <- tasa.clas(data, mask)
@@ -176,9 +174,8 @@ ILS <- function(data){
     
     # Mutacion
     a.mutar <- sample(1:n, n.a.mutar)
+    mask <- mask.best
     mask[a.mutar] <- (mask[a.mutar]+1) %% 2
-    
-    n.eval <- n.eval + 1
   }
   
   mask.best
