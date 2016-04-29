@@ -70,6 +70,7 @@ BL <- function(data, gen.init = random.init){
 BMB <- function(data){
   max.arranques <- BMB.num.sols.init
   
+  # Aplicamos busqueda local un numero max.arranques veces
   masks <- lapply (1:max.arranques, function(x){ BL(data) })
   tasas <- sapply(masks, function(x){ tasa.clas(data, x) })
   
@@ -98,16 +99,17 @@ random.greedy.init <- function(data){
       m
     } )
     
+    # Nos quedamos de las mascaras que verifican la condicion
+    # del umbral, con una aleatoria
     tasas <- sapply(masks, function(x){ tasa.clas(data, x) })
     tasas.max <- max(tasas)
     tasas.min <- min(tasas)
     umbral <- alpha * (tasas.max - tasas.min)
+    to.keep <- which(tasas.max - tasas <= umbral)
+    masks <- masks[to.keep]
+    sel <- sample(to.keep,1)
     
-    cur.selection <- which(tasas.max - tasas <= umbral)
-    masks <- masks[cur.selection]
-    
-    sel <- sample(cur.selection,1)
-    
+    # Actualizamos el mejor hasta el momento
     if (tasas [sel] > mask.fitness){
       mask.best[non.selected[sel]] <- 1
       mask.fitness <- tasas[sel]
@@ -172,7 +174,8 @@ ILS <- function(data){
       tasa.best <- tasa.mask
     }
     
-    # Mutacion
+    # Mutacion sobre el mejor de entre la mascara de
+    # la iteracion actual y el mejor hasta el momento
     a.mutar <- sample(1:n, n.a.mutar)
     mask <- mask.best
     mask[a.mutar] <- (mask[a.mutar]+1) %% 2
