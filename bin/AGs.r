@@ -111,6 +111,8 @@ AG <- function(data, crossover = crossover.OX){
         population[[1]] <- old.best
       }
     }
+    
+    population
   }
   
   ##########################################################  
@@ -153,7 +155,7 @@ AG <- function(data, crossover = crossover.OX){
   generational <- function(){
     prob.cruce <- AGG.prob.cruce
     prob.mutation <- AGG.prob.mutation
-    n.eval <- 1
+    n.eval <- 0
     
     # Bucle principal
     while(n.eval < max.eval){
@@ -173,16 +175,16 @@ AG <- function(data, crossover = crossover.OX){
       # Elitismo
       population <- make.replacement (population, old.best)
     }  
+    
     # Ordenando la poblacion por tasa de menor a mayor, delvolvemos el mejor...
     population <- sorted(population)
-    print(population)
     population <- population[[n.crom]]$mask
   }
   
   stationary <- function(){
     prob.cruce <- AGE.prob.cruce
     prob.mutation <- AGE.prob.mutation
-    n.eval <- 1
+    n.eval <- 0
     
     while(n.eval < max.eval){
       # Sacamos dos padres al azar
