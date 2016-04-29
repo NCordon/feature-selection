@@ -1,4 +1,5 @@
 def random_greedy(){
+    # n es el número de variables en la selección de características
     non_selected = {1,...n}
     mejor_mascara = {0,0...0}
     mejora = true
@@ -15,7 +16,7 @@ def random_greedy(){
 
         umbral = alpha * (max(tasas) - min(tasas))
         mascaras.delete (which(max(tasas) - tasas > umbral))
-        m = random(mascaras)
+        m = mascaras[ random{1..n} ]
 
         if (tasa(m) > tasa(mejor_mascara)){
             mejor_mascara = m
