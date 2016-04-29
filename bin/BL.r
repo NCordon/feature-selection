@@ -6,7 +6,6 @@
 
 random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
 
-
 ##########################################################################
 ### Funcion busqueda local del primer mejor
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
@@ -87,14 +86,14 @@ random.greedy.init <- function(data){
   alpha <- GRASP.alpha
   n <- ncol(data)
   n <- n-1
-  mask <- rep(0,n)
+  mask.best <- rep(0,n)
   non.selected <- seq(1,n)
   fin <- FALSE
-  mask.tasa <- 0
+  mask.fitness <- 0
   
   while(!fin){
     masks <- lapply (non.selected, function(x){
-      m <- mask
+      m <- mask.best
       m[x] <- 1
       m
     } )
@@ -109,9 +108,9 @@ random.greedy.init <- function(data){
     
     sel <- sample(cur.selection,1)
     
-    if (tasas [sel] > mask.tasa){
-      mask[non.selected[sel]] <- 1
-      mask.tasa <- tasas[sel]
+    if (tasas [sel] > mask.fitness){
+      mask.best[non.selected[sel]] <- 1
+      mask.fitness <- tasas[sel]
       non.selected <- non.selected[-sel]
     }
     else{
@@ -121,7 +120,7 @@ random.greedy.init <- function(data){
       fin <- TRUE
     }
   }
-  mask
+  mask.best
 }
 
 
@@ -136,6 +135,8 @@ random.greedy.init <- function(data){
 GRASP <- function(data){
   max.arranques <- GRASP.num.sols.init
   
+  # Generamos un numero determinado de soluciones aleatorias y les aplicamos
+  # busqueda local
   masks <- lapply (1:max.arranques, function(x){ BL(data, random.greedy.init) })
   tasas <- sapply(masks, function(x){ tasa.clas(data, x) })
   
@@ -164,6 +165,7 @@ ILS <- function(data){
   tasa.best <- tasa.clas(data, mask.best)
   
   while(n.eval < max.arranques){
+    # Aplicamos busqueda local sobre la solucion
     mask <- BL(data, function(x){ mask })
     tasa.mask <- tasa.clas(data, mask)
     
@@ -172,6 +174,7 @@ ILS <- function(data){
       tasa.best <- tasa.mask
     }
     
+    # Mutacion
     a.mutar <- sample(1:n, n.a.mutar)
     mask[a.mutar] <- (mask[a.mutar]+1) %% 2
     
