@@ -59,8 +59,8 @@ AG <- function(data, crossover = crossover.OX){
     n.cruces <- ceiling( size.population*prob.cruce )
     
     cruces <- lapply(1:n.cruces, function(i){
-      mask <- crossover(population[[i]], population[[i%%n.cruces + 1]]) 
-      list(mask = mask, fitness=0, evaluated = FALSE)
+      chromosome <- crossover(population[[i]], population[[i%%n.cruces + 1]]) 
+      list(mask = chromosome, fitness=0, evaluated = FALSE)
     })
     
     population[1:n.cruces] <- cruces
@@ -75,7 +75,7 @@ AG <- function(data, crossover = crossover.OX){
     n.mutations <- ceiling( n*size.population*prob.mutation )
     
     crom.mutate <- sample(1:size.population, n.mutations, replace=TRUE)
-    gen.mutate <- sample(1:size.population, n.mutations, replace=TRUE) 
+    gen.mutate <- sample(1:n, n.mutations, replace=TRUE) 
     
     # Hacemos las mutaciones en los genes de las codificaciones
     mutations <- lapply(1:n.mutations, function(i){
@@ -85,7 +85,7 @@ AG <- function(data, crossover = crossover.OX){
       gen <- (gen+1) %% 2
       
       # Mutamos y recalculamos tasa
-      chromosome[ gen.mutate[i] ] <- gen
+      chromosome[gen.mutate[i]] <- gen
       
       list(mask = chromosome, fitness=0, evaluated = FALSE)
     })
@@ -153,9 +153,10 @@ AG <- function(data, crossover = crossover.OX){
   generational <- function(){
     prob.cruce <- AGG.prob.cruce
     prob.mutation <- AGG.prob.mutation
-
+    n.eval <- 1
+    
     # Bucle principal
-    for(n.eval in 1:(max.eval/n.crom)){
+    while(n.eval < max.eval){
       pairs <- Map(c, sample(1:n.crom, n.crom), sample(1:n.crom, n.crom))
       
       # Conservamos el antiguo mejor de la poblacion
@@ -174,12 +175,14 @@ AG <- function(data, crossover = crossover.OX){
     }  
     # Ordenando la poblacion por tasa de menor a mayor, delvolvemos el mejor...
     population <- sorted(population)
+    print(population)
     population <- population[[n.crom]]$mask
   }
   
   stationary <- function(){
     prob.cruce <- AGE.prob.cruce
     prob.mutation <- AGE.prob.mutation
+    n.eval <- 1
     
     while(n.eval < max.eval){
       # Sacamos dos padres al azar
