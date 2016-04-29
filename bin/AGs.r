@@ -60,7 +60,7 @@ AG <- function(data, crossover = crossover.OX){
     
     cruces <- lapply(1:n.cruces, function(i){
       mask <- crossover(population[[i]], population[[i%%n.cruces + 1]]) 
-      list(mask = mask, fitness=tasa.clas(data, mask))
+      list(mask = mask, fitness=0, evaluated = FALSE)
     })
     
     population[1:n.cruces] <- cruces
@@ -79,16 +79,15 @@ AG <- function(data, crossover = crossover.OX){
     
     # Hacemos las mutaciones en los genes de las codificaciones
     mutations <- lapply(1:n.mutations, function(i){
-      chromosome <- population[[crom.mutate[i]]]
+      chromosome <- population[[crom.mutate[i]]]$mask
       
-      gen <- chromosome$mask[gen.mutate[i]]
+      gen <- chromosome[gen.mutate[i]]
       gen <- (gen+1) %% 2
       
       # Mutamos y recalculamos tasa
-      chromosome$mask [[ gen.mutate[i] ]] <- gen
-      chromosome$fitness <- tasa.clas(data, chromosome$mask)
+      chromosome[ gen.mutate[i] ] <- gen
       
-      chromosome
+      list(mask = chromosome, fitness=0, evaluated = FALSE)
     })
     
     population[crom.mutate] <- mutations
@@ -98,8 +97,6 @@ AG <- function(data, crossover = crossover.OX){
   ##########################################################
   #### Reemplaza el peor de la poblacion por otro dado
   #### caso de ser mejor cromosoma que el
-  ####    NOTA: Devuelve una poblacion ordenada
-  ####          de menor a mayor en tasa
   ##########################################################  
   make.replacement <- function(population, old.best){
     # Si el antiguo mejor no está en la poblacion,
@@ -114,9 +111,29 @@ AG <- function(data, crossover = crossover.OX){
         population[[1]] <- old.best
       }
     }
-    
-    sorted(population)
   }
+  
+  ##########################################################  
+  ### Cuenta las tasas que hay que reevaluar
+  ##########################################################
+  count.not.evaluated <- function(population){
+    sum(sapply(population, function(x){ x$evaluated==FALSE }))
+  }
+  
+  
+  ##########################################################  
+  ### Recalcula las tasas de la poblacion desactualizadas
+  ##########################################################
+  calc.fitness <- function(population){
+    lapply(population, function(x){ 
+      if(!x$evaluated){
+        x$evaluated <- TRUE
+        x$fitness <- tasa.clas(data, x$mask)
+      }
+      x
+    })
+  }
+  
   
   ##########################################################
   #### Comienzo del algoritmo
@@ -126,7 +143,7 @@ AG <- function(data, crossover = crossover.OX){
   population <- lapply(1:n.crom, function(i){
     mask <- random.init(data)
     mask.tasa <- tasa.clas(data, mask)
-    list(mask = mask, fitness = mask.tasa)
+    list(mask = mask, fitness = mask.tasa, evaluated = TRUE)
   })
 
   population <- sorted (population)  
@@ -138,32 +155,35 @@ AG <- function(data, crossover = crossover.OX){
     prob.mutation <- AGG.prob.mutation
 
     # Bucle principal
-    for(n.eval in 1:max.eval){
+    for(n.eval in 1:(max.eval/n.crom)){
       pairs <- Map(c, sample(1:n.crom, n.crom), sample(1:n.crom, n.crom))
       
       # Conservamos el antiguo mejor de la poblacion
       old.best <- population[[n.crom]]
-      
       # Seleccion
       population <- make.selection(pairs)
       # Cruce
       population <- make.crossover(population, prob.cruce)
       # Mutaciones
       population <- make.mutation(population, prob.mutation)
+      # Recalculamos las tasas de la poblacion
+      n.eval <- n.eval + count.not.evaluated (population)
+      population <- calc.fitness(population)
       # Elitismo
       population <- make.replacement (population, old.best)
     }  
-    # Como la poblacion esta ordenada por tasa de menor a mayor...
-    population[[n.crom]]$mask
+    # Ordenando la poblacion por tasa de menor a mayor, delvolvemos el mejor...
+    population <- sorted(population)
+    population <- population[[n.crom]]$mask
   }
   
   stationary <- function(){
     prob.cruce <- AGE.prob.cruce
     prob.mutation <- AGE.prob.mutation
     
-    for(n.eval in 1:max.eval){
+    while(n.eval < max.eval){
       # Sacamos dos padres al azar
-      pairs <- sample(1:n.crom, n.crom)
+      pairs <- sample(1:n.crom, 2)
       
       # Seleccion
       new.generation <- make.selection(pairs)
@@ -172,6 +192,8 @@ AG <- function(data, crossover = crossover.OX){
       # Mutaciones
       new.generation <- make.mutation(new.generation, prob.mutation)
       
+      n.eval <- n.eval + count.not.evaluated (new.generation)
+      new.generation <- calc.fitness(new.generation)
       new.generation <- sorted(new.generation)
       
       # Introducimos en la nueva poblacion los dos hijos,
@@ -179,8 +201,9 @@ AG <- function(data, crossover = crossover.OX){
       population <- make.replacement (population, new.generation[[2]])
       population <- make.replacement (population, new.generation[[1]])
     }  
-    # Como la poblacion esta ordenada por tasa de menor a mayor...
-    population[[n.crom]]$mask
+    # Ordenando la poblacion por tasa de menor a mayor, delvolvemos el mejor...
+    population <- sorted(population)
+    population <- population[[n.crom]]$mask
   }
   
   list (generational = generational, stationary = stationary)
