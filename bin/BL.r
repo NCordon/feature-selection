@@ -93,6 +93,7 @@ random.greedy.init <- function(data){
   mask.fitness <- 0
   
   while(!fin){
+    # lista restringida de candidatos
     masks <- lapply (non.selected, function(x){
       m <- mask.best
       m[x] <- 1
@@ -137,8 +138,8 @@ random.greedy.init <- function(data){
 GRASP <- function(data){
   max.arranques <- GRASP.num.sols.init
   
-  # Generamos un numero determinado de soluciones aleatorias y les aplicamos
-  # busqueda local
+  # Generamos un numero determinado de soluciones aleatorias greedy y les
+  # aplicamos busqueda local
   masks <- lapply (1:max.arranques, function(x){ BL(data, random.greedy.init) })
   tasas <- sapply(masks, function(x){ tasa.clas(data, x) })
   
