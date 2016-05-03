@@ -109,6 +109,7 @@ AG <- function(data, crossover = crossover.OX){
       
       if(population[[1]]$fitness < old.best$fitness){
         population[[1]] <- old.best
+        population <- sorted(population)
       }
     }
     
@@ -126,7 +127,7 @@ AG <- function(data, crossover = crossover.OX){
   ##########################################################  
   ### Recalcula las tasas de la poblacion desactualizadas
   ##########################################################
-  calc.fitness <- function(population){
+  eval.fitness <- function(population){
     lapply(population, function(x){ 
       if(!x$evaluated){
         x$evaluated <- TRUE
@@ -171,7 +172,7 @@ AG <- function(data, crossover = crossover.OX){
       population <- make.mutation(population, prob.mutation)
       # Recalculamos las tasas de la poblacion
       n.eval <- n.eval + count.not.evaluated (population)
-      population <- calc.fitness(population)
+      population <- eval.fitness(population)
       # Elitismo
       population <- make.replacement (population, old.best)
     }  
@@ -198,7 +199,7 @@ AG <- function(data, crossover = crossover.OX){
       new.generation <- make.mutation(new.generation, prob.mutation)
       
       n.eval <- n.eval + count.not.evaluated (new.generation)
-      new.generation <- calc.fitness(new.generation)
+      new.generation <- eval.fitness(new.generation)
       new.generation <- sorted(new.generation)
       
       # Introducimos en la nueva poblacion los dos hijos,
