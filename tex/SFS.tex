@@ -3,6 +3,7 @@
 \mbox{}\textbf{\textcolor{Blue}{def}}\ SFS\textcolor{BrickRed}{()}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ non$\_$selected\ \textcolor{BrickRed}{=}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{,...}n\textcolor{Red}{\}} \\
 \mbox{}\ \ \ \ mascara\ \textcolor{BrickRed}{=}\ \textcolor{Red}{\{}\textcolor{Purple}{0}\textcolor{BrickRed}{,}\textcolor{Purple}{0}\textcolor{BrickRed}{...}\textcolor{Purple}{0}\textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ mejora\ \textcolor{BrickRed}{=}\ \textbf{\textcolor{Blue}{true}} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \textbf{\textcolor{Blue}{do}}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ \ \ \ \ j\ \textcolor{BrickRed}{=}\ max\ arg\textcolor{Red}{\{}tasa\textcolor{BrickRed}{(}flip\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}x\textcolor{BrickRed}{)):}\ x\$\textcolor{BrickRed}{\textbackslash{}}\textbf{\textcolor{Blue}{in}}\$\ non$\_$selected\textcolor{Red}{\}} \\
@@ -11,6 +12,8 @@
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ non$\_$selected\ \textcolor{BrickRed}{=}\ non$\_$selected\ \textcolor{BrickRed}{-}\ \textcolor{Red}{\{}j\textcolor{Red}{\}} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mascara\ \textcolor{BrickRed}{[}j\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{1} \\
 \mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mejora\ \textcolor{BrickRed}{=}\ \textbf{\textcolor{Blue}{false}} \\
 \mbox{}\ \ \ \ \textcolor{Red}{\}}\textbf{\textcolor{Blue}{while}}\ mejora \\
 \mbox{} \\
 \mbox{}\ \ \textbf{\textcolor{Blue}{return}}\ mascara \\
