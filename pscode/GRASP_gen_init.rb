@@ -1,5 +1,4 @@
-def random_greedy(){
-    # n es el número de variables en la selección de características
+def random_greedy(n){
     non_selected = {1,...n}
     mejor_mascara = {0,0...0}
     mejora = true
@@ -22,9 +21,8 @@ def random_greedy(){
             mejor_mascara = m
             non_selected.delete(j : flip(mascara,j)=m)
         }
-        else{
+        else
             mejora=false
-        }
     }while !non_selected.empty and mejora
 
     return mascara

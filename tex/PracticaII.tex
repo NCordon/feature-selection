@@ -236,37 +236,40 @@ de atributos (exceptuando la clase), y la metaheaurística/algoritmo ha seleccio
 a 1. A una representación de esta forma, la denominamos máscara: $$ mask =\begin{matrix} (0 & 1\ldots 1 & 1 & 0\ldots) 
 \end{matrix}$$
 
-
+\newpage
 \section{Descripción elementos comunes de los algoritmos}
 Los algoritmos considerados tienen las siguientes componentes:
 
 \begin{itemize} 
-\item Esquema de representación: se usarán máscaras, sucesiones de unos y ceros de tanta longitud como atributos haya,
+\item \textbf{Esquema de representación:} se usarán máscaras, sucesiones de unos y ceros de tanta longitud como atributos haya,
 exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa característica se ha escogido, y un $0$ que no.
 
-\item Función objetivo: la función a maximizar será la tasa de clasificación explicada arriba usando el clasificador
-3-knn con la selección de características indicada por la máscara.
+\item \textbf{Función objetivo}: la función a maximizar será la tasa de clasificación explicada arriba usando el clasificador
+3-knn con la selección de características indicada por la máscara.\\
 
 \small\texttt{\input{tasa_clasificacion}}
 
-\item Generación de solución inicial: 
+\item \textbf{Generación de solución inicial: }
   \begin{itemize}
    \item BMB: se generarán iterativamente 25 soluciones aleatorias sobre las que se aplicará búsqueda local
-   para refinarlas.
-    \small\texttt{\input{BMB_get_init}}
+   para refinarlas.\\
+   
+    \small\texttt{\input{BMB_gen_init}}
+   
    \item GRASP: la solución inicial se generará mediante un \textit{greedy} aleatorizado, y se refinará mediante
-   la búsqueda local, quedándonos con la mejor de entre 25 generadas.
-    \small\texttt{\input{GRASP_get_init}}
+   la búsqueda local, quedándonos con la mejor de entre 25 generadas.\\
+   
+   \small\texttt{\input{GRASP_gen_init}}
   \end{itemize}
 
 
-\item Algoritmo Búsqueda Local (BL) empleado:
+\item \textbf{Algoritmo Búsqueda Local (BL)} empleado:
   
-  El operador de \textbf{generación de vecino} usado ha sido:
+  El operador de generación de vecino usado ha sido:\\
   
   \small\texttt{\input{flip}}
   
-  El algoritmo, propiamente dicho, que se ha empleado ha sido:
+  El algoritmo, propiamente dicho, que se ha empleado ha sido:\\
   
   \small\texttt{\input{BL}}
 
@@ -277,21 +280,23 @@ clasificación del 3-knn para la máscara dada por esa solución).
 
 \end{itemize}
 
+\newpage
 \section{Profundización en los algoritmos}
+Se incluyen a continuación una descripción de cada metaheurística empleada junto a un pseudocódigo de las mismas.
 \subsection{Búsqueda multiarranque básica}
 
-%\small{\texttt{\input{BL}}}
-%\normalsize
+\small{\texttt{\input{BMB}}}
+\normalsize
 
 \subsection{GRASP}
 
-%\small{\texttt{\input{ES}}}
-%\normalsize
+\small{\texttt{\input{GRASP}}}
+\normalsize
 
 \subsection{Búsqueda Local Reiterada (ILS)}
 
-%\small{\texttt{\input{ES}}}
-%\normalsize
+\small{\texttt{\input{ILS}}}
+\normalsize
 
 \section{Algoritmo de comparación: SFS}
 \small{\texttt{\input{SFS}}}

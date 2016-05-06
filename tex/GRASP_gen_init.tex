@@ -1,0 +1,32 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textbf{\textcolor{Blue}{def}}\ random$\_$greedy\textcolor{BrickRed}{(}n\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ non$\_$selected\ \textcolor{BrickRed}{=}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{,...}n\textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ mejor$\_$mascara\ \textcolor{BrickRed}{=}\ \textcolor{Red}{\{}\textcolor{Purple}{0}\textcolor{BrickRed}{,}\textcolor{Purple}{0}\textcolor{BrickRed}{...}\textcolor{Purple}{0}\textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ mejora\ \textcolor{BrickRed}{=}\ \textbf{\textcolor{Blue}{true}} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{do}}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ mascaras\ \textcolor{BrickRed}{=}\ \textcolor{Red}{\{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ tasas\ \textcolor{BrickRed}{=}\ \textcolor{Red}{\{\}} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ foreach\ j\ \textbf{\textcolor{Blue}{in}}\ non$\_$selected\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ m\ \textcolor{BrickRed}{=}\ flip\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}j\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mascaras\textcolor{BrickRed}{.}add\textcolor{BrickRed}{(}m\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ tasas\textcolor{BrickRed}{.}add\textcolor{BrickRed}{(}tasa\textcolor{BrickRed}{(}m\textcolor{BrickRed}{))} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ umbral\ \textcolor{BrickRed}{=}\ alpha\ \textcolor{BrickRed}{*}\ \textcolor{BrickRed}{(}max\textcolor{BrickRed}{(}tasas\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{-}\ min\textcolor{BrickRed}{(}tasas\textcolor{BrickRed}{))} \\
+\mbox{}\ \ \ \ \ \ \ \ mascaras\textcolor{BrickRed}{.}delete\ \textcolor{BrickRed}{(}which\textcolor{BrickRed}{(}max\textcolor{BrickRed}{(}tasas\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{-}\ tasas\ \textcolor{BrickRed}{\textgreater{}}\ umbral\textcolor{BrickRed}{))} \\
+\mbox{}\ \ \ \ \ \ \ \ m\ \textcolor{BrickRed}{=}\ mascaras\textcolor{BrickRed}{[}\ random\textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{..}n\textcolor{Red}{\}}\ \textcolor{BrickRed}{]} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}tasa\textcolor{BrickRed}{(}m\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textgreater{}}\ tasa\textcolor{BrickRed}{(}mejor$\_$mascara\textcolor{BrickRed}{))}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mejor$\_$mascara\ \textcolor{BrickRed}{=}\ m \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ non$\_$selected\textcolor{BrickRed}{.}delete\textcolor{BrickRed}{(}j\ \textcolor{BrickRed}{:}\ flip\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}j\textcolor{BrickRed}{)=}m\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mejora\textcolor{BrickRed}{=}\textbf{\textcolor{Blue}{false}} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}}\textbf{\textcolor{Blue}{while}}\ \textcolor{BrickRed}{!}non$\_$selected\textcolor{BrickRed}{.}empty\ \textbf{\textcolor{Blue}{and}}\ mejora \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ mascara \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}
