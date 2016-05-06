@@ -207,6 +207,10 @@ Grupo Prácticas Viernes
 Dado un \textit{dataset} de instancias ya clasificadas, con una serie de atributos, se pretende comparar las distintas 
 metaheaurísticas disponibles para comprobar cuál produce el conjunto de atributos que sirven para obtener una mayor 
 tasa de clasificación (número de instancias bien clasificadas sobre el total) usando un clasificador de instancias.
+En otras palabras, si tenemos $p$ atributos o características, el número total de subconjuntos de características que podemos
+escoger es $2^p$. Cada uno de esos conjuntos o selecciones de características tendrá una tasa de clasificación asociada para
+el clasificador que hemos escogido. Como este problema cuando $p$ es muy grande es inabordable por fuerza bruta, se trata de aplicar metaheurísticas para encontrar la mejor selección de características que
+podamos de entre esas $2^p$ posibilidades.
 
 Se considera la tasa de clasificación en el problema usando un clasificador \textit{3-knn} leaving one-out. Para cada 
 instancia de un conjunto, toma las 3 más cercanas usando la distancia euclídea entre sus atributos, y etiqueta la nueva
@@ -249,8 +253,10 @@ exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa carac
   \begin{itemize}
    \item BMB: se generarán iterativamente 25 soluciones aleatorias sobre las que se aplicará búsqueda local
    para refinarlas.
+    \small\texttt{\input{BMB_get_init}}
    \item GRASP: la solución inicial se generará mediante un \textit{greedy} aleatorizado, y se refinará mediante
    la búsqueda local, quedándonos con la mejor de entre 25 generadas.
+    \small\texttt{\input{GRASP_get_init}}
   \end{itemize}
 
 
@@ -267,8 +273,7 @@ exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa carac
 \item Criterio de aceptación de solución: se considera una función mejor cuando aumenta la función objetivo (tasa de 
 clasificación del 3-knn para la máscara dada por esa solución).
   
-\item Número de evaluaciones de refinamientos de la solución: se empleará la búsqueda local sobre 25
-máscaras en el BMB, GRASP e ILS.
+\item Número de multiarranques: se empleará la búsqueda local sobre 25 máscaras en el BMB, GRASP e ILS.
 
 \end{itemize}
 

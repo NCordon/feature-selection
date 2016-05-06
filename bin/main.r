@@ -76,7 +76,6 @@ ILS.results <- cross.eval(ILS)
 
 # Algoritmos geneticos
 AGG.results <- cross.eval(AGG)
-save.image(file = data.file, safe=TRUE)  
 AGE.results <- cross.eval(AGE)
 
-#save.image(file = data.file, safe=TRUE)  
+save.image(file = data.file, safe=TRUE)  
