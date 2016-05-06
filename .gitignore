@@ -4,3 +4,5 @@ ugr.jpg
 /data/*.csv
 /data/*.xls
 /bin/LEEME
+/bin/misc.r
+/bin/gengraph.r
