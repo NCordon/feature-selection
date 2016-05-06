@@ -1,10 +1,9 @@
 def ILS(){
-    # n es el número de variables en la selección de características
     mejor_mascara = [ random({1,0}) from 0 to n ]
     num_mutaciones = prob_mutacion * n
 
     while(n_eval < max.arranques){
-        mascara <- busqueda_local(mascara)
+        mascara <- BL(mascara)
 
         if (tasa(mascara) > tasa(mejor_mascara)){
             mejor_mascara = mascara

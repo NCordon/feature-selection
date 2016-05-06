@@ -1,4 +1,6 @@
-def BL(){
+def BL(m){
+    # Máscara inicial, por defecto aleatoria
+    mascara = m
     do{
         no_seleccionados = {1,2,...n}
         do{
