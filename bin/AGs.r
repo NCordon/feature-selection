@@ -189,7 +189,7 @@ AG <- function(data, crossover = crossover.OX){
     
     while(n.eval < max.eval){
       # Sacamos dos padres al azar
-      pairs <- sample(1:n.crom, 2)
+      pairs <- Map(c, sample(1:n.crom, 2), sample(1:n.crom, 2))
       
       # Seleccion
       new.generation <- make.selection(pairs)
