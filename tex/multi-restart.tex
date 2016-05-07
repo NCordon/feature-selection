@@ -494,113 +494,28 @@ Se describe a continuación un esquema de los ficheros de código:
   
   Es un problema de clasificación binaria en un dataset de 30 predictores y 569 instancias.
   
-  \imagen{../data/wdbc.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
+  \imagen{../data/multi-restart/wdbc.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
   
-  Observamos que el algoritmo que mejores tasas de clasificación obtiene es el 3NN. Las tasas que obtiene en test y train
-  son similares, y por tanto no está efectuando overfitting. Cuando hacemos un boxplot de las variables que aporta el SFS
-  ejecutado sobre ese dataset, nos encontramos que en la mayoría de esas variables los rangos intercuartílicos de ambas
-  clases son disjuntos, por lo que las variables caracterizan muy bien a una clase o a otra, y por tanto cuando tomamos los
-  vecinos más cercanos, podemos inferir que cuando la distancia entre las características de la instancia a clasificar y la ya 
-  clasificada de entre las que nos da la máscara será muy pequeña, y por lo explicado sobre el boxplot, es muy probable que
-  ambas instancias tengan la misma clase.
+  %\imgn{../data/wdbc3nn.png}{Selección de características del SFS}{1}
   
-  \imgn{../data/wdbc3nn.png}{Selección de características del SFS}{1}
-  
-  La SFS aporta una tasa de clasificación media del 94\% en test, y aunque es la más baja de todos los algoritmos considerados,
-  tiene la tasa de reducción más alta (del 84\%). Por tanto si tuviéramos muchísimas más instancias de este dataset, dependiendo
-  de las necesidades y siempre que busquemos rapidez de cálculo, no sería una mala alternativa frente al resto de algoritmos.
-  
-  De las otras metaheurísticas la que mejor funciona es la búsqueda tabú. De hecho, podríamos observar que hace algo de overfitting
-  en las tasas de clasificación del conjunto de entrenamiento, llegando a obtener 100\% de tasa de clasificación en un caso.
-  Si tomamos un boxplot de todas las variables que tiene el dataset (normalizadas, claro está), podemos inferir que la búsqueda
-  tabú a corto plazo funciona tan bien porque hay variables cuya intersección de rangos intercuartílicos es bastante grande,
-  como se puede apreciar en la figura aportada, y otras cuyos rangos intercuartílicos son completamente disjuntos. El mecanismo
-  de la tabú hace que si hacemos un flip de una variable que no mejora la tasa de clasificación (a saber, es probable que
-  sea una con los rangos intercuartílicos de ambas clases poco separados), ese movimiento no se vuelva a hacer en un tiempo,
-  y por tanto nos vamos a ir quedando con variables que caracterizan muy bien a las clases, y la lista tabú va a estar repleta
-  de movimientos para variables que no aportan información relevante sobre la clase. Además, en caso de que el movimiento
-  sí sea bueno y entre en la lista tabú, será porque caracteriza bien a las clases, y agregándole otro movimiento bueno podríamos
-  tener una buena regla de asociación que caracterizase bien las instancias.
-  
-  \imgn{../data/wdbctabu.png}{Boxplot de variables del wdbc}{1}
-  
-  Podemos afirmar a raíz de los resultados que la tabú con memoria a largo plazo también funciona muy bien para el dataset,
-  obteniéndose unos resultados similares a la tabú con memoria a corto plazo, aunque efectúa un poco de overfitting en la
-  primera partición de todas.
-  
-  El enfriamiento simulado también aporta buenos resultados para el dataset. Tanto ES, como BT como BT extendida tienen un
-  porcentaje de reducción del 50\%, lejos del 80\% de la SFS, y tardan tiempos no superiores al minuto en ejecutarse por partición,
-  y por tanto asumibles.
-  
-  La búsqueda local produce unos resultados muy similares a los de la SFS excepto en tasa de reducción. Podemos pensar que
-  lo que la hace no obtener resultados tan buenos como las tabú es que tiene en cuenta un paso de temporalidad (a cada momento
-  se coge la característica que mejora la solución que tiene, escogiendo ésta aleatoriamente), en vez de tener en cuenta varios
-  pasos de temporalidad que es lo que hace la tabú al llevar su lista tabú (esto es, la suma de varias características en conjunción
-  podría caracterizar muy bien las instancias, mientras que la BL las intenta caracterizar mejor modificando una sola característica 
-  a cada paso). En definitiva, la búsqueda tabú tiene más en cuenta el histórico de la exploración.
+  %\imgn{../data/wdbctabu.png}{Boxplot de variables del wdbc}{1}
  
   \subsection{Movement libras}
   
   Se trata de un problema de clasficación multiclase (15 clases después de normalizar el dataset). 
   Contiene 360 instancias y 90 predictores.
   
-  \imagen{../data/mlibras.png}{Tasas de clasificación en Movement Libras}{wdbcgraph}{0.7}
+  \imagen{../data/multi-restart/mlibras.png}{Tasas de clasificación en Movement Libras}{wdbcgraph}{0.7}
   
-  Dado el elevado número de clases, no podemos analizar un boxplot para ver las diferencias entre los atributos que escogen unos
-  algoritmos y otros, pero parece que hay cierta estabilidad en las soluciones y que es difícil pasar del 70\% de acierto. Dicho lo
-  cual, es claro que en igualdad de condiciones deberíamos tomar la solución que menos tiempo tarde en efectuar los cálculos y
-  mayor tasa de reducción tenga (el SFS). Si escogiéramos un algoritmo por su tasa clasificatoria, nos iríamos a la tabú search
-  extendida, aunque es bastante lenta (1 minuto y 40 por partición).
-  
-  Además, todos los algoritmos tienen particiones en las que efectúan bastante overfitting (de diferencias de un 10\% o más).
-  Esto lo podemos explicar porque tenemos muchos más atributos que en el caso del \texttt{wdbc}, concretamente el triple, y
-  casi la mitad de instancias. Por tanto hay poca densidad de datos y las tasas en entrenamiento son mejores que las de 
-  prueba (7\% en las medias de la búsqueda tabú por ejemplo).
   
   \subsection{Arrhythmia}
   
   Se trata de un problema de clasficación multiclase (5 clases después de normalizar el dataset). 
   Tiene 386 instancias y 253 predictores.
   
-  \imagen{../data/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
-  
-  Es un problema muy complejo, pues tenemos menos instancias que variables para predecir (193 instancias que tendrán
-  los conjuntos de entrenamiento por 253 variables). La SFS ya nos está diciendo, obteniendo datos mejores de clasificación
-  que el propio 3-knn, que la mayoría de variables no son estadísticamente significativas (reduce casi un 98\% el conjunto de variables)
-  para efectuar la clasificación.
-  
-  En el resto de casos las tasas de reducción son mucho más bajas (en torno al 50\%), pero con porcentajes de clasificación
-  mucho menores. Probablemente, en el caso de las búsquedas tabú falten iteraciones para hacer converger la solución a una mejor
-  tasa de clasificación. En general se observa una gran dependencia de las 4 metaheaurísticas empleadas de la solución aleatoria
-  inicial, que parece ser bastante mala (de hecho, al ser aleatoria, tendrá un número equiparable de 0s y de 1s, aunque la mayoría
-  de variables no son estadísticamente significativas para determinar la clasificación, y nos deberíamos centrar en aquellas
-  que sí lo son y intentar modificar la solución desde ahí. Una posible solución sería tomar como solución inicial para las metaheurísticas
-  la del propio algoritmo greedy.
-  
-  Observamos en la tabla de resultados de la tabú extendida que hay una partición que tarda casi el doble que el resto.
-  A juzgar por cómo hemos programado el algoritmo, sólo cabe la posibilidad de que tarde más porque entra más veces a la
-  reinicialización, y concretamente a la diversificación, aunque el dato puede ser simplemente un outlier.
-  
-  Un porcentaje del 75\% de diversificar(de las dos formas posibles) en este caso parece bastante
-  elevado para partir de una solución aleatoria o generada a partir de frecuencias que será bastante mala en la mayoría de los casos. Maxime cuando el problema
-  tiene 253 posibles variables. Como por el operador de generación de vecino que hemos montado, y eso se observa en la tabla
-  resumen, tenemos la misma probabilidad de unos que de ceros en una solución, y hay en este caso $\binom{253}{50}$ posibles
-  máscaras que obtendremos, por $\binom{30}{15}$, en el que las búsquedas tabú sí eran muy buenas,
-  del caso del \texttt{movement libras}, podemos afirmar que quizá falten iteraciones para poder hacer esta búsqueda tabú 
-  converger a soluciones mejores. Pero si cada tabú extendida está tardando del orden de 50-60 minutos por partición,
-  un número mayor de iteraciones es insostenible para un computador doméstico.
+  \imagen{../data/multi-restart/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
   
   \subsection{Notas finales}
-  
-  Una posible solución a nuestros problemas de convergencia sería programar otro operador de generación de vecino, que
-  no tuviese la misma probabilidad de generar unos que de ceros. Como las tasas de reducción de la SFS en todos los casos
-  es superior al 80\%, llegando al 97\% en el caso de arrhythmia, podríamos intentar programar un operador de vecino que
-  tuviese un 70-75\% de posibilidades de generar un 0 en la posición escogida, y un 1 con un 0.3-0.25 de probabilidad.
-  
-  Otra mejora que podría implementarse es partir en todos los casos como solución inicial de la greedy.
-  
-  En el caso del dataset \texttt{mlibras}, modificando la tenencia tabú a $2/3*n$ (esto es\texttt{BT.coef.tenencia.tabu <- 2/3}
-  en \texttt{params.r}) se ha llegado a un 68\% de tasa de acierto.
   
   
 \end{document}
