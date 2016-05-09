@@ -59,8 +59,8 @@ AG <- function(data, crossover = crossover.OX){
     n.cruces <- ceiling( size.population*prob.cruce*0.5 )
     
     cruces <- lapply(seq(1, n.cruces, 2), function(i){
-      chrom.one <- crossover(population[[i]], population[[i%%n.cruces + 1]]) 
-      chrom.two <- crossover(population[[i%%n.cruces +1]], population[[i]]) 
+      chrom.one <- crossover(population[[i]], population[[i+1]]) 
+      chrom.two <- crossover(population[[i+1]], population[[i]]) 
       
       c(list(mask = chrom.one, fitness=0, evaluated = FALSE),
         list(mask = chrom.two, fitness=0, evaluated = FALSE))
