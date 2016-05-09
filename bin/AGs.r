@@ -56,14 +56,17 @@ AG <- function(data, crossover = crossover.OX){
   ##########################################################  
   make.crossover <- function(population, prob.cruce){
     size.population <- length(population)
-    n.cruces <- ceiling( size.population*prob.cruce )
+    n.cruces <- ceiling( size.population*prob.cruce*0.5 )
     
-    cruces <- lapply(1:n.cruces, function(i){
-      chromosome <- crossover(population[[i]], population[[i%%n.cruces + 1]]) 
-      list(mask = chromosome, fitness=0, evaluated = FALSE)
+    cruces <- lapply(seq(1, n.cruces, 2), function(i){
+      chrom.one <- crossover(population[[i]], population[[i%%n.cruces + 1]]) 
+      chrom.two <- crossover(population[[i%%n.cruces +1]], population[[i]]) 
+      
+      c(list(mask = chrom.one, fitness=0, evaluated = FALSE),
+        list(mask = chrom.two, fitness=0, evaluated = FALSE))
     })
     
-    population[1:n.cruces] <- cruces
+    population[1:length(cruces)] <- cruces
     population
   }
   
@@ -72,8 +75,13 @@ AG <- function(data, crossover = crossover.OX){
   ##########################################################
   make.mutation <- function(population, prob.mutation){
     size.population <- length(population)
-    n.mutations <- ceiling( n*size.population*prob.mutation )
+    n.mutations <- n*size.population*prob.mutation
     
+    # Comprobación para no realizar demasiadas mutaciones
+    if (runif(1, 0.0, 1.0) < n.mutations){
+      n.mutations <- ceiling(n.mutations)
+    }
+
     crom.mutate <- sample(1:size.population, n.mutations, replace=TRUE)
     gen.mutate <- sample(1:n, n.mutations, replace=TRUE) 
     
@@ -170,6 +178,7 @@ AG <- function(data, crossover = crossover.OX){
       population <- make.crossover(population, prob.cruce)
       # Mutaciones
       population <- make.mutation(population, prob.mutation)
+      
       # Recalculamos las tasas de la poblacion
       n.eval <- n.eval + count.not.evaluated (population)
       population <- eval.fitness(population)

@@ -67,7 +67,7 @@ ILS.num.sols.init <- 25
 
 
 
-# Parametros de AGs
+# Parametros de AGs (AGG: generacional, AGE: estacionario)
 #### n.crom               numero de cromososmas en cada iteracion
 #### prob.cruce           probabilidad de que dos padres crucen
 #### prob.mutacion        probabilidad de mutacion de un gen
