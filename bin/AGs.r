@@ -43,9 +43,10 @@ AG <- function(data, crossover = crossover.OX){
   ##########################################################
   ### Operador de seleccion
   ##########################################################  
-  make.selection <- function(parents.paired){
+  make.selection <- function(new.size){
+    pairs <- Map(c, sample(1:n.crom, new.size), sample(1:n.crom, new.size))
     # Hace una seleccion por torneo binario
-    lapply(parents.paired, function(p){
+    lapply(pairs, function(p){
       sorted( population[p] ) [[length(p)]]  
     })
   }
@@ -103,7 +104,7 @@ AG <- function(data, crossover = crossover.OX){
   #### Reemplaza el peor de la poblacion por otro dado
   #### caso de ser mejor cromosoma que el
   ##########################################################  
-  make.replacement <- function(population, old.best){
+  keep.elitism <- function(population, old.best){
     # Si el antiguo mejor no está en la poblacion,
     # lo cambiamos por el nuevo peor
     
@@ -165,12 +166,11 @@ AG <- function(data, crossover = crossover.OX){
     
     # Bucle principal
     while(n.eval < max.eval){
-      pairs <- Map(c, sample(1:n.crom, n.crom), sample(1:n.crom, n.crom))
-      
       # Conservamos el antiguo mejor de la poblacion
       old.best <- population[[n.crom]]
+      
       # Seleccion
-      population <- make.selection(pairs)
+      population <- make.selection(n.crom)
       # Cruce
       population <- make.crossover(population, prob.cruce)
       # Mutaciones
@@ -180,7 +180,7 @@ AG <- function(data, crossover = crossover.OX){
       n.eval <- n.eval + count.not.evaluated (population)
       population <- eval.fitness(population)
       # Elitismo
-      population <- make.replacement (population, old.best)
+      population <- keep.elitism (population, old.best)
     }  
     
     # Ordenando la poblacion por tasa de menor a mayor, delvolvemos el mejor...
@@ -194,11 +194,8 @@ AG <- function(data, crossover = crossover.OX){
     n.eval <- 0
     
     while(n.eval < max.eval){
-      # Sacamos dos padres al azar
-      pairs <- Map(c, sample(1:n.crom, 2), sample(1:n.crom, 2))
-      
       # Seleccion
-      new.generation <- make.selection(pairs)
+      new.generation <- make.selection(2)
       # Cruce
       new.generation <- make.crossover(new.generation, prob.cruce)
       # Mutaciones
@@ -210,8 +207,8 @@ AG <- function(data, crossover = crossover.OX){
       
       # Introducimos en la nueva poblacion los dos hijos,
       # caso de ser mejores que las de las peores soluciones
-      population <- make.replacement (population, new.generation[[2]])
-      population <- make.replacement (population, new.generation[[1]])
+      population <- keep.elitism (population, new.generation[[2]])
+      population <- keep.elitism (population, new.generation[[1]])
     }  
     # Ordenando la poblacion por tasa de menor a mayor, delvolvemos el mejor...
     population <- sorted(population)

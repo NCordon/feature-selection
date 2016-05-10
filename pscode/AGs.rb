@@ -29,6 +29,8 @@ def crossover(population, prob){
         population[i].evaluated = False
         population[i+1].evaluated = False
     }
+
+    return(population)
 }
 
 def mutate(population, prob){
@@ -49,9 +51,11 @@ def mutate(population, prob){
         flip(population[crom[i]].mask, gen[i])
         population[crom[i]].evaluated = False
     }
+
+    return(population)
 })
 
-def make_replacement(population, old_best){
+def keep_elitism(population,old_best){
     if old_best not in population{
         k = arg min{population[0].fitness,...population[M-1].fitness}
 
@@ -59,6 +63,8 @@ def make_replacement(population, old_best){
             population[k] = old_best
         }
     }
+
+    return(population)
 }
 
 def reeval(population){
@@ -67,4 +73,5 @@ def reeval(population){
             c.fitness = tasa(c.mask)
         }
     }
+    return(population)
 }
