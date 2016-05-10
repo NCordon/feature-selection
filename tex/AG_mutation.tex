@@ -1,0 +1,24 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textbf{\textcolor{Blue}{def}}\ mutate\textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ prob\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ n\ es\ el\ número\ de\ predictores\ del\ dataset}} \\
+\mbox{}\ \ \ \ M\ \textcolor{BrickRed}{\textless{}-}\ length\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ mutations\ \textcolor{BrickRed}{\textless{}-}\ n\textcolor{BrickRed}{*}M\textcolor{BrickRed}{*}prob \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ Esto\ impide\ que\ mutemos\ siempre\ en\ el\ estacionario}} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}random\textcolor{BrickRed}{(}\textcolor{Purple}{0.0}\textcolor{BrickRed}{,}\ \textcolor{Purple}{1.0}\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textless{}}\ mutations\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ mutations\ \textcolor{BrickRed}{\textless{}-}\ ceil\textcolor{BrickRed}{(}n\textcolor{BrickRed}{.}mutations\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Se\ escogen\ los\ genes\ que\ se\ mutarán\ junto\ a\ sus\ cromosomas}} \\
+\mbox{}\ \ \ \ \ \ \ \ crom\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ \textbf{\textcolor{Blue}{for}}\ i\ \textcolor{BrickRed}{\textless{}}\ mutations\ random\textcolor{BrickRed}{[}\textcolor{Red}{\{}\textcolor{Purple}{0}\textcolor{BrickRed}{,...,}M\textcolor{Red}{\}}\textcolor{BrickRed}{]} \\
+\mbox{}\ \ \ \ \ \ \ \ gen\ \ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ \textbf{\textcolor{Blue}{for}}\ i\ \textcolor{BrickRed}{\textless{}}\ mutations\ random\textcolor{BrickRed}{[}\textcolor{Red}{\{}\textcolor{Purple}{0}\textcolor{BrickRed}{,...,}n\textcolor{Red}{\}}\textcolor{BrickRed}{]} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{for}}\ i\ \textbf{\textcolor{Blue}{in}}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}len\textcolor{BrickRed}{(}crom\textcolor{BrickRed}{)}\textcolor{Red}{\}\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ flip\textcolor{BrickRed}{(}population\textcolor{BrickRed}{[}crom\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]].}mask\textcolor{BrickRed}{,}\ gen\textcolor{BrickRed}{[}i\textcolor{BrickRed}{])} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}crom\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]].}evaluated\ \textcolor{BrickRed}{=}\ False \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)} \\
+\mbox{}\textcolor{Red}{\}}\textcolor{BrickRed}{)} \\
+\mbox{}

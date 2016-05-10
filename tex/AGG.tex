@@ -1,0 +1,21 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textbf{\textcolor{Blue}{def}}\ AGG\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ n\ \textcolor{BrickRed}{=}\ num$\_$col\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ n$\_$eval\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{0} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{while}}\textcolor{BrickRed}{(}n$\_$eval\ \textcolor{BrickRed}{\textless{}}\ max$\_$eval\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ old$\_$best\ \textcolor{BrickRed}{=}\ population\textcolor{BrickRed}{[}\ arg\ max\ population\textcolor{BrickRed}{.}fitness\ \textcolor{BrickRed}{]} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ selection\textcolor{BrickRed}{(}\textcolor{Purple}{30}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ crossover\textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ p$\_$cruce\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ mutate\textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ p$\_$mutation\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ n$\_$eval\ \textcolor{BrickRed}{+=}\ count\ \textcolor{BrickRed}{(}which\textcolor{BrickRed}{(}\textbf{\textcolor{Blue}{not}}\ population\textcolor{BrickRed}{.}evaluated\textcolor{BrickRed}{))} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ reeval\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ keep$\_$elitism\ \textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ old\textcolor{BrickRed}{.}best\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ \textcolor{BrickRed}{(}population\textcolor{BrickRed}{[}\ arg\ max\ population\textcolor{BrickRed}{.}fitness\ \textcolor{BrickRed}{].}mask\textcolor{BrickRed}{)} \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}

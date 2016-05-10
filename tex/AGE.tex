@@ -1,0 +1,21 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textbf{\textcolor{Blue}{def}}\ AGE\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ n\ \textcolor{BrickRed}{=}\ num$\_$col\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ n$\_$eval\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{0} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{while}}\textcolor{BrickRed}{(}n$\_$eval\ \textcolor{BrickRed}{\textless{}}\ max$\_$eval\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ new$\_$generation\ \textcolor{BrickRed}{=}\ selection\textcolor{BrickRed}{(}\textcolor{Purple}{2}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ new$\_$generation\ \textcolor{BrickRed}{=}\ crossover\textcolor{BrickRed}{(}new$\_$generation\textcolor{BrickRed}{,}\ p$\_$cruce\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ new$\_$generation\ \textcolor{BrickRed}{=}\ mutate\textcolor{BrickRed}{(}new$\_$generation\textcolor{BrickRed}{,}\ p$\_$mutacion\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ n$\_$eval\ \textcolor{BrickRed}{+=}\ count\ \textcolor{BrickRed}{(}which\textcolor{BrickRed}{(}\textbf{\textcolor{Blue}{not}}\ population\textcolor{BrickRed}{.}evaluated\textcolor{BrickRed}{))} \\
+\mbox{}\ \ \ \ \ \ \ \ new$\_$generation\ \textcolor{BrickRed}{=}\ reeval\textcolor{BrickRed}{(}new$\_$generation\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ keep$\_$elitism\ \textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ best\textcolor{BrickRed}{(}new$\_$generation\textcolor{BrickRed}{))} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ keep$\_$elitism\ \textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ worst\textcolor{BrickRed}{(}new$\_$generation\textcolor{BrickRed}{))} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ \textcolor{BrickRed}{(}population\textcolor{BrickRed}{[}\ arg\ max\ population\textcolor{BrickRed}{.}fitness\ \textcolor{BrickRed}{].}mask\textcolor{BrickRed}{)} \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}

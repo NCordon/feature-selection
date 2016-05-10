@@ -247,55 +247,70 @@ Los algoritmos considerados tienen las siguientes componentes:
 \begin{itemize} 
 \item \textbf{Esquema de representación:} se emplean máscaras de bits, sucesiones de unos y ceros de tanta longitud como atributos haya,
 exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa característica se ha escogido, y un $0$ que no.
+Asimismo en esta práctica, cada solución se ha encapsulado con su tasa de score, y un flag que indica si está actualizada o
+no, lo que posibilita realizar exactamente 15000 evaluaciones de la función objetivo y no recalcular tasas que ya habíamos
+obtenido.
 
 \item \textbf{Función objetivo}: la función a maximizar será la tasa de clasificación explicada arriba usando el clasificador
 3-knn con la selección de características indicada por la máscara.\\
 
   \small\texttt{\input{tasa_clasificacion}}
   \normalsize
-
-\item \textbf{Generación de soluciones aleatorias: }
   
-
-\item \textbf{Algoritmo Búsqueda Local (BL)} empleado:
+\item \textbf{Generación de soluciones aleatorias}:
+  La población inicial en ambos casos se inicializa haciendo uso del siguiente procedimiento (con 30 cromosomas en el caso
+  del generacional y 2 en el estacionario):
+  
+  \small\texttt{\input{AG_gen_init}}
   \normalsize
 
-  El operador de generación de vecino usado ha sido:\\
-  
-  \small\texttt{\input{flip}}
+\item \textbf{Mecanismo de selección}:
+
+  \small\texttt{\input{AG_selection}}
   \normalsize
   
-  El algoritmo, propiamente dicho, que se ha empleado ha sido:\\
-  
-  \small\texttt{\input{BL}}
+\item \textbf{Operador de cruce}:
+
+  Se incluye a continuación el pseudocódigo del operador de cruce OX y de la función que se emplea para aplicarlo
+
+  \small\texttt{\input{AG_crossover}}
   \normalsize
 
-\item Criterio de aceptación de solución: se considera una función mejor cuando aumenta la función objetivo (tasa de 
-clasificación del 3-knn para la máscara dada por esa solución).
+\item \textbf{Operador de mutación}:
+
+  \small\texttt{\input{AG_mutation}}
+  \normalsize
   
-\item Número de multiarranques: se empleará la búsqueda local sobre 25 máscaras en el BMB, GRASP e ILS.
 
 \end{itemize}
 
 \newpage
 \section{Profundización en los algoritmos}
-Se ha empleado una estructura común para construir los dos algoritmos, por medio de funciones auxialiares cuyo pseudocodigo
-se detalla a continuación.
+Se ha empleado una estructura común para construir los dos algoritmos, por medio de los procedimientos cuyo pseudocódigo se
+ha detallado en el punto anterior. Asimismo se ha empleado el siguiente procedimiento para realizar los reemplazamientos
+en los dos genéticos.
 
 \small{\texttt{\input{AGs}}}
 \normalsize
 
+
+La función \texttt{reeval} se emplea para calcular el \textit{score} a aquellas máscaras que se han modificado durante
+el proceso de evaluación genética, y que se han marcado a reevaluar mediante un \textit{flag}. Las máscaras que no se han
+modificado no sufreen reevaluación del score.
+
 Sea a partir de aquí $n$ el número de predictores de los respectivos \textit{datasets}, $M$ el tamaño de la población, 
 siendo de 30 cromosomas en el caso del algoritmo generacional, y de 2 padres en el algoritmo estacionario.
 
+La estructura de los dos algoritmos a partir de todos estos procedimientos auxiliares se detalla a continuación:
+
 \subsection{Algoritmo genético generacional}
 
-%\small{\texttt{\input{AGG}}}
+\small{\texttt{\input{AGG}}}
 \normalsize
 
 \subsection{Algoritmo genético estacionario}
 
-%\small{\texttt{\input{AGE}}}
+\small{\texttt{\input{AGE}}}
 \normalsize
 
 \section{Algoritmo de comparación: SFS}
@@ -306,18 +321,15 @@ de las no escogidas hasta el momento que maximiza la tasa de clasificación aña
 que la característica escogida no mejore a la mejor solución hasta el momento
 
 \section{Implementación de la práctica}
-Para la implementación de la práctica, se ha optado, al igual que en la primera práctica de trayectorias simples,
-por usar el lenguaje de programación R, reutilizando toda la lectura de ficheros ya implementada para la primera práctica
+Para la implementación de la práctica, se ha reutilizado toda la estructura de lectura de ficheros y funciones auxiliares
+empleada para las dos anteriores.
 
 El clasificador \texttt{3nn} leaving one out empleado es el incluido en el paquete \texttt{class}, de nombre
 \texttt{knn.cv}. Para su uso, se le pasa como argumento el número de vecinos a considerar (3). El argumento 
 \texttt{use.all=TRUE} indica que en caso de empate considere todas las etiquetas de las instancias con distancias 
 iguales a la mayoritaria (en este caso las tres), y escoja la etiqueta mayoritaria de entre todas. 
 
-Ya se comentó en la primera práctica la desventaja de usar este paquete de R en caso de triple empate al escoger la etiqueta
-que asignar de manera aleatoria.
-
-Se emplea de nuevo la función (\texttt{normalize(data.frame)}) que limpia los \textit{datasets} de columnas con
+Se hace uso de la función (\texttt{normalize(data.frame)}) que limpia los \textit{datasets} de columnas con
 un único valor, establece los nombres de los atributos todos a minúsculas, reordena los atributos del dataset para que
 la clase sea el último de todos, y hace una transformación con las columnas para que todos los valores estén comprendidos
 entre 0 y 1.
@@ -325,7 +337,7 @@ entre 0 y 1.
 Se describe a continuación un esquema de los ficheros de código:
 \begin{itemize}
  \item \hrefr{main.r}: de arriba a abajo, carga los paquetes necesarios, incluye el código fuente de otros ficheros
-  (\hrefr{aux.r}, \hrefr{NN3.r}, \hrefr{SFS.r}, \hrefr{BL.r},\ldots) y lee los parámetros necesarios, entre ellos las 
+  (\hrefr{aux.r}, \hrefr{AGs.r}, \ldots) y lee los parámetros necesarios, entre ellos las 
   semillas aleatorias (12345678, 23456781, 34567812, 45678123, 56781234) del fichero \hrefr{params.r}
   
   Se ejecuta la función \texttt{cross.eval(algoritmo)}, que almacena los resultados de la ejecución en la lista
@@ -333,24 +345,34 @@ Se describe a continuación un esquema de los ficheros de código:
   con 10 filas cada uno  y columnas las tasas de clasificación de test y train, la tasa de reducción y el tiempo de 
   ejecución. Incluye también 3 datasets más con la media de los datos anteriores para cada conjunto de datos.
  
+  Esta función se ejecutará pasándole como parámetros la función del algoritmo genético generacional y la del estacionario.
+  
  \item \hrefr{aux.r}: contiene las implementaciones de la función de normalización de datasets, la función de
  particionado de \texttt{data.frames}, la función objetivo \texttt{tasa.clas} y la función \texttt{cross.eval}
  descrita arriba.
  
- \item \hrefr{BL.r}, \hrefr{BMB.r}, \hrefr{GRASP.r}, \hrefr{ILS.r}: contiene la implementación de los algoritmos de Búsqueda Local (BL), Búsqueda 
- Multiarranque Básica(BMB), Búsqueda Multiarranque GRASP(GRASP) y Búsqueda Local Reiterada(ILS), respectivamente. 
- Asimismo también incluye los inicializadores de máscaras aleatorias (\texttt{random.init}), en \texttt{BL.r} 
- y de máscaras greedy aleatorizadas (\texttt{random.greedy.init}), este en \texttt{GRASP.r}
+ \item \hrefr{AGs.r}: contiene:
+  \begin{itemize}
+   \item La función \texttt{random.init} que se aplica 30 veces en cada algoritmo para inicializar la
+ población con máscaras aleatorias
+   \item La función \texttt{crossover.OX} que es el operador de cruce que por defecto se usa. Podría implementarse otro y
+   aplicarlo en lugar del OX de forma fácil según la estructura que se ha creado al programar.
+   \item Una metafunción de nombre AG, a la que se le pasa un dataset y un operador de cruce, y devuelve dos funciones,
+   una que al ejecutarla realiza el proceso de algoritmo generacional, y otra del estacionario. Se ha optado por esta 
+   técnica de implementación para encapsular todo lo común a los dos algoritmos, que como se ha descrito en el presente
+   documento se han implementado usando las mismas funciones auxiliares para efectuar selecciones-torneos, cruces, mutaciones,
+   etc.
+  \end{itemize}
  
  \item \hrefr{params.r}: fichero del que se leen los parámetros:
   \begin{itemize}
     \item \texttt{semilla}: vector de semillas aleatorias para poder reproducir los análisis hechos.
-    \item \texttt{BMB.num.sols.init, GRASP.num.sols.init, ILS.num.sols.init}: número de rearranques del algoritmo homónimo.
-    Por defecto seteados a 25.
-    \item \texttt{GRASP.alpha}: tolerancia para aceptar, en el algoritmo GRASP, una solución en la lista de candidatos 
-    respecto a la mejor solución en esa iteración. Por defecto, $\alpha=0.3$
-    \item \texttt{ILS.coef.mutacion}: multiplicado por $n$ (número de características en total), es el número de coeficientes
-    de una máscara que se mutarán en la Búsqueda Local Reiterada. En nuestro caso, 0.1 por defecto (un 10\%).
+    \item \texttt{max\_eval}: número máximo de evaluaciones de la función objetivo.
+    \item \texttt{AG.n.crom}: tamaño de la población. Por defecto seteado a 30.
+    \item \texttt{AGG.prob.cruce, AGE.prob.cruce}: probabilidad de cruce de los padres para dar lugar a un nuevo cromosoma 
+    en los algoritmos generacional y estacionario, respectivamente. Está seteada a 0.7 y a 1 por defecto.
+    \item \texttt{AGG.prob.cruce, AGE.prob.cruce}: probabilidad de mutación de los genes(cada una de las $n$ características
+    de la máscara)en las soluciones del generacional y estacionario, respectivamente. Está seteada a 0.001 (1 gen por cada mil)
   \end{itemize}
  \end{itemize}
  

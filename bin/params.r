@@ -72,7 +72,7 @@ ILS.num.sols.init <- 25
 #### prob.cruce           probabilidad de que dos padres crucen
 #### prob.mutacion        probabilidad de mutacion de un gen
 ####
-AG.n.crom <- 30
+AGG.n.crom <- 30
 AGG.prob.cruce <- 0.7
 AGG.prob.mutation <- 0.001
 AGE.n.crom <- 2

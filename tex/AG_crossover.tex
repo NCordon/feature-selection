@@ -1,0 +1,26 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textbf{\textcolor{Blue}{def}}\ OX\textcolor{BrickRed}{(}xx\textcolor{BrickRed}{,}\ xy\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ k\ \textcolor{BrickRed}{=}\ length\textcolor{BrickRed}{(}xx\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ limites\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}random\textcolor{BrickRed}{(}\textcolor{Purple}{1}\textcolor{BrickRed}{,}k\textcolor{BrickRed}{):}random\textcolor{BrickRed}{(}\textcolor{Purple}{1}\textcolor{BrickRed}{,}k\textcolor{BrickRed}{)]} \\
+\mbox{}\ \ \ \ chromosome\ \textcolor{BrickRed}{=}\ yy \\
+\mbox{}\ \ \ \ chromosome\textcolor{BrickRed}{[}limites\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{\textless{}-}\ xy\textcolor{BrickRed}{[}limites\textcolor{BrickRed}{]} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\textcolor{BrickRed}{(}chromosome\textcolor{BrickRed}{)} \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{} \\
+\mbox{}\textbf{\textcolor{Blue}{def}}\ crossover\textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ prob\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ n$\_$cruces\ \textcolor{BrickRed}{=}\ ceiling\textcolor{BrickRed}{(}\ length\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)*}prob\textcolor{BrickRed}{*}\textcolor{Purple}{0.5}\ \textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ i\textcolor{BrickRed}{=}\textcolor{Purple}{0} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{for}}\textcolor{BrickRed}{(}j\textcolor{BrickRed}{=}\textcolor{Purple}{0}\textcolor{BrickRed}{;}\ j\textcolor{BrickRed}{\textless{}}n$\_$cruces\textcolor{BrickRed}{;}\ j\textcolor{BrickRed}{+=}\textcolor{Purple}{1}\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{].}mask\ \textcolor{BrickRed}{=}\ crossover\textcolor{BrickRed}{(}population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{],}\ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{])} \\
+\mbox{}\ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{].}mask\ \textcolor{BrickRed}{=}\ crossover\textcolor{BrickRed}{(}population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{],}\ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{])} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{].}evaluated\ \textcolor{BrickRed}{=}\ False \\
+\mbox{}\ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{].}evaluated\ \textcolor{BrickRed}{=}\ False \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)} \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}
