@@ -1,5 +1,6 @@
 def OX(xx, xy){
-    limites = [random():random()]
+    k = length(xx)
+    limites = [random(1,k):random(1,k)]
     chromosome = yy
     chromosome[limites] <- xy[limites]
 
@@ -8,31 +9,26 @@ def OX(xx, xy){
 
 
 def selection(pairs){
-v =[for p in pairs{
-    if(pair.first().fitness < pair.second().fitness)
-        yield pair.first()
-    else
-        yield pair.second()
+    v =[for p in pairs{
+        if(pair.first().fitness < pair.second().fitness)
+            yield pair.first()
+        else
+            yield pair.second()
     ]
 }
 
 
 def crossover(population, prob){
     n_cruces = ceiling( length(population)*prob*0.5 )
-    cruces = []
     i=0
 
     for(j=0; j<n_cruces; j+=1){
-        uno = crossover(population[i], population[i+1])
-        otro = crossover(population[i+1], population[i])
+        population[i].mask = crossover(population[i], population[i+1])
+        population[i+1].mask = crossover(population[i+1], population[i])
 
-        cruces.add( [list(mask = uno, fitness=0, evaluated = False])
-        cruces.add( [list(mask = otro, fitness=0, evaluated = False])
-        j+=2
+        population[i].evaluated = False
+        population[i+1].evaluated = False
     }
-
-    population[1:length(cruces)] = cruces
-    return(population)
 }
 
 def mutate(population, prob){
@@ -40,12 +36,35 @@ def mutate(population, prob){
     M <- length(population)
     mutations <- n*M*prob
 
-
+    # Esto impide que mutemos todas las soluciones en el estacionario
     if (random(0.0, 1.0) < mutations){
-        mutations <- ceiling(n.mutations)
+        mutations <- ceil(n.mutations)
     }
 
     # Se escogen los genes que se mutarán junto a sus cromosomas
     crom = [ for i < mutations random[{0,...,M}]
     gen  = [ for i < mutations random[{0,...,n}]
+
+    for i in {1...len(crom)}{
+        flip(population[crom[i]].mask, gen[i])
+        population[crom[i]].evaluated = False
+    }
 })
+
+def make_replacement(population, old_best){
+    if old_best not in population{
+        k = arg min{population[0].fitness,...population[M-1].fitness}
+
+        if population[k].fitness < old_best.fitness{
+            population[k] = old_best
+        }
+    }
+}
+
+def reeval(population){
+    for c in population{
+        if c.evaluated == False{
+            c.fitness = tasa(c.mask)
+        }
+    }
+}

@@ -88,12 +88,9 @@ AG <- function(data, crossover = crossover.OX){
     # Hacemos las mutaciones en los genes de las codificaciones
     mutations <- lapply(1:n.mutations, function(i){
       chromosome <- population[[crom.mutate[i]]]$mask
-      
-      gen <- chromosome[gen.mutate[i]]
-      gen <- (gen+1) %% 2
-      
+
       # Mutamos y recalculamos tasa
-      chromosome[gen.mutate[i]] <- gen
+      chromosome[gen.mutate[i]] <- !chromosome[gen.mutate[i]]
       
       list(mask = chromosome, fitness=0, evaluated = FALSE)
     })
