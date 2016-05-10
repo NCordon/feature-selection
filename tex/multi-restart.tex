@@ -214,8 +214,7 @@ metaheaurísticas disponibles para comprobar cuál produce el conjunto de atribu
 tasa de clasificación (número de instancias bien clasificadas sobre el total) usando un clasificador de instancias.
 En otras palabras, si tenemos $p$ atributos o características, el número total de subconjuntos de características que podemos
 escoger es $2^p$. Cada uno de esos conjuntos o selecciones de características tendrá una tasa de clasificación asociada para
-el clasificador que hemos escogido. Como este problema cuando $p$ es muy grande es inabordable por fuerza bruta, se trata de aplicar metaheurísticas para encontrar la mejor selección de características que
-podamos de entre esas $2^p$ posibilidades.
+el clasificador que hemos escogido. Como este problema cuando $p$ es muy grande es inabordable por fuerza bruta, se aplican metaheurísticas para encontrar la mejor selección de características posible de entre esas $2^p$ posibilidades.
 
 Se considera la tasa de clasificación en el problema usando un clasificador \textit{3-knn} leaving one-out. Para cada 
 instancia de un conjunto, toma las 3 más cercanas usando la distancia euclídea entre sus atributos, y etiqueta la nueva
@@ -246,46 +245,58 @@ a 1. A una representación de esta forma, la denominamos máscara: $$ mask =\beg
 Los algoritmos considerados tienen las siguientes componentes:
 
 \begin{itemize} 
-\item \textbf{Esquema de representación:} se usarán máscaras, sucesiones de unos y ceros de tanta longitud como atributos haya,
+\item \textbf{Esquema de representación:} se usan máscaras, sucesiones de unos y ceros de tanta longitud como atributos haya,
 exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa característica se ha escogido, y un $0$ que no.
 
 \item \textbf{Función objetivo}: la función a maximizar será la tasa de clasificación explicada arriba usando el clasificador
 3-knn con la selección de características indicada por la máscara.\\
 
 \small\texttt{\input{tasa_clasificacion}}
+\normalsize
 
 \item \textbf{Generación de solución inicial: }
   \begin{itemize}
-   \item BMB: se generarán iterativamente 25 soluciones aleatorias sobre las que se aplicará búsqueda local
+   \item BMB: En la BMB se generarán 25 soluciones aleatorias sobre las que se aplicará búsqueda local.
    para refinarlas.\\
    
-    \small\texttt{\input{BMB_gen_init}}
+   \small\texttt{\input{BMB_gen_init}}
+   \normalsize
    
-   \item GRASP: la solución inicial se generará mediante un \textit{greedy} aleatorizado, y se refinará mediante
+   \item GRASP: La solución inicial se generará mediante un \textit{greedy} aleatorizado, y se refinará mediante
    la búsqueda local, quedándonos con la mejor de entre 25 generadas.\\
    
    \small\texttt{\input{GRASP_gen_init}}
+   \normalsize
+   
+   \item ILS: Se generará una solución inicial aleatoria mediante el procedimiento descrito a continuación, y sobre esa se
+   aplicará búsqueda local, y el resto de iteraciones del algoritmo (24), se aplicará el mismo sobre la mejor solución
+   mutada.\\
+   
+   \small\texttt{\input{ILS_gen_init}}
+   \normalsize
+    
   \end{itemize}
 
 
 \item \textbf{Algoritmo Búsqueda Local (BL)} empleado:
   
-  El operador de generación de vecino usado ha sido:\\
+  El operador de generación de vecino usado ha sido:
+  \footnote{En R, puesto que estamos manejando un vector de 0 y 1, el operador \texttt{flip} puede explicitarse como
+  \texttt{mask[j]} = \texttt{!mask[j]} o incluso para una parte del vector:\quad \texttt{mask[c(i,j,...k)] = !mask[c(i,j,..,k)]}}\\
   
   \small\texttt{\input{flip}}
+  \normalsize
+  
   
   El algoritmo, propiamente dicho, que se ha empleado ha sido:\\
   
   \small\texttt{\input{BL}}
 
-\item Criterio de aceptación de solución: se considera una función mejor cuando aumenta la función objetivo (tasa de 
-clasificación del 3-knn para la máscara dada por esa solución).
-  
-\item Número de multiarranques: se empleará la búsqueda local sobre 25 máscaras en el BMB, GRASP e ILS.
+\item \textbf{Número de multiarranques}: se empleará la búsqueda local sobre 25 máscaras en el BMB, GRASP e ILS.
 
 \end{itemize}
 
-\newpage
+
 \section{Profundización en los algoritmos}
 Se incluyen a continuación una descripción de cada metaheurística empleada junto a un pseudocódigo de las mismas.
 
@@ -315,14 +326,15 @@ que la característica escogida no mejore a la mejor solución hasta el momento
 \section{Implementación de la práctica}
 Para la implementación de la práctica, se ha optado, al igual que en la primera práctica de trayectorias simples,
 por usar el lenguaje de programación R, reutilizando toda la lectura de ficheros ya implementada para la primera práctica
+y todas las funciones auxiliares.
 
 El clasificador \texttt{3nn} leaving one out empleado es el incluido en el paquete \texttt{class}, de nombre
 \texttt{knn.cv}. Para su uso, se le pasa como argumento el número de vecinos a considerar (3). El argumento 
 \texttt{use.all=TRUE} indica que en caso de empate considere todas las etiquetas de las instancias con distancias 
 iguales a la mayoritaria (en este caso las tres), y escoja la etiqueta mayoritaria de entre todas. 
 
-Ya se comentó en la primera práctica la desventaja de usar este paquete de R en caso de triple empate al escoger la etiqueta
-que asignar de manera aleatoria.
+Ya se comentó en la primera práctica la desventaja de usar este paquete de R en caso de triple empate por el hecho de
+escoger la etiqueta que asignar de manera aleatoria y dar lugar esto a sesgo en distintas llamadas.
 
 Se emplea de nuevo la función (\texttt{normalize(data.frame)}) que limpia los \textit{datasets} de columnas con
 un único valor, establece los nombres de los atributos todos a minúsculas, reordena los atributos del dataset para que
@@ -332,13 +344,15 @@ entre 0 y 1.
 Se describe a continuación un esquema de los ficheros de código:
 \begin{itemize}
  \item \hrefr{main.r}: de arriba a abajo, carga los paquetes necesarios, incluye el código fuente de otros ficheros
-  (\hrefr{aux.r}, \hrefr{NN3.r}, \hrefr{SFS.r}, \hrefr{BL.r},\ldots) y lee los parámetros necesarios, entre ellos las 
-  semillas aleatorias (12345678, 23456781, 34567812, 45678123, 56781234) del fichero \hrefr{params.r}
+  (\hrefr{aux.r}, \hrefr{NN3.r}, \hrefr{SFS.r}, \hrefr{BL.r},\ldots) y lee los parámetros necesarios como las 
+  semillas aleatorias (12345678, 23456781, 34567812, 45678123, 56781234), desde el fichero \hrefr{params.r}
   
   Se ejecuta la función \texttt{cross.eval(algoritmo)}, que almacena los resultados de la ejecución en la lista
   \texttt{algoritmo.results}. Esta lista contendrá 3 dataframes con los datos del 5x2 cross validation, uno por dataset, 
   con 10 filas cada uno  y columnas las tasas de clasificación de test y train, la tasa de reducción y el tiempo de 
-  ejecución. Incluye también 3 datasets más con la media de los datos anteriores para cada conjunto de datos.
+  ejecución. Incluye también 3 datasets más con la media de los datos anteriores para cada conjunto de datos. La implementación
+  de la función \texttt{cross.eval} ha sido revisada para esta práctica, aunque su utilidad y su forma de uso sigue
+  siendo la misma.
  
  \item \hrefr{aux.r}: contiene las implementaciones de la función de normalización de datasets, la función de
  particionado de \texttt{data.frames}, la función objetivo \texttt{tasa.clas} y la función \texttt{cross.eval}
@@ -346,14 +360,15 @@ Se describe a continuación un esquema de los ficheros de código:
  
  \item \hrefr{BL.r}, \hrefr{BMB.r}, \hrefr{GRASP.r}, \hrefr{ILS.r}: contiene la implementación de los algoritmos de Búsqueda Local (BL), Búsqueda 
  Multiarranque Básica(BMB), Búsqueda Multiarranque GRASP(GRASP) y Búsqueda Local Reiterada(ILS), respectivamente. 
- Asimismo también incluye los inicializadores de máscaras aleatorias (\texttt{random.init}), en \texttt{BL.r} 
+ Asimismo también podemos encontrar los inicializadores de máscaras aleatorias (\texttt{random.init}), en \texttt{BL.r};
  y de máscaras greedy aleatorizadas (\texttt{random.greedy.init}), este en \texttt{GRASP.r}
  
  \item \hrefr{params.r}: fichero del que se leen los parámetros:
   \begin{itemize}
     \item \texttt{semilla}: vector de semillas aleatorias para poder reproducir los análisis hechos.
+    \item \texttt{max\_eval}: máximo de evaluaciones de la búsqueda local. Seteado a 15000.
     \item \texttt{BMB.num.sols.init, GRASP.num.sols.init, ILS.num.sols.init}: número de rearranques del algoritmo homónimo.
-    Por defecto seteados a 25.
+    Por defecto configurados a 25.
     \item \texttt{GRASP.alpha}: tolerancia para aceptar, en el algoritmo GRASP, una solución en la lista de candidatos 
     respecto a la mejor solución en esa iteración. Por defecto, $\alpha=0.3$
     \item \texttt{ILS.coef.mutacion}: multiplicado por $n$ (número de características en total), es el número de coeficientes

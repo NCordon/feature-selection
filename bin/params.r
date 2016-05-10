@@ -75,6 +75,5 @@ ILS.num.sols.init <- 25
 AGG.n.crom <- 30
 AGG.prob.cruce <- 0.7
 AGG.prob.mutation <- 0.001
-AGE.n.crom <- 2
 AGE.prob.cruce <- 1
 AGE.prob.mutation <- 0.001

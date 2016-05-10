@@ -96,7 +96,6 @@ cross.eval <- function(algorithm){
     class.split <- split(x, x$class)
     
     for (i in 1:n.eval){
-      print(semilla[i])
       set.seed(semilla[i])
       
       # Hacemos las particiones de entrenamiento y prueba

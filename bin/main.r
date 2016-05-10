@@ -27,6 +27,8 @@ load.my.packages()
 ##########################################################################
 ### Algoritmos
 ##########################################################################
+#data.file <- "seleccion-caracteristicas.RData"
+#load(file = data.file)
 
 source(file="./NN3.r")
 source(file="./SFS.r")
@@ -57,12 +59,9 @@ wdbc <- normalize (read.arff("../data/wdbc.arff"))
 datasets <- list(wdbc, mlibras, arrhythmia)
 datasets.names <- c("wdbc", "mlibras", "arrhythmia")
 
-
 ##########################################################################
 ### Obtencion de resultados
 ##########################################################################
-#data.file <- "seleccion-caracteristicas.RData"
-#load(file = data.file)
 
 # Metodos de trayectorias simples
 NN3.results <- cross.eval(NN3)
@@ -76,6 +75,7 @@ BT.ext.results <-cross.eval(BT.ext)
 BMB.results <- cross.eval(BMB)
 GRASP.results <- cross.eval(GRASP)
 ILS.results <- cross.eval(ILS)
+save.image(file = data.file, safe=TRUE)  
 
 # Algoritmos geneticos
 AGG.results <- cross.eval(AGG)

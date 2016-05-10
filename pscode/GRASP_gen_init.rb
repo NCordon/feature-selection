@@ -8,7 +8,7 @@ def random_greedy(n){
         tasas = {}
 
         foreach j in non_selected{
-            m = flip(mascara,j)
+            m = flip(mejor_mascara,j)
             mascaras.add(m)
             tasas.add(tasa(m))
         }
@@ -18,12 +18,12 @@ def random_greedy(n){
         m = mascaras[ random{1..n} ]
 
         if (tasa(m) > tasa(mejor_mascara)){
+            non_selected.delete(j : flip(mejor_mascara,j)=m)
             mejor_mascara = m
-            non_selected.delete(j : flip(mascara,j)=m)
         }
         else
             mejora=false
     }while !non_selected.empty and mejora
 
-    return mascara
+    return mejor_mascara
 }

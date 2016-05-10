@@ -1,7 +1,9 @@
 % Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
 \noindent
 \mbox{}\textbf{\textcolor{Blue}{def}}\ ILS\textcolor{BrickRed}{()}\textcolor{Red}{\{} \\
-\mbox{}\ \ \ \ mejor$\_$mascara\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ random\textcolor{BrickRed}{(}\textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{,}\textcolor{Purple}{0}\textcolor{Red}{\}}\textcolor{BrickRed}{)}\ from\ \textcolor{Purple}{0}\ to\ n\ \textcolor{BrickRed}{]} \\
+\mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ n\ el\ número\ de\ predictores\ del\ dataset}} \\
+\mbox{}\ \ \ \ mascara\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ random\textcolor{BrickRed}{(}\textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{,}\textcolor{Purple}{0}\textcolor{Red}{\}}\textcolor{BrickRed}{)}\ from\ \textcolor{Purple}{0}\ to\ n\ \textcolor{BrickRed}{]} \\
+\mbox{}\ \ \ \ mejor$\_$mascara\ \textcolor{BrickRed}{=}\ mascara \\
 \mbox{}\ \ \ \ num$\_$mutaciones\ \textcolor{BrickRed}{=}\ prob$\_$mutacion\ \textcolor{BrickRed}{*}\ n \\
 \mbox{} \\
 \mbox{}\ \ \ \ \textbf{\textcolor{Blue}{while}}\textcolor{BrickRed}{(}n$\_$eval\ \textcolor{BrickRed}{\textless{}}\ max\textcolor{BrickRed}{.}arranques\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
@@ -14,9 +16,9 @@
 \mbox{}\ \ \ \ \ \ \ \ mutaciones\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}random\textcolor{BrickRed}{(}\textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}n\textcolor{Red}{\}}\textcolor{BrickRed}{)}\ from\ \textcolor{Purple}{0}\ to\ num$\_$mutaciones\ \textcolor{BrickRed}{]} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \ \ \ \ foreach\ m\ \textbf{\textcolor{Blue}{in}}\ mutaciones\textcolor{Red}{\{} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mascara\ \textcolor{BrickRed}{=}\ flip\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}\ m\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mascara\ \textcolor{BrickRed}{=}\ flip\textcolor{BrickRed}{(}mejor$\_$mascara\textcolor{BrickRed}{,}\ m\textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
 \mbox{}\ \ \ \ \textcolor{Red}{\}} \\
-\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ mascara \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ mejor$\_$mascara \\
 \mbox{}\textcolor{Red}{\}} \\
 \mbox{}

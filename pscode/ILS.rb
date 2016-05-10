@@ -1,5 +1,7 @@
 def ILS(){
-    mejor_mascara = [ random({1,0}) from 0 to n ]
+    # n el número de predictores del dataset
+    mascara = [ random({1,0}) from 0 to n ]
+    mejor_mascara = mascara
     num_mutaciones = prob_mutacion * n
 
     while(n_eval < max.arranques){
@@ -12,8 +14,8 @@ def ILS(){
         mutaciones = [random({1...n}) from 0 to num_mutaciones ]
 
         foreach m in mutaciones{
-            mascara = flip(mascara, m)
+            mascara = flip(mejor_mascara, m)
         }
     }
-    return mascara
+    return mejor_mascara
 }
