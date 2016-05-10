@@ -15,7 +15,7 @@ ILS <- function(data){
   mask.best <- mask
   tasa.best <- tasa.clas(data, mask.best)
   
-  for(n.eval in 1:max.arranques){
+  for(n.eval in 1:(max.arranques-1)){
     # Aplicamos busqueda local sobre la solucion
     mask <- BL(data, function(x){ mask })
     tasa.mask <- tasa.clas(data, mask)

@@ -118,6 +118,7 @@ cross.eval <- function(algorithm){
     mean.results[[d]] <- with.decimals(result.mean)
   }
   
+  names(all.results) <- datasets.names
   names(mean.results) <- paste(datasets.names, ".media", sep="")
   # Salida
   append(all.results, mean.results)
