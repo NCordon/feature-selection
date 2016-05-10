@@ -79,7 +79,7 @@ BT.ext <- function(data){
     evs <- sapply(pos.vecinos, function(j){
       m <- mask
       
-      m[j] <- (m[j]+1)%%2
+      m[j] <- !m[j]
       tasa.actual <- tasa.clas(data, m)
       
       if (j %in% tabu.list){
@@ -98,7 +98,7 @@ BT.ext <- function(data){
     tasa.mejor.vecino <- evs[j]
     tabu.elem <- pos.vecinos[j]
     # Esto asigna a la solucion actual el mejor vecino
-    mask[tabu.elem] <- (mask[tabu.elem]+1)%%2
+    mask[tabu.elem] <- !mask[tabu.elem]
     
     if (tasa.mejor.vecino > tasa.best){
       mask.best <- mask

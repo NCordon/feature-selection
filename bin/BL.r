@@ -38,7 +38,7 @@ BL <- function(data, gen.init = random.init){
       j <- sample(non.selected, 1)
       non.selected <- non.selected[non.selected!=j]
       
-      m[j] <- (m[j]+1)%%2
+      m[j] <- !m[j]
       
       tasa.actual <- tasa.clas(data, m)
       n.eval <- n.eval + 1

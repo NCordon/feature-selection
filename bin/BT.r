@@ -31,7 +31,7 @@ BT <- function(data){
     evs <- sapply(pos.vecinos, function(j){
       m <- mask
       
-      m[j] <- (m[j]+1)%%2
+      m[j] <- !m[j]
       tasa.actual <- tasa.clas(data, m)
       
       if (j %in% tabu.list){

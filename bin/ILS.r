@@ -29,7 +29,7 @@ ILS <- function(data){
     # la iteracion actual y el mejor hasta el momento
     a.mutar <- sample(1:n, n.a.mutar)
     mask <- mask.best
-    mask[a.mutar] <- (mask[a.mutar]+1) %% 2
+    mask[a.mutar] <- !mask[a.mutar]
   }
   
   mask.best

@@ -50,7 +50,7 @@ ES <- function(data){
       
       # Generamos un vecino
       j <- sample(1:n,1)
-      m[j] <- (m[j]+1)%%2
+      m[j] <- !m[j]
       
       tasa.actual <- tasa.clas(data, m)
       delta <- tasa.actual - tasa.best
