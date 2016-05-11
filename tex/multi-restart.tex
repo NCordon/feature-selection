@@ -540,7 +540,7 @@ Se describe a continuación un esquema de los ficheros de código:
   
   Es un problema de clasificación binaria en un dataset de 30 atributos y 569 instancias.
    
-  \imagen{../data/multi-restart/wdbc.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
+  \imagen{../data/multi-restart/wdbc.png}{Tasas de clasificación en Wdbc}{wdbc}{0.7}
   
   \imagen{../data/multi-restart/wdbc_sfs_boxplot.png}{Boxplot del SFS}{wsfs}{1}
   
@@ -583,7 +583,7 @@ Se describe a continuación un esquema de los ficheros de código:
   Se trata de un problema de clasficación multiclase (15 clases después de normalizar el dataset). 
   Contiene 360 instancias y 90 atributos.
   
-  \imagen{../data/multi-restart/mlibras.png}{Tasas de clasificación en Movement Libras}{wdbcgraph}{0.7}
+  \imagen{../data/multi-restart/mlibras.png}{Tasas de clasificación en Movement Libras}{mlibras}{0.7}
   
   El algoritmo que mejor funciona en este caso es el 3NN, aunque las tasas de clasificación que se producen son muy similares
   entre BMB, GRASP, e ILS, al igual que los tiempos de ejecución en BMB, GRASP e ILS. GRASP sin embargo es el que más
@@ -597,24 +597,55 @@ Se describe a continuación un esquema de los ficheros de código:
   
   Cabe destacar que los datos obtenidos son muy similares a los obtenidos en la práctica de trayectorias para las metaheurísticas
   de búsquedas tabú, enfriamiento simulado, \ldots. Si observamos \ref{mboxplot}, que es un boxplot de un 10\% de características
-  aleatorias del dataset, vemos que en todas las variables hay muchas clases muy solapadas. Por tanto, estamos ante un dataset
-  duro de tratar. De hecho, las tasas de clasificación que estamos manejando son incluso inferiores a las que obtenemos a
-  veces sobre Arrhythmia, que es mucho más duro de tratar todavía que este, porque al entrenar disponemos de más variables que 
+  aleatorias del dataset, vemos que en todas las variables hay muchas clases muy solapadas. 
+  Por tanto, estamos ante un dataset duro de tratar, seguramente debido al alto número de clases. 
+  De hecho, las tasas de clasificación que estamos manejando son incluso inferiores a las que obtenemos a veces sobre 
+  Arrhythmia, que es mucho más duro de tratar todavía que este, porque al entrenar disponemos de más variables que 
   atributos. En este caso, al entrenar tenemos el doble de instancias que de características, pero sin embargo no estamos
   consiguiendo mejores tasas de clasificación que en Arrhythmia, probablemente porque la selección de características óptima
   para el dataset produzca una tasa de clasificación inferior a la tasa que produce una selección óptima para los datos dados
   en Arrhythmia.
   
-  
   \imagen{../data/multi-restart/mlibras_boxplot.png}{Boxplot de 10 \% de variables de Movement Libras}{mboxplot}{1}
+  
   \subsection{Arrhythmia}
   
   Se trata de un problema de clasficación multiclase (5 clases después de normalizar el dataset). 
   Tiene 386 instancias y 253 atributos.
   
-  \imagen{../data/multi-restart/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
+  \imagen{../data/multi-restart/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{arrhythmia}{0.7}
+  
+  Observamos que en este problema el GRASP si es claramente superior a la BMB e ILS en cuanto a tasa de 
+  clasificación, siendo superior hasta en 7 puntos porcentuales al BMB y aprox. 6 al ILS. Tiene muy buena tasa de
+  reducción, y tanto la tasa de clasificación como de reducción son similares a las producidas por el SFS.
+  
+  Como se observa en el boxplot \ref{aboxplot} las clases también aparecen muy solapadas para cada atributo, aunque el menor
+  número de clases determina que las tasas de clasificación que se obtienen sean un poquito mejores que con el triple de clases
+  en Movement Libras.
+  
+  De hecho, de las 3 metaheaurísticas implementadas en tiempo, el GRASP es claramente superior, a pesar de realizar overfiting.
+  Esto puede deberse a que como hemos expresado anteriormente, el greedy aleatorizado parece producir máscaras con un 
+  número bajo de características seleccionadas, cualidad a tener en cuenta en este problema para las selecciones que se hacen,
+  ya que los atributos exceden a las instancias con las que entrenamos, y tenemos poca información para calcular cada 7
+  una de las clases.
+  
+  Por tanto, en un problema con tantísimas variables, debería primar la interpretabilidad de las soluciones, cualidad que
+  conseguimos con el GRASP, además de la mejor tasa de clasificación. Un boxplot de las variables que selecciona el GRASP en
+  este dataset puede consultarse en \ref{aboxplot}.
+  
+  \imagen{../data/multi-restart/arrhythmia_grasp_boxplot.png}{Boxplot de algunas características de Arrhythmia}{aboxplot}{1}
   
   \subsection{Notas finales}
+
+  El GRASP ha dado muy buenos resultados en general, incluso aún no habiendo aumentado la tasa de clasificación en el 
+  dataset Movement Libras, ya que en general las tasas de reducción que maneja son muy positivas. Asimismo, está dando
+  unos resultados excelentes en Arrhythmia, donde parecía difícil encontrar un mecanismo que mejorase las soluciones de
+  la anterior práctica, dada la gran multidimensionalidad del dataset.
   
+  Como idea que ha surgido durante la realización de la práctica está el implementar una función \textit{stepwise} que para
+  una máscara y un dataset dado, vaya quitando iterativamente las características seleccionadas que no reducen la tasa de
+  clasificación, de manera que obtendríamos tasas de reducción superiores a las actuales pero manteniendo el nivel de 
+  \textit{score} en clasificación. Es decir, podríamos obtener soluciones muy buenas en calidad e interpretabilidad. Se
+  tratará de implementar esta función en futuras prácticas.
   
 \end{document}
