@@ -1,10 +1,10 @@
-def selection(num_crom){
-    pairs = [ for i in {1,..,num_crom} {1..n}.random(0 or 1) ]
+def selection(num_crom)
+    pairs = [ for i in {1,..,size_generation}
+            (random({0,...,num_crom}), random({0,...,num_crom})) ]
 
-    v =[for p in pairs{
-        if(pair.first().fitness < pair.second().fitness)
-            yield pair.first()
+    v =[ for p in pairs{
+        if(population[p.first()].fitness < population[p.second()].fitness)
+            yield population[p.first()]
         else
-            yield pair.second()
-    ]
+            yield population[p.second()] ]
 }

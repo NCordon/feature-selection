@@ -10,7 +10,6 @@ def AGE(data){
         n_eval += count (which(not population.evaluated))
         new_generation = reeval(new_generation)
 
-
         population = keep_elitism (population, best(new_generation))
         population = keep_elitism (population, worst(new_generation))
     }

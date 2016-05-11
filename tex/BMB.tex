@@ -1,9 +1,10 @@
 % Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
 \noindent
 \mbox{}\textbf{\textcolor{Blue}{def}}\ BMB\textcolor{BrickRed}{()}\textcolor{Red}{\{} \\
-\mbox{}\ \ \ \ mascaras\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ random$\_$mask\textcolor{BrickRed}{(}n\textcolor{BrickRed}{)}\ from\ \textcolor{Purple}{0}\ to\ max$\_$arranques\ \textcolor{BrickRed}{]} \\
-\mbox{}\ \ \ \ mascaras\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ BL\textcolor{BrickRed}{(}m\textcolor{BrickRed}{):}\ m\ \$\textcolor{BrickRed}{\textbackslash{}}\textbf{\textcolor{Blue}{in}}\$\ mascaras\ \textcolor{BrickRed}{]} \\
-\mbox{}\ \ \ \ tasas\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ tasa\textcolor{BrickRed}{.}clas\textcolor{BrickRed}{(}m\textcolor{BrickRed}{):}\ m\ \$\textcolor{BrickRed}{\textbackslash{}}\textbf{\textcolor{Blue}{in}}\$\ mascaras\ \textcolor{BrickRed}{]} \\
+\mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ n\ el\ número\ de\ predictores\ de\ cada\ dataset}} \\
+\mbox{}\ \ \ \ mascaras\ \textcolor{BrickRed}{=}\ random$\_$init\textcolor{BrickRed}{(}n\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ mascaras\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ BL\textcolor{BrickRed}{(}m\textcolor{BrickRed}{):}\ m\ \textbf{\textcolor{Blue}{in}}\ mascaras\ \textcolor{BrickRed}{]} \\
+\mbox{}\ \ \ \ tasas\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ tasa\textcolor{BrickRed}{.}clas\textcolor{BrickRed}{(}m\textcolor{BrickRed}{):}\ m\ \textbf{\textcolor{Blue}{in}}\ mascaras\ \textcolor{BrickRed}{]} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ mascaras\ \textcolor{BrickRed}{[}arg\ max\ tasas\textcolor{BrickRed}{]} \\
 \mbox{}\textcolor{Red}{\}} \\

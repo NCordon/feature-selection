@@ -5,7 +5,7 @@ def mutate(population, prob){
 
     # Esto impide que mutemos siempre en el estacionario
     if (random(0.0, 1.0) < mutations){
-        mutations <- ceil(n.mutations)
+        mutations <- ceil(mutations)
 
         # Se escogen los genes que se mutarán junto a sus cromosomas
         crom = [ for i < mutations random[{0,...,M}]

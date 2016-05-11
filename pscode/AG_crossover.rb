@@ -12,9 +12,11 @@ def crossover(population, prob){
     i=0
 
     for(j=0; j<n_cruces; j+=1){
-        population[i].mask = crossover(population[i], population[i+1])
-        population[i+1].mask = crossover(population[i+1], population[i])
+        uno  = OX(population[i], population[i+1])
+        otro = OX(population[i+1], population[i])
 
+        population[i] = uno
+        population[i+1] = otro
         population[i].evaluated = False
         population[i+1].evaluated = False
     }

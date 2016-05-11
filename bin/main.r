@@ -75,7 +75,6 @@ BT.ext.results <-cross.eval(BT.ext)
 BMB.results <- cross.eval(BMB)
 GRASP.results <- cross.eval(GRASP)
 ILS.results <- cross.eval(ILS)
-save.image(file = data.file, safe=TRUE)  
 
 # Algoritmos geneticos
 AGG.results <- cross.eval(AGG)

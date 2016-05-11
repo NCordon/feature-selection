@@ -14,9 +14,11 @@
 \mbox{}\ \ \ \ i\textcolor{BrickRed}{=}\textcolor{Purple}{0} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \textbf{\textcolor{Blue}{for}}\textcolor{BrickRed}{(}j\textcolor{BrickRed}{=}\textcolor{Purple}{0}\textcolor{BrickRed}{;}\ j\textcolor{BrickRed}{\textless{}}n$\_$cruces\textcolor{BrickRed}{;}\ j\textcolor{BrickRed}{+=}\textcolor{Purple}{1}\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
-\mbox{}\ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{].}mask\ \textcolor{BrickRed}{=}\ crossover\textcolor{BrickRed}{(}population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{],}\ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{])} \\
-\mbox{}\ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{].}mask\ \textcolor{BrickRed}{=}\ crossover\textcolor{BrickRed}{(}population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{],}\ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{])} \\
+\mbox{}\ \ \ \ \ \ \ \ uno\ \ \textcolor{BrickRed}{=}\ OX\textcolor{BrickRed}{(}population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{],}\ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{])} \\
+\mbox{}\ \ \ \ \ \ \ \ otro\ \textcolor{BrickRed}{=}\ OX\textcolor{BrickRed}{(}population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{],}\ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{])} \\
 \mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ uno \\
+\mbox{}\ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ otro \\
 \mbox{}\ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{].}evaluated\ \textcolor{BrickRed}{=}\ False \\
 \mbox{}\ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[}i\textcolor{BrickRed}{+}\textcolor{Purple}{1}\textcolor{BrickRed}{].}evaluated\ \textcolor{BrickRed}{=}\ False \\
 \mbox{}\ \ \ \ \textcolor{Red}{\}} \\
