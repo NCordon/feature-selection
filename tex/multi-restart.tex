@@ -283,6 +283,8 @@ exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa carac
   El algoritmo, propiamente dicho, que se ha empleado ha sido:\\
   
   \small\texttt{\input{BL}}
+  
+  Se realizan 15000 iteraciones en el bucle principal de la búsqueda local.
 
 \item \textbf{Número de multiarranques}: se empleará la búsqueda local sobre 25 máscaras en el BMB, GRASP e ILS.
 
@@ -292,7 +294,7 @@ exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa carac
 \section{Profundización en los algoritmos}
 Se incluyen a continuación una descripción de cada metaheurística empleada junto a un pseudocódigo de las mismas.
 
-Sea a partir de aquí $n$ el número de predictores de los respectivos \textit{datasets}.
+Sea a partir de aquí $n$ el número de atributos de los respectivos \textit{datasets}.
 \subsection{Búsqueda multiarranque básica}
 Puesto que \texttt{max\_arranques} vale 25, se generan 25 soluciones iniciales, se les aplica búsqueda local, y nos quedamos
 con la que maximiza el \textit{score}.\\
@@ -412,6 +414,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \textbf{Partición 5-1} & 96.49123 & 96.83099 & 0.00000 & 0.00000 & 63.33333 & 68.33333 & 0.00000 & 0.00000 & 61.85567 & 61.45833 & 0.00000 & 0.00000 \\ \hline
     \textbf{Partición 5-2} & 96.83099 & 96.49123 & 0.00000 & 0.00000 & 67.77778 & 65.55556 & 0.00000 & 0.00000 & 60.41667 & 62.37113 & 0.00000 & 0.00000 \\ \hline
     \textbf{Media} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
+    \textbf{Desv.Típica} & 0.76434 & 0.76434 & 0.00000 & 0.00000 & 4.09343 & 3.26599 & 0.00000 & 0.00000 & 1.66035 & 1.48907 & 0.00000 & 0.00000 \\ \hline
     \end{tabular}
     \end{adjustbox}
     \label{NN3}
@@ -435,6 +438,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \textbf{Partición 5-1} & 94.73684 & 95.77465 & 0.86667 & 0.15500 & 58.33333 & 75.55556 & 0.91111 & 0.76600 & 67.52577 & 75.52083 & 0.98419 & 2.30900 \\ \hline
     \textbf{Partición 5-2} & 90.49296 & 96.49123 & 0.86667 & 0.15300 & 65.00000 & 67.22222 & 0.90000 & 0.99900 & 70.83333 & 74.74227 & 0.98814 & 1.33000 \\ \hline
     \textbf{Media} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
+    \textbf{Desv.Típica} & 1.95851 & 1.12301 & 0.04069 & 0.05315 & 3.26268 & 3.72844 & 0.01587 & 0.22233 & 3.57073 & 2.31592 & 0.00237 & 0.30695 \\ \hline
     \end{tabular}
     \end{adjustbox}
     \label{SFS}
@@ -458,6 +462,7 @@ Se describe a continuación un esquema de los ficheros de código:
   \textbf{Partición 5-1} & 95.43860 & 97.88732 & 0.46667 & 5.01900 & 66.11111 & 72.22222 & 0.51111 & 19.70900 & 62.37113 & 65.62500 & 0.54941 & 507.68300 \\ \hline
   \textbf{Partición 5-2} & 95.07042 & 98.24561 & 0.46667 & 4.56000 & 65.55556 & 66.11111 & 0.51111 & 21.76900 & 59.89583 & 68.04124 & 0.57312 & 509.55800 \\ \hline
   \textbf{Media} & 95.07895 & 98.24252 & 0.47333 & 5.32720 & 66.66667 & 71.66667 & 0.51333 & 22.13020 & 63.93632 & 68.70329 & 0.53360 & 516.98560 \\ \hline
+  \textbf{Desv.Típica} & 0.73824 & 0.52161 & 0.05538 & 0.74172 & 2.54588 & 4.25281 & 0.05230 & 1.54661 & 1.76058 & 1.88678 & 0.04286 & 53.27163 \\ \hline
   \end{tabular}
   \end{adjustbox}
   \label{BMB}
@@ -481,6 +486,7 @@ Se describe a continuación un esquema de los ficheros de código:
   \textbf{Partición 5-1} & 94.38596 & 97.88732 & 0.73333 & 6.93500 & 65.00000 & 79.44444 & 0.82222 & 29.86400 & 72.68041 & 83.33333 & 0.91304 & 78.73700 \\ \hline
   \textbf{Partición 5-2} & 92.60563 & 98.59649 & 0.66667 & 6.43600 & 73.88889 & 69.44444 & 0.83333 & 26.30000 & 73.95833 & 81.95876 & 0.91700 & 85.65900 \\ \hline
   \textbf{Media} & 95.32530 & 98.48863 & 0.73333 & 6.72450 & 66.83333 & 74.72222 & 0.84778 & 28.75500 & 70.83226 & 80.10471 & 0.93162 & 78.69940 \\ \hline
+  \textbf{Desv.Típica} & 1.43387 & 0.44607 & 0.05375 & 0.50617 & 4.46558 & 3.12546 & 0.02111 & 1.97036 & 2.81395 & 2.14136 & 0.01723 & 8.75598 \\ \hline
   \end{tabular}
   \end{adjustbox}
   \label{GRASP}
@@ -505,33 +511,86 @@ Se describe a continuación un esquema de los ficheros de código:
   \textbf{Partición 5-1} & 96.84211 & 97.88732 & 0.26667 & 5.98500 & 66.11111 & 74.44444 & 0.45556 & 21.68800 & 62.37113 & 71.35417 & 0.51779 & 474.18500 \\ \hline
   \textbf{Partición 5-2} & 94.36620 & 98.59649 & 0.50000 & 4.97300 & 67.22222 & 66.66667 & 0.46667 & 19.75400 & 67.70833 & 69.58763 & 0.54545 & 430.18100 \\ \hline
   \textbf{Media} & 96.09761 & 98.48851 & 0.47667 & 5.07790 & 66.77778 & 70.38889 & 0.50000 & 22.70410 & 64.29822 & 69.27996 & 0.51067 & 535.30780 \\ \hline
+  \textbf{Desv.Típica} & 1.03913 & 0.56804 & 0.10116 & 0.42146 & 3.46767 & 4.09795 & 0.04472 & 2.17755 & 2.03471 & 1.98776 & 0.02105 & 48.24853 \\ \hline
   \end{tabular}
   \end{adjustbox}
   \label{ILS}
   \end{table}
   
+  
+  \begin{table}[H]
+  \caption*{Resultados globales}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{3-NN} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
+  \textbf{SFS} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
+  \textbf{BMB} & 95.07895 & 98.24252 & 0.47333 & 5.32720 & 66.66667 & 71.66667 & 0.51333 & 22.13020 & 63.93632 & 68.70329 & 0.53360 & 516.98560 \\ \hline
+  \textbf{GRASP} & 95.32530 & 98.48863 & 0.73333 & 6.72450 & 66.83333 & 74.72222 & 0.84778 & 28.75500 & 70.83226 & 80.10471 & 0.93162 & 78.69940 \\ \hline
+  \textbf{ILS} & 96.09761 & 98.48851 & 0.47667 & 5.07790 & 66.77778 & 70.38889 & 0.50000 & 22.70410 & 64.29822 & 69.27996 & 0.51067 & 535.30780 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{all}
+  \end{table}
+  
+  
   \subsection{Wdbc}
   
-  Es un problema de clasificación binaria en un dataset de 30 predictores y 569 instancias.
+  Es un problema de clasificación binaria en un dataset de 30 atributos y 569 instancias.
+  
+  El mejor algoritmo para seleccionar características en este caso es el 3NN. Vuelve a ocurrir lo que en las metaheurísticas
+  de trayectorias, ya que el \textit{vecino más cercano} funciona muy bien en poca dimensionalidad, ya que aproxima muy bien
+  el clasificador de Bayes, que es el que menor error probabilístico comete.
+  
+  El que más se le acerca es el ILS, aunque tiene un porcentaje de reducción inferior al 50\%. Si comparamos por ejemplo el
+  boxplot del SFS (\ref{wsfs}) con el del ILS (\ref{wils}), observamos que a pesar de que ambos tienen una reducción similar, ILS incluye atributos
+  cuyos rangos intercuartílicos para las dos clases son disjuntos y que en BMB no están incluidos. Puesto que el único
+  componente que diferencia esas metaheaurísticas son las mutaciones, podemos concluir que resulta un proceso beneficioso
+  para la búsqueda de soluciones. La explicación más plausible es que al mutar atributos, estamos introduciendo posbiles
+  desmejoras en soluciones que dan lugar a que al aplicar búsqueda local se incuyan atributos que combinados con los que han
+  provocado desmejoras por mutaciones, den lugar a una mejor solución de la que había.
+  
+  BMB y GRASP producen \textit{scores} muy similares. De hecho, en general, con tasas superiores al 95\%, todas las
+  metaheurísticas se acercan a la solución del 3NN, pero siendo la tasa de reducción de este último nula, lo que dificulta
+  mucho la interpretabilidad de los resultados si lo empleamos.
+  
+  En general no se observa \textit{overfiting} en la aplicación de las metaheurísticas.
+  
+  Dependiendo del objetivo del problema, podría resultar interesante aplicar GRASP en lugar de ILS, ya que los \textit{score}
+  que producen ambos no difieren demasiado, pero GRASP produce una fuerte reducción en el número de características usadas.
+  Ello se debe a que es fácil que una solución greedy aleatorizada que se está generando supere el umbral por el que se
+  siguen añadiendo características, y por tanto, esta inicialización resulta muy positiva en tanto que las tasas de reducción,
+  no solo en este dataset, sino también en los otros, es tremendamente buena.
+  
+  En cuanto a tiempo de ejecución, las tres metaheurísticas implementadas tardan alrededor de 5 segundos, lo que es un tiempo
+  más que aceptable, pero que viene condicionado por la baja dimensionalidad del dataset que tratamos.
   
   \imagen{../data/multi-restart/wdbc.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
   
-  %\imgn{../data/wdbc3nn.png}{Selección de características del SFS}{1}
+  \imagen{../data/multi-restart/wdbc_sfs_boxplot.png}{Boxplot del SFS}{wsfs}{1}
   
-  %\imgn{../data/wdbctabu.png}{Boxplot de variables del wdbc}{1}
+  \imagen{../data/multi-restart/wdbc_bmb_boxplot.png}{Boxplot del BMB}{wbmb}{1}
+  
+  \imagen{../data/multi-restart/wdbc_ils_boxplot.png}{Boxplot del ILS}{wils}{1}
+  
+  \imagen{../data/multi-restart/wdbc_grasp_boxplot.png}{Boxplot del GRASP}{wilsbp}{1}
+  
+  
  
   \subsection{Movement libras}
   
   Se trata de un problema de clasficación multiclase (15 clases después de normalizar el dataset). 
-  Contiene 360 instancias y 90 predictores.
+  Contiene 360 instancias y 90 atributos.
   
   \imagen{../data/multi-restart/mlibras.png}{Tasas de clasificación en Movement Libras}{wdbcgraph}{0.7}
   
-  
+  \imagen{../data/multi-restart/mlibras_boxplot.png}{Boxplot de 10 \% de variables de Movement Libras}{wilsbp}{1}
   \subsection{Arrhythmia}
   
   Se trata de un problema de clasficación multiclase (5 clases después de normalizar el dataset). 
-  Tiene 386 instancias y 253 predictores.
+  Tiene 386 instancias y 253 atributos.
   
   \imagen{../data/multi-restart/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
   
