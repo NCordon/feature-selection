@@ -295,7 +295,7 @@ obtenido.
   Puesto que la parte de selección incluía un matiz aleatorio en la ordenación del vector, mutamos siempre los cromosomas
   que nos encontramos al principio. Se ha querido adaptar esta función para que funcione tanto para el modelo generacional
   como el estacionario. Por tanto, el problema de usar la esperanza matemática de mutar en lugar de generar un aleatorio
-  por cada gen se materializa en que para pocos genes (wdbc tiene 30 predictores), y para 2 padres, tendremos 60 genes,
+  por cada gen se materializa en que para pocos genes (wdbc tiene 30 características), y para 2 padres, tendremos 60 genes,
   de los cuales sólo debemos mutar uno. ¿Mutamos siempre uno, no mutamos nunca ninguno en este caso,\ldots? Por eso para
   resolver la tesitura se calcula el número, se lanza un aleatorio, y si es menor que él, mutaremos un gen en dicha llamada.
   Caso opuesto, no.
@@ -319,7 +319,7 @@ La función \texttt{reeval} se emplea para calcular el \textit{score} a aquellas
 el proceso de evaluación genética, y que se han marcado a reevaluar mediante un \textit{flag}. Las máscaras que no se han
 modificado no sufreen reevaluación del score.
 
-Sea a partir de aquí $n$ el número de predictores de los respectivos \textit{datasets}, $M$ el tamaño de la población, 
+Sea a partir de aquí $n$ el número de características de los respectivos \textit{datasets}, $M$ el tamaño de la población, 
 siendo de 30 cromosomas en el caso del algoritmo generacional, y de 2 padres en el algoritmo estacionario.
 
 La estructura de los dos algoritmos a partir de todos estos procedimientos auxiliares se detalla a continuación.
@@ -410,106 +410,151 @@ Se describe a continuación un esquema de los ficheros de código:
  
  \section{Experimentos y análisis de resultados}
  \subsection{Tablas de resultados}
-  
- \begin{table}[H]
- \caption*{Resultados del 3NN}
-    \begin{adjustbox}{width=1.1\textwidth}
-    \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
-    \hline
-    \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
-    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
-    \textbf{Partición 1-1} & 95.78947 & 97.53521 & 0.00000 & 0.00000 & 65.00000 & 66.66667 & 0.00000 & 0.00000 & 65.46392 & 65.62500 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 1-2} & 97.53521 & 95.78947 & 0.00000 & 0.00000 & 66.11111 & 67.77778 & 0.00000 & 0.00000 & 65.62500 & 65.97938 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 2-1} & 97.19298 & 95.77465 & 0.00000 & 0.00000 & 72.22222 & 64.44444 & 0.00000 & 0.00000 & 62.88660 & 61.45833 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 2-2} & 95.77465 & 97.19298 & 0.00000 & 0.00000 & 63.33333 & 70.00000 & 0.00000 & 0.00000 & 63.02083 & 63.91753 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 3-1} & 96.14035 & 96.47887 & 0.00000 & 0.00000 & 72.77778 & 65.00000 & 0.00000 & 0.00000 & 62.37113 & 64.06250 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 3-2} & 96.47887 & 96.14035 & 0.00000 & 0.00000 & 63.33333 & 75.00000 & 0.00000 & 0.00000 & 63.54167 & 62.88660 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 4-1} & 95.43860 & 97.88732 & 0.00000 & 0.00000 & 74.44444 & 66.66667 & 0.00000 & 0.00000 & 64.94845 & 62.50000 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 4-2} & 97.88732 & 95.43860 & 0.00000 & 0.00000 & 64.44444 & 72.77778 & 0.00000 & 0.00000 & 61.45833 & 62.88660 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 5-1} & 96.49123 & 96.83099 & 0.00000 & 0.00000 & 63.33333 & 68.33333 & 0.00000 & 0.00000 & 61.85567 & 61.45833 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 5-2} & 96.83099 & 96.49123 & 0.00000 & 0.00000 & 67.77778 & 65.55556 & 0.00000 & 0.00000 & 60.41667 & 62.37113 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Media} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
-    \end{tabular}
-    \end{adjustbox}
-    \label{NN3}
+  \begin{table}[H]	
+  \caption{Resultados del 3NN}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
+  & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 95.78947 & 97.53521 & 0.00000 & 0.00000 & 65.00000 & 66.66667 & 0.00000 & 0.00000 & 65.46392 & 65.62500 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 1-2} & 97.53521 & 95.78947 & 0.00000 & 0.00000 & 66.11111 & 67.77778 & 0.00000 & 0.00000 & 65.62500 & 65.97938 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 2-1} & 97.19298 & 95.77465 & 0.00000 & 0.00000 & 72.22222 & 64.44444 & 0.00000 & 0.00000 & 62.88660 & 61.45833 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 2-2} & 95.77465 & 97.19298 & 0.00000 & 0.00000 & 63.33333 & 70.00000 & 0.00000 & 0.00000 & 63.02083 & 63.91753 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 3-1} & 96.14035 & 96.47887 & 0.00000 & 0.00000 & 72.77778 & 65.00000 & 0.00000 & 0.00000 & 62.37113 & 64.06250 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 3-2} & 96.47887 & 96.14035 & 0.00000 & 0.00000 & 63.33333 & 75.00000 & 0.00000 & 0.00000 & 63.54167 & 62.88660 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 4-1} & 95.43860 & 97.88732 & 0.00000 & 0.00000 & 74.44444 & 66.66667 & 0.00000 & 0.00000 & 64.94845 & 62.50000 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 4-2} & 97.88732 & 95.43860 & 0.00000 & 0.00000 & 64.44444 & 72.77778 & 0.00000 & 0.00000 & 61.45833 & 62.88660 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 5-1} & 96.49123 & 96.83099 & 0.00000 & 0.00000 & 63.33333 & 68.33333 & 0.00000 & 0.00000 & 61.85567 & 61.45833 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 5-2} & 96.83099 & 96.49123 & 0.00000 & 0.00000 & 67.77778 & 65.55556 & 0.00000 & 0.00000 & 60.41667 & 62.37113 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Media} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Desv.Típica} & 0.76434 & 0.76434 & 0.00000 & 0.00000 & 4.09343 & 3.26599 & 0.00000 & 0.00000 & 1.66035 & 1.48907 & 0.00000 & 0.00000 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{NN3}
   \end{table}
   
-   \begin{table}[H]	
-    \caption*{Resultados del SFS}
-    \begin{adjustbox}{width=1.1\textwidth}
-   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
-    \hline
-    \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
-    \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
-    \textbf{Partición 1-1} & 91.92982 & 97.53521 & 0.86667 & 0.15400 & 63.88889 & 70.55556 & 0.88889 & 1.01200 & 64.94845 & 75.00000 & 0.98419 & 1.84000 \\ \hline
-    \textbf{Partición 1-2} & 95.77465 & 97.89474 & 0.80000 & 0.25600 & 65.00000 & 68.33333 & 0.87778 & 1.29800 & 75.00000 & 78.35052 & 0.98419 & 1.98900 \\ \hline
-    \textbf{Partición 2-1} & 97.19298 & 97.88732 & 0.86667 & 0.15200 & 64.44444 & 66.66667 & 0.93333 & 0.57300 & 64.94845 & 76.56250 & 0.98419 & 1.95300 \\ \hline
-    \textbf{Partición 2-2} & 94.01408 & 97.19298 & 0.80000 & 0.26600 & 62.22222 & 69.44444 & 0.87778 & 1.13400 & 73.43750 & 71.13402 & 0.98419 & 2.22600 \\ \hline
-    \textbf{Partición 3-1} & 94.38596 & 95.77465 & 0.93333 & 0.09700 & 66.66667 & 66.11111 & 0.88889 & 1.02800 & 72.16495 & 80.20833 & 0.98024 & 2.34900 \\ \hline
-    \textbf{Partición 3-2} & 91.54930 & 96.14035 & 0.90000 & 0.14500 & 62.22222 & 74.44444 & 0.88889 & 1.20200 & 67.70833 & 74.22680 & 0.98024 & 2.20000 \\ \hline
-    \textbf{Partición 4-1} & 94.03509 & 97.88732 & 0.90000 & 0.12000 & 71.66667 & 72.22222 & 0.88889 & 1.31100 & 74.22680 & 76.04167 & 0.98024 & 2.02000 \\ \hline
-    \textbf{Partición 4-2} & 92.25352 & 94.38596 & 0.90000 & 0.11700 & 65.55556 & 77.22222 & 0.90000 & 0.87400 & 67.70833 & 76.80412 & 0.98419 & 2.44800 \\ \hline
-    \textbf{Partición 5-1} & 94.73684 & 95.77465 & 0.86667 & 0.15500 & 58.33333 & 75.55556 & 0.91111 & 0.76600 & 67.52577 & 75.52083 & 0.98419 & 2.30900 \\ \hline
-    \textbf{Partición 5-2} & 90.49296 & 96.49123 & 0.86667 & 0.15300 & 65.00000 & 67.22222 & 0.90000 & 0.99900 & 70.83333 & 74.74227 & 0.98814 & 1.33000 \\ \hline
-    \textbf{Media} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
-    \end{tabular}
-    \end{adjustbox}
-    \label{SFS}
+  \begin{table}[H]	
+  \caption{Resultados del SFS}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 91.92982 & 97.53521 & 0.86667 & 0.15400 & 63.88889 & 70.55556 & 0.88889 & 1.01200 & 64.94845 & 75.00000 & 0.98419 & 1.84000 \\ \hline
+  \textbf{Partición 1-2} & 95.77465 & 97.89474 & 0.80000 & 0.25600 & 65.00000 & 68.33333 & 0.87778 & 1.29800 & 75.00000 & 78.35052 & 0.98419 & 1.98900 \\ \hline
+  \textbf{Partición 2-1} & 97.19298 & 97.88732 & 0.86667 & 0.15200 & 64.44444 & 66.66667 & 0.93333 & 0.57300 & 64.94845 & 76.56250 & 0.98419 & 1.95300 \\ \hline
+  \textbf{Partición 2-2} & 94.01408 & 97.19298 & 0.80000 & 0.26600 & 62.22222 & 69.44444 & 0.87778 & 1.13400 & 73.43750 & 71.13402 & 0.98419 & 2.22600 \\ \hline
+  \textbf{Partición 3-1} & 94.38596 & 95.77465 & 0.93333 & 0.09700 & 66.66667 & 66.11111 & 0.88889 & 1.02800 & 72.16495 & 80.20833 & 0.98024 & 2.34900 \\ \hline
+  \textbf{Partición 3-2} & 91.54930 & 96.14035 & 0.90000 & 0.14500 & 62.22222 & 74.44444 & 0.88889 & 1.20200 & 67.70833 & 74.22680 & 0.98024 & 2.20000 \\ \hline
+  \textbf{Partición 4-1} & 94.03509 & 97.88732 & 0.90000 & 0.12000 & 71.66667 & 72.22222 & 0.88889 & 1.31100 & 74.22680 & 76.04167 & 0.98024 & 2.02000 \\ \hline
+  \textbf{Partición 4-2} & 92.25352 & 94.38596 & 0.90000 & 0.11700 & 65.55556 & 77.22222 & 0.90000 & 0.87400 & 67.70833 & 76.80412 & 0.98419 & 2.44800 \\ \hline
+  \textbf{Partición 5-1} & 94.73684 & 95.77465 & 0.86667 & 0.15500 & 58.33333 & 75.55556 & 0.91111 & 0.76600 & 67.52577 & 75.52083 & 0.98419 & 2.30900 \\ \hline
+  \textbf{Partición 5-2} & 90.49296 & 96.49123 & 0.86667 & 0.15300 & 65.00000 & 67.22222 & 0.90000 & 0.99900 & 70.83333 & 74.74227 & 0.98814 & 1.33000 \\ \hline
+  \textbf{Media} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
+  \textbf{Desv.Típica} & 1.95851 & 1.12301 & 0.04069 & 0.05315 & 3.26268 & 3.72844 & 0.01587 & 0.22233 & 3.57073 & 2.31592 & 0.00237 & 0.30695 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{SFS}
   \end{table}
- 
+  
  
  \begin{table}[H]	
-    \caption*{Resultados del AGG}
-    \begin{adjustbox}{width=1.1\textwidth}
-    \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
-    \hline
-    \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
-    \textbf{Partición 1-1} & 96.14035 & 98.94366 & 0.46667 & 42.45600 & 63.88889 & 70.55556 & 0.53333 & 69.70300 & 69.07216 & 68.22917 & 0.47431 & 540.86500 \\ \hline
-    \textbf{Partición 1-2} & 95.07042 & 98.59649 & 0.63333 & 43.79400 & 65.55556 & 71.11111 & 0.47778 & 70.91200 & 66.14583 & 70.61856 & 0.58498 & 501.70800 \\ \hline
-    \textbf{Partición 2-1} & 95.08772 & 97.18310 & 0.50000 & 45.44200 & 66.11111 & 67.77778 & 0.48889 & 74.08400 & 62.37113 & 72.39583 & 0.46640 & 537.66100 \\ \hline
-    \textbf{Partición 2-2} & 96.47887 & 98.94737 & 0.46667 & 45.10000 & 62.77778 & 75.55556 & 0.53333 & 77.48200 & 61.97917 & 65.97938 & 0.49012 & 496.93400 \\ \hline
-    \textbf{Partición 3-1} & 96.14035 & 97.18310 & 0.53333 & 43.84000 & 73.33333 & 68.88889 & 0.48889 & 77.51000 & 63.91753 & 67.18750 & 0.49012 & 520.82900 \\ \hline
-    \textbf{Partición 3-2} & 95.07042 & 98.24561 & 0.46667 & 45.26400 & 66.66667 & 78.88889 & 0.48889 & 77.85100 & 61.97917 & 67.52577 & 0.46640 & 492.01200 \\ \hline
-    \textbf{Partición 4-1} & 95.08772 & 99.29577 & 0.40000 & 44.32100 & 73.33333 & 69.44444 & 0.47778 & 72.34400 & 68.04124 & 68.22917 & 0.54545 & 533.04200 \\ \hline
-    \textbf{Partición 4-2} & 96.83099 & 97.19298 & 0.56667 & 44.96400 & 66.11111 & 73.88889 & 0.52222 & 72.25600 & 61.45833 & 69.58763 & 0.50593 & 503.29800 \\ \hline
-    \textbf{Partición 5-1} & 96.84211 & 97.53521 & 0.33333 & 45.77500 & 65.55556 & 73.88889 & 0.53333 & 65.11200 & 60.30928 & 68.22917 & 0.52964 & 551.07800 \\ \hline
-    \textbf{Partición 5-2} & 92.60563 & 98.24561 & 0.63333 & 49.35300 & 69.44444 & 65.55556 & 0.46667 & 65.12700 & 64.06250 & 65.97938 & 0.55731 & 518.51600 \\ \hline
-    \textbf{Media} & 95.53546 & 98.13689 & 0.50000 & 45.03090 & 67.27778 & 71.55556 & 0.50111 & 72.23810 & 63.93363 & 68.39616 & 0.51107 & 519.59430 \\ \hline
-    \end{tabular}
-    \end{adjustbox}
-    \label{AGG}
+  \caption{Resultados del AGG}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 96.14035 & 98.94366 & 0.46667 & 42.45600 & 63.88889 & 70.55556 & 0.53333 & 69.70300 & 69.07216 & 68.22917 & 0.47431 & 540.86500 \\ \hline
+  \textbf{Partición 1-2} & 95.07042 & 98.59649 & 0.63333 & 43.79400 & 65.55556 & 71.11111 & 0.47778 & 70.91200 & 66.14583 & 70.61856 & 0.58498 & 501.70800 \\ \hline
+  \textbf{Partición 2-1} & 95.08772 & 97.18310 & 0.50000 & 45.44200 & 66.11111 & 67.77778 & 0.48889 & 74.08400 & 62.37113 & 72.39583 & 0.46640 & 537.66100 \\ \hline
+  \textbf{Partición 2-2} & 96.47887 & 98.94737 & 0.46667 & 45.10000 & 62.77778 & 75.55556 & 0.53333 & 77.48200 & 61.97917 & 65.97938 & 0.49012 & 496.93400 \\ \hline
+  \textbf{Partición 3-1} & 96.14035 & 97.18310 & 0.53333 & 43.84000 & 73.33333 & 68.88889 & 0.48889 & 77.51000 & 63.91753 & 67.18750 & 0.49012 & 520.82900 \\ \hline
+  \textbf{Partición 3-2} & 95.07042 & 98.24561 & 0.46667 & 45.26400 & 66.66667 & 78.88889 & 0.48889 & 77.85100 & 61.97917 & 67.52577 & 0.46640 & 492.01200 \\ \hline
+  \textbf{Partición 4-1} & 95.08772 & 99.29577 & 0.40000 & 44.32100 & 73.33333 & 69.44444 & 0.47778 & 72.34400 & 68.04124 & 68.22917 & 0.54545 & 533.04200 \\ \hline
+  \textbf{Partición 4-2} & 96.83099 & 97.19298 & 0.56667 & 44.96400 & 66.11111 & 73.88889 & 0.52222 & 72.25600 & 61.45833 & 69.58763 & 0.50593 & 503.29800 \\ \hline
+  \textbf{Partición 5-1} & 96.84211 & 97.53521 & 0.33333 & 45.77500 & 65.55556 & 73.88889 & 0.53333 & 65.11200 & 60.30928 & 68.22917 & 0.52964 & 551.07800 \\ \hline
+  \textbf{Partición 5-2} & 92.60563 & 98.24561 & 0.63333 & 49.35300 & 69.44444 & 65.55556 & 0.46667 & 65.12700 & 64.06250 & 65.97938 & 0.55731 & 518.51600 \\ \hline
+  \textbf{Media} & 95.53546 & 98.13689 & 0.50000 & 45.03090 & 67.27778 & 71.55556 & 0.50111 & 72.23810 & 63.93363 & 68.39616 & 0.51107 & 519.59430 \\ \hline
+  \textbf{Desv.Típica} & 1.20104 & 0.77188 & 0.09068 & 1.71898 & 3.44668 & 3.79083 & 0.02507 & 4.46933 & 2.78446 & 1.90630 & 0.03921 & 19.52783 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{AGG}
   \end{table}
   
-   \begin{table}[H]	
-    \caption*{Resultados del AGE}
-    \begin{adjustbox}{width=1.1\textwidth}
-   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
-    \hline
-    \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
-    \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
-    \textbf{Partición 1-1} & 95.43860 & 99.29577 & 0.40000 & 50.12100 & 65.00000 & 71.66667 & 0.57778 & 71.52400 & 67.52577 & 69.79167 & 0.49802 & 520.74700 \\ \hline
-    \textbf{Partición 1-2} & 96.47887 & 98.24561 & 0.43333 & 52.61000 & 68.88889 & 69.44444 & 0.43333 & 78.16000 & 66.14583 & 68.55670 & 0.58498 & 474.08400 \\ \hline
-    \textbf{Partición 2-1} & 95.43860 & 97.53521 & 0.60000 & 52.66800 & 72.22222 & 66.66667 & 0.47778 & 75.68800 & 64.43299 & 70.31250 & 0.51383 & 523.33000 \\ \hline
-    \textbf{Partición 2-2} & 95.42254 & 98.59649 & 0.50000 & 47.40900 & 65.00000 & 72.77778 & 0.50000 & 75.94300 & 66.66667 & 69.58763 & 0.46640 & 503.43600 \\ \hline
-    \textbf{Partición 3-1} & 95.78947 & 97.53521 & 0.60000 & 45.66200 & 73.88889 & 67.77778 & 0.50000 & 80.08000 & 61.85567 & 67.70833 & 0.52174 & 545.61800 \\ \hline
-    \textbf{Partición 3-2} & 94.01408 & 98.24561 & 0.53333 & 47.37400 & 65.00000 & 79.44444 & 0.52222 & 75.07400 & 63.54167 & 66.49485 & 0.57708 & 482.20600 \\ \hline
-    \textbf{Partición 4-1} & 94.73684 & 99.29577 & 0.40000 & 46.46900 & 72.22222 & 67.22222 & 0.42222 & 74.29900 & 63.91753 & 67.70833 & 0.47826 & 516.64900 \\ \hline
-    \textbf{Partición 4-2} & 96.47887 & 97.54386 & 0.50000 & 47.50900 & 67.22222 & 72.77778 & 0.46667 & 78.42300 & 63.02083 & 68.55670 & 0.55336 & 490.41700 \\ \hline
-    \textbf{Partición 5-1} & 96.49123 & 97.88732 & 0.50000 & 47.69300 & 66.66667 & 73.33333 & 0.54444 & 72.92700 & 62.88660 & 68.22917 & 0.50988 & 531.90500 \\ \hline
-    \textbf{Partición 5-2} & 95.07042 & 98.24561 & 0.53333 & 45.56600 & 68.33333 & 68.33333 & 0.50000 & 70.38900 & 64.06250 & 71.13402 & 0.50988 & 493.30900 \\ \hline
-    \textbf{Media} & 95.53595 & 98.24265 & 0.50000 & 48.30810 & 68.44444 & 70.94444 & 0.49444 & 75.25070 & 64.40561 & 68.80799 & 0.52134 & 508.17010 \\ \hline
-    \end{tabular}
-    \end{adjustbox}
-    \label{AGE}
+  \begin{table}[H]	
+  \caption{Resultados del AGE}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 95.43860 & 99.29577 & 0.40000 & 50.12100 & 65.00000 & 71.66667 & 0.57778 & 71.52400 & 67.52577 & 69.79167 & 0.49802 & 520.74700 \\ \hline
+  \textbf{Partición 1-2} & 96.47887 & 98.24561 & 0.43333 & 52.61000 & 68.88889 & 69.44444 & 0.43333 & 78.16000 & 66.14583 & 68.55670 & 0.58498 & 474.08400 \\ \hline
+  \textbf{Partición 2-1} & 95.43860 & 97.53521 & 0.60000 & 52.66800 & 72.22222 & 66.66667 & 0.47778 & 75.68800 & 64.43299 & 70.31250 & 0.51383 & 523.33000 \\ \hline
+  \textbf{Partición 2-2} & 95.42254 & 98.59649 & 0.50000 & 47.40900 & 65.00000 & 72.77778 & 0.50000 & 75.94300 & 66.66667 & 69.58763 & 0.46640 & 503.43600 \\ \hline
+  \textbf{Partición 3-1} & 95.78947 & 97.53521 & 0.60000 & 45.66200 & 73.88889 & 67.77778 & 0.50000 & 80.08000 & 61.85567 & 67.70833 & 0.52174 & 545.61800 \\ \hline
+  \textbf{Partición 3-2} & 94.01408 & 98.24561 & 0.53333 & 47.37400 & 65.00000 & 79.44444 & 0.52222 & 75.07400 & 63.54167 & 66.49485 & 0.57708 & 482.20600 \\ \hline
+  \textbf{Partición 4-1} & 94.73684 & 99.29577 & 0.40000 & 46.46900 & 72.22222 & 67.22222 & 0.42222 & 74.29900 & 63.91753 & 67.70833 & 0.47826 & 516.64900 \\ \hline
+  \textbf{Partición 4-2} & 96.47887 & 97.54386 & 0.50000 & 47.50900 & 67.22222 & 72.77778 & 0.46667 & 78.42300 & 63.02083 & 68.55670 & 0.55336 & 490.41700 \\ \hline
+  \textbf{Partición 5-1} & 96.49123 & 97.88732 & 0.50000 & 47.69300 & 66.66667 & 73.33333 & 0.54444 & 72.92700 & 62.88660 & 68.22917 & 0.50988 & 531.90500 \\ \hline
+  \textbf{Partición 5-2} & 95.07042 & 98.24561 & 0.53333 & 45.56600 & 68.33333 & 68.33333 & 0.50000 & 70.38900 & 64.06250 & 71.13402 & 0.50988 & 493.30900 \\ \hline
+  \textbf{Media} & 95.53595 & 98.24265 & 0.50000 & 48.30810 & 68.44444 & 70.94444 & 0.49444 & 75.25070 & 64.40561 & 68.80799 & 0.52134 & 508.17010 \\ \hline
+  \textbf{Desv.Típica} & 0.77190 & 0.62919 & 0.06831 & 2.47796 & 3.14073 & 3.69392 & 0.04507 & 2.93907 & 1.72356 & 1.32211 & 0.03731 & 21.95454 \\ \hline  \end{tabular}
+  \end{adjustbox}
+  \label{AGE}
   \end{table}
   
+  
+  
+  \begin{table}[H]
+  \caption{Resultados globales}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{3-NN} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
+  \textbf{SFS} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
+  \textbf{AGG} & 95.53546 & 98.13689 & 0.50000 & 45.03090 & 67.27778 & 71.55556 & 0.50111 & 72.23810 & 63.93363 & 68.39616 & 0.51107 & 519.59430 \\ \hline
+  \textbf{AGE} & 95.53595 & 98.24265 & 0.50000 & 48.30810 & 68.44444 & 70.94444 & 0.49444 & 75.25070 & 64.40561 & 68.80799 & 0.52134 & 508.17010 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{all}
+  \end{table}
+  
+  Observamos a juzgar por los datos que estamos obteniendo que los algoritmos genéticos que hemos usado tienen la limitación
+  de que su tasa de reducción tiende a ser 0.5 (ya que las soluciones iniciales se generan aleatoriamente, y tienden a tener
+  la misma cantidad de ceros y de unos, por ser equiprobables los hechos de escoger un 0 o un 1. Además las operaciones que se
+  hacen (mutaciones, cruces) conservan estas probabilidades de al escoger una característica ser 0 o 1. Por tanto, podemos
+  encontrar ahí una limitación fuerte en los algoritmos genéticos por ejemplo en el dataset Arrhythmia, donde hemos observado
+  que las mejores soluciones tienden a tener pocas características.
   
   \subsection{Wdbc}
   
-  Es un problema de clasificación binaria en un dataset de 30 predictores y 569 instancias.
+  Es un problema de clasificación binaria en un dataset de 30 características y 569 instancias.
   
   \imagen{../data/genetic/wdbc.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
   
+  
+  Prácticamente los dos modelos de algoritmo genético funcionan igual de bien en todos los datasets. El \textit{overfiting} no
+  se aprecia con tasas tan elevadas de \textit{score}. Observamos eso sí, que la desviación típica del modelo estacionario es
+  menor tanto en porcentajes de clasificación como en tasas de acierto. Esto se debe a que la diversidad del modelo generacional
+  es mayor, al ser sustituida la población entera por otra población en la que en el peor de los casos, todos los individuos
+  podrían ser muy malas soluciones excepto una, que es la que se conserva por elitismo. En el modelo elitista, al ser únicamente
+  dos los cromosomas que se van sustituyendo a cada paso en la población de 30, tenemos menos diversidad, pero una convergencia
+  un poco más uniforme. Este comentario es extensible al análisis de los otros dos datasets.
+  
+  Las metaheurísticas que se han programado para este dataset (trayectorias, multiarranque, genéticos) no están consiguiendo
+  batir al clasificador 3-NN. Este clasificador en baja dimensión aproxima muy bien el \textit{Bayes decision boundary}, que es
+  el límite que estima el clasificador de Bayes para clasificar una instancia como de una clase u otra reduciendo la probabilidad
+  de fallo. Podemos empezar a teorizar llegados a este punto, que en baja dimensión no vamos a conseguir obtener tasas muy
+  superiores sobre el clasificador 3-NN. En tema de interpretabilidad, las soluciones son mejores que las proporcionadas por el
+  clasificador 3-NN, pero peores que el SFS, ya que como se ha explicado la tasa de reducción tiende a ser 0.5.
+  
+  En cuanto a tiempos, ambos genéticos tardan lo mismo, alrededor de 45 segundos. Constituyen tiempos bastante peores de 
+  lo que tardaban las metaheurísticas de trayectorias o multiarranque, obteniendo tasas de reducción muy inferiores a las
+  que obtenían estas.
   %\imgn{../data/wdbc3nn.png}{Selección de características del SFS}{1}
   
   %\imgn{../data/wdbctabu.png}{Boxplot de variables del wdbc}{1}
@@ -517,7 +562,17 @@ Se describe a continuación un esquema de los ficheros de código:
   \subsection{Movement libras}
   
   Se trata de un problema de clasficación multiclase (15 clases después de normalizar el dataset). 
-  Contiene 360 instancias y 90 predictores.
+  Contiene 360 instancias y 90 características.
+  
+  Como se ha comentado, el generacional proporciona soluciones con mayor desviación típica en la tasa de clasificación y 
+  de reducción.
+  
+  Para este dataset, solo se aprecia diferencia en tiempo con respecto a las metaheurísticas de multiarranque de la práctica
+  anterior y en tasa de reducción respecto al GRASP, siendo peor en el caso de los genéticos.
+  
+  Para Movement Libras, el modelo estacionario funciona ligeramente mejor en cuanto a convergencia y tasa de clasificación
+  de las soluciones que el generacional. Así bien las diferencias en términos porcentuales en \textit{score} entre ambos 
+  modelos no son muy acusadas, apenas de un punto porcentual.
   
   \imagen{../data/genetic/mlibras.png}{Tasas de clasificación en Movement Libras}{wdbcgraph}{0.7}
   
@@ -525,11 +580,27 @@ Se describe a continuación un esquema de los ficheros de código:
   \subsection{Arrhythmia}
   
   Se trata de un problema de clasficación multiclase (5 clases después de normalizar el dataset). 
-  Tiene 386 instancias y 253 predictores.
+  Tiene 386 instancias y 253 características.
+  
+  
+  Como se ha comentado, el generacional proporciona soluciones con mayor desviación típica en la tasa de clasificación y 
+  de reducción.
+  
+  Prácticamente las dos metaheaurísticas son iguales, pero ofrecen tiempos muy superiores a los que arrojaban las 
+  metaheaurísticas multiarranque, y unas tasas de reducción y de clasificación muy alejadas de la solución que obteníamos
+  en el GRASP.
   
   \imagen{../data/genetic/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
   
   \subsection{Notas finales}
   
+  Podemos concluir que el uso de algoritmos genéticos en datasets de baja dimensionalidad está desaconsejado, por el tiempo
+  que consume, que comparado al resto de metaheurísticas es grande.
   
+  Al igual que en la práctica de multiarranque, en la que se propuso añadir a futuras prácticas un \textit{stepwise} para
+  aumentar las tasas de reducción de las soluciones, durante la programación de los genéticos ha surgido la idea (que 
+  plausiblemente pueda aplicarse en meméticos) de usar codificaciones con mayor probabilidad de contener ceros que unos y
+  que esta probabilidad de generar un 0 o un 1 sea adaptativa al \textit{dataset} (características e instancias que tengamos)
+  
+  También se deja como intención el probar otros operadores de cruce con los algoritmos meméticos.
 \end{document}

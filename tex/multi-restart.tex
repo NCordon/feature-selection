@@ -397,51 +397,51 @@ Se describe a continuación un esquema de los ficheros de código:
  \section{Experimentos y análisis de resultados}
  \subsection{Tablas de resultados}
  \begin{table}[H]	
-    \caption{Resultados del 3NN}
-    \begin{adjustbox}{width=1.1\textwidth}
-    \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
-    \hline
-    \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
-    & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
-    \textbf{Partición 1-1} & 95.78947 & 97.53521 & 0.00000 & 0.00000 & 65.00000 & 66.66667 & 0.00000 & 0.00000 & 65.46392 & 65.62500 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 1-2} & 97.53521 & 95.78947 & 0.00000 & 0.00000 & 66.11111 & 67.77778 & 0.00000 & 0.00000 & 65.62500 & 65.97938 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 2-1} & 97.19298 & 95.77465 & 0.00000 & 0.00000 & 72.22222 & 64.44444 & 0.00000 & 0.00000 & 62.88660 & 61.45833 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 2-2} & 95.77465 & 97.19298 & 0.00000 & 0.00000 & 63.33333 & 70.00000 & 0.00000 & 0.00000 & 63.02083 & 63.91753 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 3-1} & 96.14035 & 96.47887 & 0.00000 & 0.00000 & 72.77778 & 65.00000 & 0.00000 & 0.00000 & 62.37113 & 64.06250 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 3-2} & 96.47887 & 96.14035 & 0.00000 & 0.00000 & 63.33333 & 75.00000 & 0.00000 & 0.00000 & 63.54167 & 62.88660 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 4-1} & 95.43860 & 97.88732 & 0.00000 & 0.00000 & 74.44444 & 66.66667 & 0.00000 & 0.00000 & 64.94845 & 62.50000 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 4-2} & 97.88732 & 95.43860 & 0.00000 & 0.00000 & 64.44444 & 72.77778 & 0.00000 & 0.00000 & 61.45833 & 62.88660 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 5-1} & 96.49123 & 96.83099 & 0.00000 & 0.00000 & 63.33333 & 68.33333 & 0.00000 & 0.00000 & 61.85567 & 61.45833 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Partición 5-2} & 96.83099 & 96.49123 & 0.00000 & 0.00000 & 67.77778 & 65.55556 & 0.00000 & 0.00000 & 60.41667 & 62.37113 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Media} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
-    \textbf{Desv.Típica} & 0.76434 & 0.76434 & 0.00000 & 0.00000 & 4.09343 & 3.26599 & 0.00000 & 0.00000 & 1.66035 & 1.48907 & 0.00000 & 0.00000 \\ \hline
-    \end{tabular}
-    \end{adjustbox}
-    \label{NN3}
+  \caption{Resultados del 3NN}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhythmia}}} \\ \hline
+  & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 95.78947 & 97.53521 & 0.00000 & 0.00000 & 65.00000 & 66.66667 & 0.00000 & 0.00000 & 65.46392 & 65.62500 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 1-2} & 97.53521 & 95.78947 & 0.00000 & 0.00000 & 66.11111 & 67.77778 & 0.00000 & 0.00000 & 65.62500 & 65.97938 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 2-1} & 97.19298 & 95.77465 & 0.00000 & 0.00000 & 72.22222 & 64.44444 & 0.00000 & 0.00000 & 62.88660 & 61.45833 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 2-2} & 95.77465 & 97.19298 & 0.00000 & 0.00000 & 63.33333 & 70.00000 & 0.00000 & 0.00000 & 63.02083 & 63.91753 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 3-1} & 96.14035 & 96.47887 & 0.00000 & 0.00000 & 72.77778 & 65.00000 & 0.00000 & 0.00000 & 62.37113 & 64.06250 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 3-2} & 96.47887 & 96.14035 & 0.00000 & 0.00000 & 63.33333 & 75.00000 & 0.00000 & 0.00000 & 63.54167 & 62.88660 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 4-1} & 95.43860 & 97.88732 & 0.00000 & 0.00000 & 74.44444 & 66.66667 & 0.00000 & 0.00000 & 64.94845 & 62.50000 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 4-2} & 97.88732 & 95.43860 & 0.00000 & 0.00000 & 64.44444 & 72.77778 & 0.00000 & 0.00000 & 61.45833 & 62.88660 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 5-1} & 96.49123 & 96.83099 & 0.00000 & 0.00000 & 63.33333 & 68.33333 & 0.00000 & 0.00000 & 61.85567 & 61.45833 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Partición 5-2} & 96.83099 & 96.49123 & 0.00000 & 0.00000 & 67.77778 & 65.55556 & 0.00000 & 0.00000 & 60.41667 & 62.37113 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Media} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
+  \textbf{Desv.Típica} & 0.76434 & 0.76434 & 0.00000 & 0.00000 & 4.09343 & 3.26599 & 0.00000 & 0.00000 & 1.66035 & 1.48907 & 0.00000 & 0.00000 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{NN3}
   \end{table}
   
-   \begin{table}[H]	
-    \caption{Resultados del SFS}
-    \begin{adjustbox}{width=1.1\textwidth}
-   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
-    \hline
-    \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
-    \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
-    \textbf{Partición 1-1} & 91.92982 & 97.53521 & 0.86667 & 0.15400 & 63.88889 & 70.55556 & 0.88889 & 1.01200 & 64.94845 & 75.00000 & 0.98419 & 1.84000 \\ \hline
-    \textbf{Partición 1-2} & 95.77465 & 97.89474 & 0.80000 & 0.25600 & 65.00000 & 68.33333 & 0.87778 & 1.29800 & 75.00000 & 78.35052 & 0.98419 & 1.98900 \\ \hline
-    \textbf{Partición 2-1} & 97.19298 & 97.88732 & 0.86667 & 0.15200 & 64.44444 & 66.66667 & 0.93333 & 0.57300 & 64.94845 & 76.56250 & 0.98419 & 1.95300 \\ \hline
-    \textbf{Partición 2-2} & 94.01408 & 97.19298 & 0.80000 & 0.26600 & 62.22222 & 69.44444 & 0.87778 & 1.13400 & 73.43750 & 71.13402 & 0.98419 & 2.22600 \\ \hline
-    \textbf{Partición 3-1} & 94.38596 & 95.77465 & 0.93333 & 0.09700 & 66.66667 & 66.11111 & 0.88889 & 1.02800 & 72.16495 & 80.20833 & 0.98024 & 2.34900 \\ \hline
-    \textbf{Partición 3-2} & 91.54930 & 96.14035 & 0.90000 & 0.14500 & 62.22222 & 74.44444 & 0.88889 & 1.20200 & 67.70833 & 74.22680 & 0.98024 & 2.20000 \\ \hline
-    \textbf{Partición 4-1} & 94.03509 & 97.88732 & 0.90000 & 0.12000 & 71.66667 & 72.22222 & 0.88889 & 1.31100 & 74.22680 & 76.04167 & 0.98024 & 2.02000 \\ \hline
-    \textbf{Partición 4-2} & 92.25352 & 94.38596 & 0.90000 & 0.11700 & 65.55556 & 77.22222 & 0.90000 & 0.87400 & 67.70833 & 76.80412 & 0.98419 & 2.44800 \\ \hline
-    \textbf{Partición 5-1} & 94.73684 & 95.77465 & 0.86667 & 0.15500 & 58.33333 & 75.55556 & 0.91111 & 0.76600 & 67.52577 & 75.52083 & 0.98419 & 2.30900 \\ \hline
-    \textbf{Partición 5-2} & 90.49296 & 96.49123 & 0.86667 & 0.15300 & 65.00000 & 67.22222 & 0.90000 & 0.99900 & 70.83333 & 74.74227 & 0.98814 & 1.33000 \\ \hline
-    \textbf{Media} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
-    \textbf{Desv.Típica} & 1.95851 & 1.12301 & 0.04069 & 0.05315 & 3.26268 & 3.72844 & 0.01587 & 0.22233 & 3.57073 & 2.31592 & 0.00237 & 0.30695 \\ \hline
-    \end{tabular}
-    \end{adjustbox}
-    \label{SFS}
+  \begin{table}[H]	
+  \caption{Resultados del SFS}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 91.92982 & 97.53521 & 0.86667 & 0.15400 & 63.88889 & 70.55556 & 0.88889 & 1.01200 & 64.94845 & 75.00000 & 0.98419 & 1.84000 \\ \hline
+  \textbf{Partición 1-2} & 95.77465 & 97.89474 & 0.80000 & 0.25600 & 65.00000 & 68.33333 & 0.87778 & 1.29800 & 75.00000 & 78.35052 & 0.98419 & 1.98900 \\ \hline
+  \textbf{Partición 2-1} & 97.19298 & 97.88732 & 0.86667 & 0.15200 & 64.44444 & 66.66667 & 0.93333 & 0.57300 & 64.94845 & 76.56250 & 0.98419 & 1.95300 \\ \hline
+  \textbf{Partición 2-2} & 94.01408 & 97.19298 & 0.80000 & 0.26600 & 62.22222 & 69.44444 & 0.87778 & 1.13400 & 73.43750 & 71.13402 & 0.98419 & 2.22600 \\ \hline
+  \textbf{Partición 3-1} & 94.38596 & 95.77465 & 0.93333 & 0.09700 & 66.66667 & 66.11111 & 0.88889 & 1.02800 & 72.16495 & 80.20833 & 0.98024 & 2.34900 \\ \hline
+  \textbf{Partición 3-2} & 91.54930 & 96.14035 & 0.90000 & 0.14500 & 62.22222 & 74.44444 & 0.88889 & 1.20200 & 67.70833 & 74.22680 & 0.98024 & 2.20000 \\ \hline
+  \textbf{Partición 4-1} & 94.03509 & 97.88732 & 0.90000 & 0.12000 & 71.66667 & 72.22222 & 0.88889 & 1.31100 & 74.22680 & 76.04167 & 0.98024 & 2.02000 \\ \hline
+  \textbf{Partición 4-2} & 92.25352 & 94.38596 & 0.90000 & 0.11700 & 65.55556 & 77.22222 & 0.90000 & 0.87400 & 67.70833 & 76.80412 & 0.98419 & 2.44800 \\ \hline
+  \textbf{Partición 5-1} & 94.73684 & 95.77465 & 0.86667 & 0.15500 & 58.33333 & 75.55556 & 0.91111 & 0.76600 & 67.52577 & 75.52083 & 0.98419 & 2.30900 \\ \hline
+  \textbf{Partición 5-2} & 90.49296 & 96.49123 & 0.86667 & 0.15300 & 65.00000 & 67.22222 & 0.90000 & 0.99900 & 70.83333 & 74.74227 & 0.98814 & 1.33000 \\ \hline
+  \textbf{Media} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
+  \textbf{Desv.Típica} & 1.95851 & 1.12301 & 0.04069 & 0.05315 & 3.26268 & 3.72844 & 0.01587 & 0.22233 & 3.57073 & 2.31592 & 0.00237 & 0.30695 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{SFS}
   \end{table}
   
   \begin{table}[H]
@@ -450,7 +450,7 @@ Se describe a continuación un esquema de los ficheros de código:
   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
   \hline
   \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
-  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
   \textbf{Partición 1-1} & 94.03509 & 98.94366 & 0.40000 & 4.89100 & 62.77778 & 72.22222 & 0.58889 & 24.48300 & 66.49485 & 68.75000 & 0.47431 & 559.55700 \\ \hline
   \textbf{Partición 1-2} & 96.12676 & 98.24561 & 0.36667 & 5.21200 & 67.22222 & 64.44444 & 0.48889 & 24.28400 & 65.10417 & 71.64948 & 0.58893 & 551.05100 \\ \hline
   \textbf{Partición 2-1} & 95.43860 & 97.53521 & 0.53333 & 6.58300 & 68.88889 & 72.22222 & 0.55556 & 23.17700 & 62.88660 & 69.79167 & 0.56917 & 459.46600 \\ \hline
@@ -474,7 +474,7 @@ Se describe a continuación un esquema de los ficheros de código:
   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
   \hline
   \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
-  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_clas\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
   \textbf{Partición 1-1} & 95.08772 & 98.94366 & 0.73333 & 6.39000 & 59.44444 & 72.77778 & 0.86667 & 31.34700 & 69.07216 & 77.60417 & 0.94071 & 66.54200 \\ \hline
   \textbf{Partición 1-2} & 94.36620 & 98.59649 & 0.66667 & 7.65700 & 65.00000 & 74.44444 & 0.83333 & 27.10800 & 70.83333 & 81.95876 & 0.93281 & 86.96500 \\ \hline
   \textbf{Partición 2-1} & 95.08772 & 98.23944 & 0.76667 & 6.24400 & 62.22222 & 71.66667 & 0.86667 & 27.14100 & 69.07216 & 80.72917 & 0.94862 & 84.36400 \\ \hline
@@ -499,7 +499,7 @@ Se describe a continuación un esquema de los ficheros de código:
   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
   \hline
   \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
-  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
   \textbf{Partición 1-1} & 96.84211 & 98.94366 & 0.50000 & 4.77400 & 62.22222 & 68.88889 & 0.57778 & 21.96400 & 67.01031 & 69.79167 & 0.48617 & 547.73100 \\ \hline
   \textbf{Partición 1-2} & 95.42254 & 98.59649 & 0.66667 & 4.78400 & 61.11111 & 63.33333 & 0.51111 & 23.65400 & 65.10417 & 69.07216 & 0.50198 & 557.80000 \\ \hline
   \textbf{Partición 2-1} & 97.54386 & 97.88732 & 0.46667 & 5.23500 & 70.55556 & 68.33333 & 0.41111 & 24.52000 & 65.46392 & 72.91667 & 0.49407 & 570.61600 \\ \hline
@@ -524,7 +524,7 @@ Se describe a continuación un esquema de los ficheros de código:
   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
   \hline
   \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
-  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
   \textbf{3-NN} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
   \textbf{SFS} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
   \textbf{BMB} & 95.07895 & 98.24252 & 0.47333 & 5.32720 & 66.66667 & 71.66667 & 0.51333 & 22.13020 & 63.93632 & 68.70329 & 0.53360 & 516.98560 \\ \hline
@@ -641,6 +641,11 @@ Se describe a continuación un esquema de los ficheros de código:
   dataset Movement Libras, ya que en general las tasas de reducción que maneja son muy positivas. Asimismo, está dando
   unos resultados excelentes en Arrhythmia, donde parecía difícil encontrar un mecanismo que mejorase las soluciones de
   la anterior práctica, dada la gran multidimensionalidad del dataset.
+  
+  Excepto el GRASP, las otras dos metaheurísticas tienden a tener tasas de reducción de 0.5 por estar usando un generador
+  de aleatorios con equiprobabilidad de generar un 0 o un 1, lo cual limita la calidad de las soluciones (por tener más 
+  o menos características de la cuenta, fenómeno que se agrava bastante en el caso de un dataset que tiene 253 
+  características, como es Arrhythmia.
   
   Como idea que ha surgido durante la realización de la práctica está el implementar una función \textit{stepwise} que para
   una máscara y un dataset dado, vaya quitando iterativamente las características seleccionadas que no reducen la tasa de
