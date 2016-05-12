@@ -256,13 +256,14 @@ exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa carac
 
 \item \textbf{Generación de solución aleatoria inicial: }
   \begin{itemize}
-   \item BMB: En la BMB se generarán 25 soluciones aleatorias sobre las que se aplicará búsqueda local.
-   para refinarlas.\\
+   \item BMB: En la BMB se generarán 25 soluciones aleatorias sobre las que se aplicará búsqueda local para refinarlas.
+   En el siguiente pseudocódigo \texttt{max\_arranques} vale 25, y $n$ es el número de características del dataset.\\
    
    \small\texttt{\input{BMB_gen_init}}
    \normalsize
    
-   \item ILS: Se generará una solución inicial aleatoria mediante el procedimiento descrito a continuación:
+   \item ILS: Se generará una solución inicial aleatoria mediante el procedimiento descrito a continuación, con $n$ el
+   número de características del dataset.
    
    \small\texttt{\input{ILS_gen_init}}
    \normalsize
@@ -274,7 +275,7 @@ exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa carac
   
   El operador de generación de vecino usado ha sido:
   \footnote{En R, puesto que estamos manejando un vector de 0 y 1, el operador \texttt{flip} puede explicitarse como
-  \texttt{mask[j]} = \texttt{!mask[j]} o incluso para una parte del vector:\quad \texttt{mask[c(i,j,...k)] = !mask[c(i,j,..,k)]}}\\
+  \texttt{mask[j]} = \texttt{!mask[j]}}
   
   \small\texttt{\input{flip}}
   \normalsize
@@ -297,7 +298,7 @@ Se incluyen a continuación una descripción de cada metaheurística empleada ju
 Sea a partir de aquí $n$ el número de atributos de los respectivos \textit{datasets}.
 \subsection{Búsqueda multiarranque básica}
 Puesto que \texttt{max\_arranques} vale 25, se generan 25 soluciones iniciales, se les aplica búsqueda local, y nos quedamos
-con la que maximiza el \textit{score}.\\
+con la que maximiza el \textit{score}. En este caso, \texttt{alpha} vale 0.3\\
 
 \small{\texttt{\input{BMB}}}
 \normalsize
@@ -318,7 +319,7 @@ local, y nos quedamos con la que maximiza el \textit{score}.\\
 \subsection{Búsqueda Local Reiterada (ILS)}
 Se genera una solución inicial aleatoria mediante el procedimiento descrito anteriormente, y sobre esa se
 aplica búsqueda local, y el resto de iteraciones del algoritmo (24), se efectúa el mismo procedimiento sobre la mejor solución
-mutada.\\
+mutada. En este caso \texttt{prob\_mutacion} vale 0.1.\\
 
 \small{\texttt{\input{ILS}}}
 \normalsize
@@ -551,13 +552,13 @@ Se describe a continuación un esquema de los ficheros de código:
   \imagen{../data/multi-restart/wdbc_grasp_boxplot.png}{Boxplot del GRASP}{wilsbp}{1}
   
   El mejor algoritmo para seleccionar características en este caso es el 3NN. Vuelve a ocurrir lo que en las metaheurísticas
-  de trayectorias, ya que el \textit{vecino más cercano} funciona muy bien en poca dimensionalidad, ya que aproxima muy bien
+  de trayectorias, ya que el \textit{vecino más cercano} funciona muy bien en poca dimensionalidad, al aproximar muy bien
   el clasificador de Bayes, que es el que menor error probabilístico comete.
   
   El que más se le acerca es el ILS, aunque tiene un porcentaje de reducción inferior al 50\%. Si comparamos por ejemplo el
-  boxplot del SFS (\ref{wsfs}) con el del ILS (\ref{wils}), observamos que a pesar de que ambos tienen una reducción similar, ILS incluye atributos
-  cuyos rangos intercuartílicos para las dos clases son disjuntos y que en BMB no están incluidos. Puesto que el único
-  componente que diferencia esas metaheaurísticas son las mutaciones, podemos concluir que resulta un proceso beneficioso
+  boxplot del SFS (\ref{wsfs}) con el del ILS (\ref{wils}), observamos que a pesar de que ambos tienen una reducción similar, 
+  ILS incluye algunos atributos cuyos rangos intercuartílicos para las dos clases son disjuntos y que en BMB no están incluidos. 
+  Puesto que el único componente que diferencia esas metaheaurísticas son las mutaciones, podemos concluir que resulta un proceso beneficioso
   para la búsqueda de soluciones. La explicación más plausible es que al mutar atributos, estamos introduciendo posbiles
   desmejoras en soluciones que dan lugar a que al aplicar búsqueda local se incuyan atributos que combinados con los que han
   provocado desmejoras por mutaciones, den lugar a una mejor solución de la que había.
@@ -586,7 +587,7 @@ Se describe a continuación un esquema de los ficheros de código:
   \imagen{../data/multi-restart/mlibras.png}{Tasas de clasificación en Movement Libras}{mlibras}{0.7}
   
   El algoritmo que mejor funciona en este caso es el 3NN, aunque las tasas de clasificación que se producen son muy similares
-  entre BMB, GRASP, e ILS, al igual que los tiempos de ejecución en BMB, GRASP e ILS. GRASP sin embargo es el que más
+  entre BMB, GRASP, e ILS, al igual que sus tiempos de ejecución. GRASP sin embargo es el que más
   \textit{overfiting} realiza, siendo la media de clasificación en el conjunto de entrenamiento de un 74\% y en el de prueba
   de un 66\%. Sin embargo si analizamos el desglose en la tabla del GRASP(\ref{GRASP}), observamos que el resultado obtenido
   en la primera partición es el culpable de esto produciendo un \textit{overfiting} enorme.
@@ -600,11 +601,8 @@ Se describe a continuación un esquema de los ficheros de código:
   aleatorias del dataset, vemos que en todas las variables hay muchas clases muy solapadas. 
   Por tanto, estamos ante un dataset duro de tratar, seguramente debido al alto número de clases. 
   De hecho, las tasas de clasificación que estamos manejando son incluso inferiores a las que obtenemos a veces sobre 
-  Arrhythmia, que es mucho más duro de tratar todavía que este, porque al entrenar disponemos de más variables que 
-  atributos. En este caso, al entrenar tenemos el doble de instancias que de características, pero sin embargo no estamos
-  consiguiendo mejores tasas de clasificación que en Arrhythmia, probablemente porque la selección de características óptima
-  para el dataset produzca una tasa de clasificación inferior a la tasa que produce una selección óptima para los datos dados
-  en Arrhythmia.
+  Arrhythmia. En el caso de Movement Libras, los resultados que obtenemos probablemente se deban a la baja proporción instancias/clase.
+  Es decir, disponemos de poca información para caracterizar cada clase. 
   
   \imagen{../data/multi-restart/mlibras_boxplot.png}{Boxplot de 10 \% de variables de Movement Libras}{mboxplot}{1}
   
@@ -617,7 +615,8 @@ Se describe a continuación un esquema de los ficheros de código:
   
   Observamos que en este problema el GRASP si es claramente superior a la BMB e ILS en cuanto a tasa de 
   clasificación, siendo superior hasta en 7 puntos porcentuales al BMB y aprox. 6 al ILS. Tiene muy buena tasa de
-  reducción, y tanto la tasa de clasificación como de reducción son similares a las producidas por el SFS.
+  reducción, y tanto la tasa de clasificación como de reducción son similares a las producidas por el SFS. Este último
+  tiene un comportamiento tan bueno porque selecciona muy pocos atributos.
   
   Como se observa en el boxplot \ref{aboxplot} las clases también aparecen muy solapadas para cada atributo, aunque el menor
   número de clases determina que las tasas de clasificación que se obtienen sean un poquito mejores que con el triple de clases
@@ -626,7 +625,7 @@ Se describe a continuación un esquema de los ficheros de código:
   De hecho, de las 3 metaheaurísticas implementadas en tiempo, el GRASP es claramente superior, a pesar de realizar overfiting.
   Esto puede deberse a que como hemos expresado anteriormente, el greedy aleatorizado parece producir máscaras con un 
   número bajo de características seleccionadas, cualidad a tener en cuenta en este problema para las selecciones que se hacen,
-  ya que los atributos exceden a las instancias con las que entrenamos, y tenemos poca información para calcular cada 7
+  ya que los atributos exceden a las instancias con las que entrenamos, y tenemos poca información para calcular cada
   una de las clases.
   
   Por tanto, en un problema con tantísimas variables, debería primar la interpretabilidad de las soluciones, cualidad que
@@ -645,7 +644,7 @@ Se describe a continuación un esquema de los ficheros de código:
   Excepto el GRASP, las otras dos metaheurísticas tienden a tener tasas de reducción de 0.5 por estar usando un generador
   de aleatorios con equiprobabilidad de generar un 0 o un 1, lo cual limita la calidad de las soluciones (por tener más 
   o menos características de la cuenta, fenómeno que se agrava bastante en el caso de un dataset que tiene 253 
-  características, como es Arrhythmia.
+  características, como es Arrhythmia).
   
   Como idea que ha surgido durante la realización de la práctica está el implementar una función \textit{stepwise} que para
   una máscara y un dataset dado, vaya quitando iterativamente las características seleccionadas que no reducen la tasa de

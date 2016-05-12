@@ -5,7 +5,7 @@ def ILS(){
     num_mutaciones = prob_mutacion * n
 
     while(n_eval < max.arranques){
-        mascara <- BL(mascara)
+        mascara = BL(mascara)
 
         if (tasa(mascara) > tasa(mejor_mascara)){
             mejor_mascara = mascara

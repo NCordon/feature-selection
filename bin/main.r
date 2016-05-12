@@ -12,7 +12,7 @@ rm(list = ls())
 ##########################################################################
 # Cargamos pkgs
 load.my.packages <- function(){
-  pkgs = c("foreign", "data.table", "class", "base", "ggplot2")
+  pkgs = c("foreign", "data.table", "class")
   to.install <- pkgs[ ! pkgs %in% installed.packages() ]
   
   if ( length(to.install) > 0 )

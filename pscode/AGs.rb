@@ -14,6 +14,7 @@ def reeval(population){
     for c in population{
         if c.evaluated == False{
             c.fitness = tasa(c.mask)
+            c.evaluated = True
         }
     }
     return(population)

@@ -15,7 +15,7 @@ def random_greedy(n){
 
         umbral = alpha * (max(tasas) - min(tasas))
         mascaras.delete (which(max(tasas) - tasas > umbral))
-        m = mascaras[ random{1..n} ]
+        m = mascaras[ random() ]
 
         if (tasa(m) > tasa(mejor_mascara)){
             non_selected.delete(j : flip(mejor_mascara,j)=m)

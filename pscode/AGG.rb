@@ -1,5 +1,5 @@
 def AGG(data){
-    n = num_col(data)
+    n = num_variables(data)
     n_eval = 0
 
     while(n_eval < max_eval){

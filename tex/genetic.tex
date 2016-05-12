@@ -247,7 +247,7 @@ Los algoritmos considerados tienen las siguientes componentes:
 \begin{itemize} 
 \item \textbf{Esquema de representación:} se emplean máscaras de bits, sucesiones de unos y ceros de tanta longitud como atributos haya,
 exceptuando la clase, donde un 1 en la posición $i-$ésima indica que esa característica se ha escogido, y un $0$ que no.
-Asimismo en esta práctica, cada solución se ha encapsulado con su tasa de score, y un flag que indica si está actualizada o
+Asimismo en esta práctica cada solución se ha encapsulado con su tasa de score, y un flag que indica si está actualizada o
 no, lo que posibilita realizar exactamente 15000 evaluaciones de la función objetivo y no recalcular tasas que ya habíamos
 obtenido.
 
@@ -268,8 +268,8 @@ obtenido.
   El mecanismo de selección empleado ha sido el siguiente, donde para el modelo generacional \texttt{size\_generation = 30} y para
   el estacionario se tiene \texttt{size\_generation = 2}, y en ambos casos el tamaño de la población es 30 (\texttt{num\_crom=30}).
 
-  Se emparejan aleatoriamente un número \texttt{size\_generation} de cromosomas, y se decide cuál se queda en la población por
-  torneo binario.\\
+  Se seleccionan \texttt{size\_generation} parejas de cromosomas, y se decide cuál de los dos individuos de la pareja se 
+  queda en la población por torneo binario.\\
   
   \small\texttt{\input{AG_selection}}
   \normalsize
@@ -296,13 +296,13 @@ obtenido.
   que nos encontramos al principio. Se ha querido adaptar esta función para que funcione tanto para el modelo generacional
   como el estacionario. Por tanto, el problema de usar la esperanza matemática de mutar en lugar de generar un aleatorio
   por cada gen se materializa en que para pocos genes (wdbc tiene 30 características), y para 2 padres, tendremos 60 genes,
-  de los cuales sólo debemos mutar uno. ¿Mutamos siempre uno, no mutamos nunca ninguno en este caso,\ldots? Por eso para
-  resolver la tesitura se calcula el número, se lanza un aleatorio, y si es menor que él, mutaremos un gen en dicha llamada.
-  Caso opuesto, no.
+  de los cuales podríamos mutar 1 gen siempre, o no mutar ninguno, por ser la esperanza menor que cero. Por eso para 
+  resolver esta tesitura se lanza un aleatorio, y si es menor que la esperanza calculada, mutaremos un gen en dicha 
+  llamada. Caso opuesto, no.
 
 \end{itemize}
 
-\newpage
+%\newpage
 \section{Profundización en los algoritmos}
 Se ha empleado una estructura común para construir los dos algoritmos, por medio de los procedimientos cuyo pseudocódigo se
 ha detallado en el punto anterior. Asimismo se ha empleado el siguiente procedimiento para realizar los reemplazamientos
@@ -311,7 +311,7 @@ en los dos genéticos.
 \small{\texttt{\input{AGs}}}
 \normalsize
 
-La forma en que funciona \texttt{keep\_elitism} para hayar los peores de la población es ordenándola por \textit{score}.
+La forma en que funciona \texttt{keep\_elitism} para hallar los peores de la población es ordenándola por \textit{score}.
 Además, sustituye al peor de la población si es peor en términos de \textit{score} que el anterior mejor, y si el anterior
 mejor no está en la generación nueva.
 
@@ -319,17 +319,17 @@ La función \texttt{reeval} se emplea para calcular el \textit{score} a aquellas
 el proceso de evaluación genética, y que se han marcado a reevaluar mediante un \textit{flag}. Las máscaras que no se han
 modificado no sufreen reevaluación del score.
 
-Sea a partir de aquí $n$ el número de características de los respectivos \textit{datasets}, $M$ el tamaño de la población, 
-siendo de 30 cromosomas en el caso del algoritmo generacional, y de 2 padres en el algoritmo estacionario.
+La estructura de los dos algoritmos a partir de todos estos procedimientos auxiliares se detalla a continuación, donde
+\texttt{max\_eval} = 15000 y \texttt{p\_mutation}=0.001(por gen) en ambos casos.
 
-La estructura de los dos algoritmos a partir de todos estos procedimientos auxiliares se detalla a continuación.
-
-\subsection{Algoritmo genético generacional}
+\subsection{Algoritmo genético generacional}.
+En este caso la probabilidad de cruce es 0.7
 
 \small{\texttt{\input{AGG}}}
 \normalsize
 
 \subsection{Algoritmo genético estacionario}
+En este caso la probabilidad de cruce es 1.
 
 \small{\texttt{\input{AGE}}}
 \normalsize
@@ -393,7 +393,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \item \texttt{AGG.prob.cruce, AGE.prob.cruce}: probabilidad de cruce de los padres para dar lugar a un nuevo cromosoma 
     en los algoritmos generacional y estacionario, respectivamente. Está seteada a 0.7 y a 1 por defecto.
     \item \texttt{AGG.prob.cruce, AGE.prob.cruce}: probabilidad de mutación de los genes(cada una de las $n$ características
-    de la máscara)en las soluciones del generacional y estacionario, respectivamente. Está seteada a 0.001 (1 gen por cada mil)
+    de la máscara) en las soluciones del generacional y estacionario, respectivamente. Está seteada a 0.001 (1 gen por cada mil)
   \end{itemize}
  \end{itemize}
  
@@ -405,7 +405,7 @@ Se describe a continuación un esquema de los ficheros de código:
  Para trabajar correctamente, el working path debe estar seteado a la carpeta de códigos fuente. Se puede consultar el 
  valor actual mediante \texttt{getwd()} y setearlo mediante \texttt{setwd(path)}
  
- Cuando se cambia algo en algún algoritmo o en \texttt{params.r} hay que recargar en \texttt{main.r}
+ Cuando se modifica algo en algún algoritmo o en \texttt{params.r} hay que recargar en \texttt{main.r}
  la línea del \texttt{source(file=...)} correspondiente.
  
  \section{Experimentos y análisis de resultados}
@@ -538,23 +538,24 @@ Se describe a continuación un esquema de los ficheros de código:
   
   
   Prácticamente los dos modelos de algoritmo genético funcionan igual de bien en todos los datasets. El \textit{overfiting} no
-  se aprecia con tasas tan elevadas de \textit{score}. Observamos eso sí, que la desviación típica del modelo estacionario es
+  se aprecia con tasas tan elevadas de \textit{score} en Wdbc. Observamos eso sí, que la desviación típica del modelo estacionario es
   menor tanto en porcentajes de clasificación como en tasas de acierto. Esto se debe a que la diversidad del modelo generacional
   es mayor, al ser sustituida la población entera por otra población en la que en el peor de los casos, todos los individuos
   podrían ser muy malas soluciones excepto una, que es la que se conserva por elitismo. En el modelo elitista, al ser únicamente
-  dos los cromosomas que se van sustituyendo a cada paso en la población de 30, tenemos menos diversidad, pero una convergencia
+  dos los cromosomas que se van sustituyendo a cada paso en la población de 30, tenemos menor diversidad, pero una convergencia
   un poco más uniforme. Este comentario es extensible al análisis de los otros dos datasets.
   
   Las metaheurísticas que se han programado para este dataset (trayectorias, multiarranque, genéticos) no están consiguiendo
   batir al clasificador 3-NN. Este clasificador en baja dimensión aproxima muy bien el \textit{Bayes decision boundary}, que es
   el límite que estima el clasificador de Bayes para clasificar una instancia como de una clase u otra reduciendo la probabilidad
   de fallo. Podemos empezar a teorizar llegados a este punto, que en baja dimensión no vamos a conseguir obtener tasas muy
-  superiores sobre el clasificador 3-NN. En tema de interpretabilidad, las soluciones son mejores que las proporcionadas por el
-  clasificador 3-NN, pero peores que el SFS, ya que como se ha explicado la tasa de reducción tiende a ser 0.5.
+  superiores al clasificador 3-NN. En tema de interpretabilidad, las soluciones aportadas por los genéticos son mejores 
+  que las proporcionadas por el clasificador 3-NN, pero peores que el SFS, ya que como se ha explicado la tasa de 
+  reducción tiende a ser 0.5.
   
   En cuanto a tiempos, ambos genéticos tardan lo mismo, alrededor de 45 segundos. Constituyen tiempos bastante peores de 
   lo que tardaban las metaheurísticas de trayectorias o multiarranque, obteniendo tasas de reducción muy inferiores a las
-  que obtenían estas.
+  que se obtenían por ejemplo con el GRASP.
   %\imgn{../data/wdbc3nn.png}{Selección de características del SFS}{1}
   
   %\imgn{../data/wdbctabu.png}{Boxplot de variables del wdbc}{1}
@@ -590,6 +591,10 @@ Se describe a continuación un esquema de los ficheros de código:
   metaheaurísticas multiarranque, y unas tasas de reducción y de clasificación muy alejadas de la solución que obteníamos
   en el GRASP.
   
+  Como punto positivo, podemos afirmar que los genéticos baten al clasificador vecino más cercano en este caso, pero no
+  podemos olvidar que este último es especialmente malo en alta dimensionalidad. De hecho, el algoritmo que mejor funciona
+  es el \textit{greedy} SFS, por seleccionar un número pequeño de características.
+  
   \imagen{../data/genetic/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
   
   \subsection{Notas finales}
@@ -600,7 +605,7 @@ Se describe a continuación un esquema de los ficheros de código:
   Al igual que en la práctica de multiarranque, en la que se propuso añadir a futuras prácticas un \textit{stepwise} para
   aumentar las tasas de reducción de las soluciones, durante la programación de los genéticos ha surgido la idea (que 
   plausiblemente pueda aplicarse en meméticos) de usar codificaciones con mayor probabilidad de contener ceros que unos y
-  que esta probabilidad de generar un 0 o un 1 sea adaptativa al \textit{dataset} (características e instancias que tengamos)
+  que esta probabilidad de generar un 0 o un 1 sea adaptativa al \textit{dataset} (características e instancias que tengamos).
   
   También se deja como intención el probar otros operadores de cruce con los algoritmos meméticos.
 \end{document}

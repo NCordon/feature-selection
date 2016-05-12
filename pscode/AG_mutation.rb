@@ -11,7 +11,7 @@ def mutate(population, prob){
         crom = [ for i < mutations random[{0,...,M}]
         gen  = [ for i < mutations random[{0,...,n}]
 
-        for i in {1...len(crom)}{
+        for i in {0...len(crom)}{
             flip(population[crom[i]].mask, gen[i])
             population[crom[i]].evaluated = False
         }
