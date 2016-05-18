@@ -77,3 +77,14 @@ AGG.prob.cruce <- 0.7
 AGG.prob.mutation <- 0.001
 AGE.prob.cruce <- 1
 AGE.prob.mutation <- 0.001
+
+
+# Parametros de las OCH  
+#### num.ants             numero de hormigas
+####
+OCH.num.ants <- 10
+OCH.alpha <- 1
+OCH.beta <- 2
+OCH.evaporation <- 0.2
+SCH.BL.trans.prob <- 0.8
+SCH.BL.evap <- 0.2
