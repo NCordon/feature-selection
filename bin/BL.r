@@ -17,7 +17,7 @@ random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
 ###                   aleatorias, pero puede pasarsele un GRASP p.e.)
 ##########################################################################
 
-BL <- function(data, gen.init = random.init){
+BL <- function(data, gen.init = random.init, max.eval = max.eval){
   n <- ncol(data)
   n <- n-1
   mask <- gen.init(data)

@@ -1,15 +1,12 @@
 ##########################################################################
-### Funcion busqueda local del primer mejor
+### Funcion sistema de colonia de hormigas
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
-###     de caracteristicas que se obtienen de aplicar la busqueda local del
-###     primer mejor
+###     de caracteristicas que se obtienen de aplicar sistema de colonia de
+###     hormigas reforzado con búsqueda local
 ###
-###
-###     get.init      Es el generador de soluciones iniciales (por defecto
-###                   aleatorias, pero puede pasarsele un GRASP p.e.)
 ##########################################################################
 
-SCH.BL <- function(data, gen.init = random.init){
+SCH.BL <- function(data){
   n <- ncol(data)
   n <- n-1
   class <- unique(data$class)
@@ -29,8 +26,26 @@ SCH.BL <- function(data, gen.init = random.init){
   # Inicializacion de parametros
   trail.features <- rep(1e-6, n)
   trail.num.features <- rep(1.0/n, n)
-  # Completar
-  heuristic.info <- c()
+  
+  # Supone las clases discretizadas
+  heuristic.info <- lapply(1:n, function(i){
+    sum(
+      lapply(class, function(c){
+        # Deben ser 0 o 1 en este caso
+        values.c <- unique(data[,i])
+        
+        sum(
+          lapply(values.c, function(f){
+            prob.c.f <- sum( data[data[,i] == f, ]$class = c)
+            prob.c <- sum(data$class == c) / nrow(data)
+            prob.f <- sum(data[,i] == f) / nrow(data)
+            
+            prob.c.f * log(prob.c.f / (prob.c * prob.f), base=2)
+          })
+        )  
+      })
+    )
+  })
   
   next.feature <- function(path){
     values <- lapply(1:length(path), function(x){
@@ -75,6 +90,9 @@ SCH.BL <- function(data, gen.init = random.init){
       }
     }
     
+    # Aplicamos busqueda local a los caminos encontrados por las hormigas
+    paths <- lapply(paths, function(p){ BL(p,1) })
+    
     # Buscamos la mejor solucion de todas las encontradas por las hormigas
     paths.score <- lapply(paths, function(p){tasa.clas(data, p)})
     where.max <- which.max(paths.score)
@@ -84,7 +102,11 @@ SCH.BL <- function(data, gen.init = random.init){
     }
     
     # Actualizacion global de feromona
-       
+    trail.features <- (1 - global.evap) * trail.features
+    trail.features[where.max] <- global.evap * paths.score[where.max]
+    trail.num.features <- (1 - global.evap) * trail.features
+    # Aquí falta algo
+    
   }
   mask.best
 }
