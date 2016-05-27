@@ -81,10 +81,13 @@ AGE.prob.mutation <- 0.001
 
 # Parametros de las OCH  
 #### num.ants             numero de hormigas
-####
+#### alpha                parametro de la regla de transicion
+#### beta                 parametro de la regla de transicion
+#### evaporation          parametro de evaporacion global, en tanto por uno
+#### trans.prob           prob
 OCH.num.ants <- 10
 OCH.alpha <- 1
 OCH.beta <- 2
 OCH.evaporation <- 0.2
-SCH.BL.trans.prob <- 0.8
+SCH.BL.prob.trans <- 0.8
 SCH.BL.evap <- 0.2
