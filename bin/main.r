@@ -52,9 +52,9 @@ source(file="./aux.r")
 
 
 # Lectura de ficheros y normalizacion
-mlibras <- normalize (read.arff("../data/movement_libras.arff"))
-arrhythmia <- normalize (read.arff("../data/arrhythmia.arff"))
-wdbc <- normalize (read.arff("../data/wdbc.arff"))
+mlibras <- normalize.dataset (read.arff("../data/movement_libras.arff"))
+arrhythmia <- normalize.dataset (read.arff("../data/arrhythmia.arff"))
+wdbc <- normalize.dataset (read.arff("../data/wdbc.arff"))
 
 datasets <- list(wdbc, mlibras, arrhythmia)
 datasets.names <- c("wdbc", "mlibras", "arrhythmia")

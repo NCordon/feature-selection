@@ -2,7 +2,7 @@
 # Funcion de normalizacion de datasets
 ##########################################################################
 
-normalize <- function(data){
+normalize.dataset <- function(data){
   colnames(data) <- tolower(colnames(data))
   names <- colnames(data)[ colnames(data) != "class" ]
   
@@ -18,7 +18,6 @@ normalize <- function(data){
     else x
   }))
 }
-
 
 ##########################################################################
 # Funcion de generacion de particiones

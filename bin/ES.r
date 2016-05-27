@@ -11,6 +11,7 @@ ES <- function(data){
   mask <- sample(0:1, n, replace=TRUE)
   mask.best <- mask
   tasa.best <- tasa.clas(data, mask.best)
+  tasa.umbral <- tasa.best
   
   # Parametros del enfriamiento simulado
   #max.eval <- 15000
@@ -53,16 +54,17 @@ ES <- function(data){
       m[j] <- !m[j]
       
       tasa.actual <- tasa.clas(data, m)
-      delta <- tasa.actual - tasa.best
+      delta <- tasa.actual - tasa.umbral
       u <- runif(1, 0.0, 1.0)
       
       if (delta > 0 || u <= exp(delta/t.actual)){
         mask <- m
-        tasa.best <- tasa.actual
+        tasa.umbral <- tasa.actual
         n.exitos <- n.exitos + 1
         
-        if (delta > 0){
+        if (tasa.actual > tasa.best){
           mask.best <- m
+          tasa.best <- tasa.actual
         }
         
       }
@@ -71,10 +73,6 @@ ES <- function(data){
       n.eval <- n.eval + 1
     }
     t.actual <- t.actual/(1 + beta*t.actual)
-    # Depuracion
-    #cat("\n Temperatura actual: ", t.actual)
-    #cat("\n Numero de exitos: ", n.exitos)
-    #cat("\n Numero de vecinos generados ", n.vecinos)
   }
   mask.best
 }
