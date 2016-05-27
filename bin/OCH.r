@@ -62,6 +62,8 @@ SCH.BL <- function(data){
   prob.trans <- SCH.BL.prob.trans
   # phi
   local.evap <- SCH.BL.evap
+  # Profundidad de la busqueda local
+  prof.bl <- SCH.BL.prof.bl * n
   mask.best <- rep(0,n)
   tasa.best <- 0
   
@@ -81,93 +83,63 @@ SCH.BL <- function(data){
     v/sum(v)  
   }
   
-  
-  ##########################################################
-  #### Construye una ruleta con las probabilidades dadas en
-  #### prob.vector, y selecciona un indice segun prob
-  ##########################################################
-  roulette.selection <- function(prob.vector, prob){
-    roll.probs <- sapply(1:length(prob.vector), function(i){
-      sum(prob.vector[1:i])
-    })
-    
-    index <- which( roll.probs <= prob )
-    
-    if (any(index)){
-      result <- max(index)
-      
-    } else {
-      result <- n
-    }
-    
-    result
-  }
-  
   ##########################################################
   #### Funcion de transicion del sistema de hormigas en base
   #### a la feromona, a la heuristica, y a los valores de
   #### alpha y beta
   ##########################################################
-  make.transiction <- function(path){
-    values <- (!path * trail.features**alpha * data.heuristic**beta)
-    
-    # Regla de la colonia de hormigas
-    if (runif(1) < prob.trans){
-      selected <- which.max(values)
-    # Regla del sistema de hormigas
-    } else {
-      values <- normalize.vector(values)
-      selected <- roulette.selection(values, runif(1))
+  make.transitions <- function(path, num.car){
+    if(num.car > 0){
+      make.trans.prob <- runif(num.car)
+  
+      for (i in 1:num.car){
+        values <- (as.numeric(!path) * trail.features**alpha * data.heuristic**beta)
+        
+        # Regla de la colonia de hormigas
+        if (make.trans.prob[i] < prob.trans){
+          selected <- which.max(values)
+        # Regla del sistema de hormigas
+        } else {
+          non.selected <- (1:n)[values > 0]
+          values <- values[values > 0]
+          
+          selected <- non.selected[ sample( 1:length(non.selected), size=1, prob=values ) ]
+        }
+        path[selected] <- 1
+      }
     }
-    
-    selected
+    path 
   }
   
   ##########################################################
-  #### Funcion de actualizacion de la actualizacion de la 
-  #### feromona local
+  #### Funcion de actualizacion de la feromona
   ##########################################################
-  update.local.trail <- function(trail, s){
-    trail[s] <- (1-local.evap) * trail[s] + local.evap * init.trail
-    
-    normalize.vector(trail)
+  update.trail <- function(trail, factor.evap, extra, mask){
+    normalize.vector( trail + ((1 - factor.evap) * trail +  
+                      factor.evap * extra) * mask )
   }
   
   
-  ##########################################################
-  #### Funcion de actualizacion de la actualizacion de la 
-  #### feromona global
-  ##########################################################
-  update.global.trail <- function(trail, extra, mask){
-    normalize.vector(trail + ((1 - global.evap) * trail +  
-                    global.evap * extra) * mask)
-    
-  }
-  
-  
-  for(i in 1:(max.eval/(num.ants*2))){
+  for(i in 1:(max.eval/(num.ants + num.ants*prof.bl))){
     # Inicializacion de los caminos seguidos por cada hormiga
     paths <- lapply(1:num.ants, function(x){ sample(c(1,rep(0,n-1))) })
     
     # Numero de caracteristicas que escogera cada hormiga
-    num.features <- sapply(runif(num.ants), function(prob){
-      roulette.selection(trail.num.features, prob)
-    })
+    num.features <- sample( 1:n, size=num.ants, replace=T, prob=trail.num.features)
     
     for(k in 1:num.ants){
-      paths
-      for (num.car in 1:(num.features[k]-1)){  
-        # Transicion
-        selected <- make.transiction(paths[[k]])
-        paths[[k]][selected] <- 1
+      # Transicion
+      paths[[k]] <- make.transitions(paths[[k]], num.features[[k]] - 1 )
 
-        # Actualizacion local de la feromona
-        trail.features <- update.local.trail(trail.features, selected)
-      }
+      # Actualizacion local de la feromona
+      trail.features <- update.trail(trail.features, local.evap, 
+                                    init.trail, paths[[k]])
     }
     
     # Aplicamos busqueda local a los caminos encontrados por las hormigas
-    paths <- lapply(paths, function(p){ BL(data, gen.init = function(data){ p }, max.eval=1) })
+    paths <- lapply(paths, function(p){ 
+      BL(data, gen.init = function(data){ p }, max.eval=prof.bl) 
+    })
     
     # Buscamos la mejor solucion de todas las encontradas por las hormigas
     paths.score <- sapply(paths, function(p){tasa.clas(data, p)})
@@ -178,17 +150,13 @@ SCH.BL <- function(data){
     }
     
     # Actualizacion global de feromona
-    trail.features <- update.global.trail(trail.features, 
+    trail.features <- update.trail(trail.features, global.evap,
                       paths.score[where.max], paths[[where.max]])
-    trail.num.features <- update.global.trail(trail.num.features, 
-                          paths.score[where.max], 
+    
+    trail.num.features <- update.trail(trail.num.features, 
+                          global.evap, paths.score[where.max], 
                           c(rep(0,where.max-1), 1, rep(0, n-where.max)))
   }
   
   mask.best
 }
-t.ini <- proc.time()[3]
-SCH.BL(wdbc)
-t.fin <- proc.time()[3]
-
-print(t.fin-t.ini)
