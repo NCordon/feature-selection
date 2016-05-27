@@ -1,4 +1,13 @@
 ##########################################################################
+### Generador de soluciones iniciales aleatorias en selec. caracteristicas
+###     Para un tamaño determinado devuelve una seleccion de 
+###     caracteristicas aleatoria
+##########################################################################
+
+random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
+
+
+##########################################################################
 # Funcion de normalizacion de datasets
 ##########################################################################
 

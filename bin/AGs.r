@@ -1,12 +1,4 @@
 ##########################################################################
-### Generador de soluciones iniciales aleatorias en selec. caracteristicas
-###     Para un tamaño determinado devuelve una seleccion de 
-###     caracteristicas aleatoria
-##########################################################################
-
-random.init <- function(data){ sample(0:1, ncol(data)-1, replace=TRUE) }
-
-##########################################################################
 #### Operador de cruce OX para los AGs
 ####    Dada una madre y un padre se genera un nuevo cromosoma
 ####    con una subcadena de la madre y rellenamos el resto con

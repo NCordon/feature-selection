@@ -5,14 +5,12 @@ rm(list = ls())
 # Lista de paquetes a cargar
 
 # foreign: leer ARFF
-# data.table: rbindinglist
+# data.table: rbindlist
 # class: kknn
-# base: logaritmo
-# ggplot2: gráficas
 ##########################################################################
 # Cargamos pkgs
 load.my.packages <- function(){
-  pkgs = c("foreign", "data.table", "class", "emtropy")
+  pkgs = c("foreign", "data.table", "class")
   to.install <- pkgs[ ! pkgs %in% installed.packages() ]
   
   if ( length(to.install) > 0 )
@@ -82,6 +80,9 @@ AGG.results <- cross.eval(AGG)
 AGE.results <- cross.eval(AGE)
 
 # Algoritmos de Optimización de Hormigas
-source("OCH.r")
 SCH.BL.results <- cross.eval(SCH.BL)
+save.image(file = data.file, safe=TRUE)  
+SHMM.BL.results <- cross.eval(SHMM.BL)
+save.image(file = data.file, safe=TRUE)  
+
 #save.image(file = data.file, safe=TRUE)  
