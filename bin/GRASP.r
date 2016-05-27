@@ -34,8 +34,8 @@ random.greedy.init <- function(data){
       mask.best[non.selected[sel]] <- 1
       mask.fitness <- tasas[sel]
       non.selected <- non.selected[-sel]
-    }
-    else{
+      
+    } else{
       fin <- TRUE
     }
     if (length(non.selected)==0){

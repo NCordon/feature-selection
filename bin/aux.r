@@ -14,8 +14,7 @@ normalize.dataset <- function(data){
   data.frame(lapply(data, function(x){
     if(is.numeric(x)){
       (x-min(x))/(max(x)-min(x))
-    }
-    else x
+    } else x
   }))
 }
 
@@ -47,8 +46,8 @@ tasa.clas <- function (train, mask){
     
     # Tasa de clasificacion
     result <- (100 * length(which(cl == fit)) / length(cl))
-  }
-  else{
+    
+  } else {
     result <- 0
   }
   result

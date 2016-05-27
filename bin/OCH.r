@@ -5,29 +5,42 @@
 ###     Devuelve un vector con el valor de la entropia de cada variable
 ###     que interviene en el dataset
 ###
+###     Recibe como parámetro h, número de valores discretos en caso de
+###     que la variable sea continua. Por defecto, 10
 ##########################################################################
 
-heuristic.info <- function(data){
-  lapply(1:n, function(i){
+heuristic.info <- function(data, h = 10){
+  sapply(1:(ncol(data)-1), function(i){
+    
+    if(is.factor(data[,i])){
+      discretized.values <- split(data[,i], data[,i])
+      
+    } else{
+      columna <- sort(data[,i])
+      chunk.size <- ceiling( length(columna)/h )
+      
+      discretized.values <- split(columna, ceiling( seq_along(columna) / chunk.size) )
+    }
+
     sum(
       sapply( unique(data$class), function(c){
-        # Deben ser 0 o 1 en este caso
-        values.c <- unique(data[,i])
-        
         sum(
-          sapply(values.c, function(f){
-            dist.f <- data[data[,i] == f, ]
-            prob.c.f <- sum(dist.f$class == c) / nrow(dist.f)
+          sapply(discretized.values, function(f){
+            dist.f <- data[data[,i] %in% f, ]
+            prob.c.f <- sum(dist.f$class == c) / length(f)
             prob.c <- sum(data$class == c) / nrow(data)
-            prob.f <- sum(data[,i] == f) / nrow(data)
+            prob.f <- length(f) / nrow(data)
             
-            prob.c.f * log(prob.c.f / (prob.c * prob.f), base=2)
+            if (prob.c.f > 0){
+              prob.c.f * log(prob.c.f / (prob.c * prob.f), base=2)
+            } else 0
           })
         )  
       })
     )
   })
 }
+
 
 ##########################################################################
 ### Funcion sistema de colonia de hormigas
@@ -74,7 +87,7 @@ SCH.BL <- function(data){
   #### prob.vector, y selecciona un indice segun prob
   ##########################################################
   roulette.selection <- function(prob.vector, prob){
-    roll.probs <- sapply(1:length(prob.vector), fucntion(i){
+    roll.probs <- sapply(1:length(prob.vector), function(i){
       sum(prob.vector[1:i])
     })
     
@@ -82,8 +95,8 @@ SCH.BL <- function(data){
     
     if (any(index)){
       result <- max(index)
-    }
-    else{
+      
+    } else {
       result <- n
     }
     
@@ -98,12 +111,13 @@ SCH.BL <- function(data){
   make.transiction <- function(path){
     values <- (!path * trail.features**alpha * data.heuristic**beta)
     
+    # Regla de la colonia de hormigas
     if (runif(1) < prob.trans){
       selected <- which.max(values)
-    }
-    else{
+    # Regla del sistema de hormigas
+    } else {
       values <- normalize.vector(values)
-      selected <- roulette.selection(values)
+      selected <- roulette.selection(values, runif(1))
     }
     
     selected
@@ -131,42 +145,41 @@ SCH.BL <- function(data){
   }
   
   
-  for(i in 1:max.eval){
+  for(i in 1:(max.eval/(num.ants*2))){
     # Inicializacion de los caminos seguidos por cada hormiga
-    paths <- lapply(1:num.ants, sample(c(1,rep(0,n-1))))
+    paths <- lapply(1:num.ants, function(x){ sample(c(1,rep(0,n-1))) })
     
     # Numero de caracteristicas que escogera cada hormiga
     num.features <- sapply(runif(num.ants), function(prob){
-      roulette.selection(trail.num.features, prob) - 1
+      roulette.selection(trail.num.features, prob)
     })
     
     for(k in 1:num.ants){
-      if (num.features[k] > 0){  
+      paths
+      for (num.car in 1:(num.features[k]-1)){  
         # Transicion
-        selected <- make.transiction(paths[[i]])
-        paths[[i]][selected] <- 1
+        selected <- make.transiction(paths[[k]])
+        paths[[k]][selected] <- 1
 
         # Actualizacion local de la feromona
         trail.features <- update.local.trail(trail.features, selected)
-        
-        num.features[k] <- num.features[k] - 1
       }
     }
     
     # Aplicamos busqueda local a los caminos encontrados por las hormigas
-    paths <- lapply(paths, function(p){ BL(p,1) })
+    paths <- lapply(paths, function(p){ BL(data, gen.init = function(data){ p }, max.eval=1) })
     
     # Buscamos la mejor solucion de todas las encontradas por las hormigas
-    paths.score <- lapply(paths, function(p){tasa.clas(data, p)})
+    paths.score <- sapply(paths, function(p){tasa.clas(data, p)})
     where.max <- which.max(paths.score)
     
     if(paths.score[where.max] > tasa.best){
-      mask.best <- paths[where.max]
+      mask.best <- paths[[where.max]]
     }
     
     # Actualizacion global de feromona
     trail.features <- update.global.trail(trail.features, 
-                      paths.score[where.max], paths[where.max])
+                      paths.score[where.max], paths[[where.max]])
     trail.num.features <- update.global.trail(trail.num.features, 
                           paths.score[where.max], 
                           c(rep(0,where.max-1), 1, rep(0, n-where.max)))
@@ -174,3 +187,8 @@ SCH.BL <- function(data){
   
   mask.best
 }
+t.ini <- proc.time()[3]
+SCH.BL(wdbc)
+t.fin <- proc.time()[3]
+
+print(t.fin-t.ini)

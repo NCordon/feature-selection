@@ -39,11 +39,11 @@ BT.ext <- function(data){
       
       if (u < prob.diversif){
         mask <- sample(0:1, n, replace=TRUE)
-      }
-      else if (u < prob.intensif){
+        
+      } else if (u < prob.intensif){
         mask <- mask.best
-      }
-      else{
+        
+      } else{
         n.soluciones <- sum(frec)
         
         mask <- sapply(frec, function(f,n){
@@ -63,8 +63,7 @@ BT.ext <- function(data){
       if (u < 0.5){
         # Aumenta de tamaño en un 50%
         tenencia.tabu <- ceiling(tenencia.tabu*1.5)
-      }
-      else{
+      } else{
         # Disminuye en un 50%
         tenencia.tabu <- ceiling(tenencia.tabu*0.5)
       }
@@ -105,8 +104,8 @@ BT.ext <- function(data){
       tasa.best <- tasa.mejor.vecino
       frec <- frec + mask
       n.sin.mejora <- 0
-    }
-    else{
+      
+    } else{
       n.sin.mejora <- n.sin.mejora + 1
     }
     

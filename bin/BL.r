@@ -47,12 +47,9 @@ BL <- function(data, gen.init = random.init, max.eval = max.eval){
         mask <- m
         tasa.best <- tasa.actual
         mejora.found <- TRUE
-      }
-      else{
-        if (length(non.selected) == 0){
+      } else if (length(non.selected) == 0){
           vecinos.left <- FALSE
         }
-      }
     }
   }
   mask

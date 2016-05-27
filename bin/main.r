@@ -12,7 +12,7 @@ rm(list = ls())
 ##########################################################################
 # Cargamos pkgs
 load.my.packages <- function(){
-  pkgs = c("foreign", "data.table", "class")
+  pkgs = c("foreign", "data.table", "class", "emtropy")
   to.install <- pkgs[ ! pkgs %in% installed.packages() ]
   
   if ( length(to.install) > 0 )
