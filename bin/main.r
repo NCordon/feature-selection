@@ -81,8 +81,6 @@ AGE.results <- cross.eval(AGE)
 
 # Algoritmos de Optimización de Hormigas
 SCH.BL.results <- cross.eval(SCH.BL)
-save.image(file = data.file, safe=TRUE)  
 SHMM.BL.results <- cross.eval(SHMM.BL)
-save.image(file = data.file, safe=TRUE)  
 
 #save.image(file = data.file, safe=TRUE)  

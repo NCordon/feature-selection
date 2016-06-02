@@ -20,10 +20,11 @@ crossover.OX <- function(xx, xy){
 ###     y estacionario
 ###
 ##########################################################################
-AG <- function(data, crossover = crossover.OX){
+AG <- function(data, crossover = crossover.OX, memetic.BL, gen.memetico){
   n <- ncol(data)
   n <- n-1
   n.crom <- AG.n.crom
+  memetic.algotithm <- !missing(memetic.BL) && !missing(gen.memetico)
   
   ##########################################################
   #### Ordena una pobacion de menor a mayor tasa
@@ -158,6 +159,14 @@ AG <- function(data, crossover = crossover.OX){
     
     # Bucle principal
     while(n.eval < max.eval){
+      # Aplicamos busqueda local si el algoritmo es memetico
+      
+      if (memetic.algorithm &&
+          n.eval %% gen.memetico == 0 
+          && n.eval !=0){
+        
+        population <- memetic.BL(population)
+      }
       # Conservamos el antiguo mejor de la poblacion
       old.best <- population[[n.crom]]
       
@@ -230,4 +239,45 @@ AGG <- function(data){
 ##########################################################################
 AGE <- function(data){
   AG(data)$stationary()
+}
+
+
+##########################################################################
+### Fucniones de algoritmos meméticos
+###
+##########################################################################
+
+memetic.BL <- function(num.generaciones, prob, prof.BL, apply.best){
+  size.population <- length(population)
+  
+  function(population){
+    if (apply.best){
+      best.number <- ceiling(prob * size.population)
+      apply.to <- c( rep(F, length(population) - best.number), 
+                     rep(T,best.number) )
+  
+    } else {
+      apply.to <- (runif(length(population)) <= prob)
+    }
+    
+    lapply(1:length(population), function(i){
+      c <- population[[i]]
+      
+      if (apply.to[i]){
+        result <- list (mask = BL(data, function(){ c$mask }, prof.BL), 
+                        fitness = 0, evaluated = FALSE)
+      } else{
+        result <- c 
+      }
+      
+      result
+    })
+  }
+}
+
+AM <- AGE <- function(data){
+  list( AG(data, memetic.BL(10, prob = 1, prof.BL, apply.best = F))$stationary(),
+        AG(data, memetic.BL(10, prob = 0.1, prof.BL, apply.best = F))$stationary(),
+        AG(data, memetic.BL(10, prob = 0.1, prof.BL, apply.best = T))$stationary()
+      )
 }
