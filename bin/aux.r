@@ -130,3 +130,31 @@ cross.eval <- function(algorithm){
   # Salida
   append(all.results, mean.results)
 } 
+
+
+
+backward.selection <- function(data, mask){
+  non.selected <- which(mask == 1)
+  actual <- tasa.clas(data, mask)
+  mejora <- TRUE
+  
+  while(mejora){
+    evs <- sapply (selected, function(x){
+      m <- mask
+      m[x] <- 0
+      tasa.clas(data, m)
+    } )
+    
+    if (max(evs) < actual || length(evs)==0){
+      mejora <- FALSE
+    }
+    else{
+      sel <- selected[which.max (evs)]
+      mask [sel] <- 0
+      selected <- selected[non.selected != sel]
+      actual <- max(evs)
+    }
+  }
+  
+  mask
+}
