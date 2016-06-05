@@ -21,7 +21,7 @@ heuristic.info <- function(data, h = 10){
       
       discretized.values <- split(columna, ceiling( seq_along(columna) / chunk.size) )
     }
-
+    
     sum(
       sapply( unique(data$class), function(c){
         sum(
@@ -52,6 +52,7 @@ heuristic.info <- function(data, h = 10){
 OCH <- function(data){
   n <- ncol(data)
   n <- n-1
+  n.eval <- 0
   num.ants <- OCH.num.ants
   alpha <- OCH.alpha
   beta <- OCH.beta
@@ -62,14 +63,13 @@ OCH <- function(data){
   # phi
   local.evap <- OCH.BL.evap
   # Profundidad de la busqueda local
-  prof.bl <- OCH.BL.prof.bl * n
+  prof.bl <- OCH.BL.prof.bl
   mask.best <- random.init(data)
   tasa.best <- tasa.clas(data, mask.best)
   
   # Inicializacion de parametros
   trail.num.features <- rep(1.0/n, n)
   data.heuristic <- heuristic.info(data)
-  
   
   ##########################################################
   #### Funcion de normalizacion de vectores que hace que la
@@ -87,18 +87,18 @@ OCH <- function(data){
   make.transitions <- function(path, num.car, trail.features){
     if(num.car > 0){
       make.trans.prob <- runif(num.car)
-  
+      
       for (i in 1:num.car){
         values <- (as.numeric(!path) * trail.features**alpha * data.heuristic**beta)
         
         # Regla de la colonia de hormigas
         if (make.trans.prob[i] < prob.trans){
           selected <- which.max(values)
-        # Regla del sistema de hormigas
+          
+          # Regla del sistema de hormigas
         } else {
           non.selected <- (1:n)[values > 0]
           values <- values[values > 0]
-          
           selected <- non.selected[ sample( 1:length(non.selected), size=1, prob=values ) ]
         }
         path[selected] <- 1
@@ -111,8 +111,9 @@ OCH <- function(data){
   #### Funcion de actualizacion de la feromona
   ##########################################################
   update.trail <- function(trail, factor.evap, extra, mask){
-    result <- trail + ((1 - factor.evap) * trail +  
-                      factor.evap * extra) * mask
+    result <- trail * as.numeric(!mask) + 
+              ((1 - factor.evap) * trail +  
+              factor.evap * extra) * as.numeric(mask)
     # normalize.vector(result)
     result
   }
@@ -123,33 +124,33 @@ OCH <- function(data){
     
     trail.features <- rep(init.trail, n)
     
-    for(i in 1:(max.eval/(num.ants + num.ants*prof.bl))){
+    while(n.eval < max.eval){
       # Inicializacion de los caminos seguidos por cada hormiga
       paths <- lapply(1:num.ants, function(x){ sample(c(1,rep(0,n-1))) })
       
       # Numero de caracteristicas que escogera cada hormiga
       num.features <- sample( 1:n, size=num.ants, 
-                              replace=T, prob=trail.num.features)
+                              replace=T, prob=trail.num.features) - 1
       
       for(k in 1:num.ants){
         # Transicion
-        paths[[k]] <- make.transitions(paths[[k]], num.features[[k]] - 1, 
-                                       trail.features )
+        paths[[k]] <- make.transitions(paths[[k]], num.features[[k]], trail.features)
         
         if(local.update){
           # Actualizacion local de la feromona
           trail.features <- update.trail(trail.features, local.evap, 
-                                        init.trail, paths[[k]])
+                                         init.trail, paths[[k]])
         }
       }
-      
+    
       # Aplicamos busqueda local a los caminos encontrados por las hormigas
-      paths <- lapply(paths, function(p){ 
-        BL(data, gen.init = function(data){ p }, max.eval=prof.bl) 
-      })
+      paths <- lapply(paths, function(p){ BL.entornos(data, p, max.entornos=1) })
+      n.eval <- n.eval + sum(sapply(paths, '[[', 2))
+      paths <- lapply(paths, '[[', 1)
       
       # Buscamos la mejor solucion de todas las encontradas por las hormigas
       paths.score <- sapply(paths, function(p){tasa.clas(data, p)})
+      n.eval <- n.eval + num.ants
       where.max <- which.max(paths.score)
       
       if(paths.score[where.max] > tasa.best){
@@ -163,11 +164,11 @@ OCH <- function(data){
       
       # Actualizacion global de feromona
       trail.features <- update.trail(trail.features, global.evap,
-                        paths.score[where.max], paths[[where.max]])
+                                     paths.score[where.max], paths[[where.max]])
       
       trail.num.features <- update.trail(trail.num.features, 
-                            global.evap, paths.score[where.max], 
-                            c(rep(0,where.max-1), 1, rep(0, n-where.max)))
+                                         global.evap, paths.score[where.max], 
+                                         c(rep(0,where.max-1), 1, rep(0, n-where.max)))
       
       if ( normalize.trails ){
         trail.features[ trail.features > trail.max ] <- trail.max
@@ -185,9 +186,11 @@ OCH <- function(data){
   }
   
   SHMM.BL <- function(){
-    OCH.algorithm(init.trail = tasa.clas( data, mask.best)/local.evap , 
+    init.trail <- tasa.clas( data, mask.best)/local.evap 
+    
+    OCH.algorithm(init.trail = init.trail , 
                   trail.max = init.trail,
-                  trail.min = trail.max/500,
+                  trail.min = init.trail/500,
                   normalize.trails = T, local.update = F)
   }  
   list ( SCH.BL = SCH.BL, SHMM.BL = SHMM.BL)
@@ -216,3 +219,4 @@ SCH.BL <- function(data){
 SHMM.BL <- function(data){
   OCH(data)$SHMM.BL()
 }
+
