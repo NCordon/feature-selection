@@ -1,5 +1,5 @@
-def heuristic.info(){
-    heuristic = [0,0...0]
+def entropy(data){
+    heuristic_info = [0,0...0]
 
     for i in {1...n}{
 
@@ -25,11 +25,11 @@ def heuristic.info(){
                 prob_f <- length(dist_f) / length(columna)
 
                 if (prob_c_f > 0){
-                    value += prob.c.f * log_2(prob.c.f / (prob.c * prob.f))
+                    value += prob_c_f * log_2(prob_c_f / (prob_c * prob_f))
                 }
             }
         }
-        heuristic[i] = value
+        heuristic_info[i] = value
     }
-    return heuristic
+    return heuristic_info
 }

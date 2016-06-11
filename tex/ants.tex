@@ -283,7 +283,7 @@ Se han escogido dos vectores para representar los rastros de feromona:
   
   \item \textbf{Proceso de generación de soluciones}:
   
-    \small\texttt{\input{gen_och}}
+    \small\texttt{\input{och_init}}
     \normalsize  
   
   Situamos cada hormiga en una característica inicial, y seleccionamos al azar el número de características que escogera
@@ -307,27 +307,35 @@ Se han escogido dos vectores para representar los rastros de feromona:
   Se realiza 1 iteracion en el bucle principal de la búsqueda local, tanto si se ha encontrado mejora en el entorno como
   si no. Como solución se devuelve la máscara junto al número de evaluaciones de la función objetivo efectuado.
 
+  \item \textbf{Actualización de la feromona}:
+  \footnote{Se introduce este aspecto en este apartado y no el siguiente dado que el lenguaje de programación empleado,
+  R, ha posibilitado emplear la misma función para ambos algoritmos}
+  
+  \small\texttt{\input{och_update_trail}}
+  \normalsize
+  
 \end{itemize}
 
 \end{itemize}
 %\newpage
 \section{Profundización en los algoritmos}
-Se ha empleado una estructura común para construir los dos algoritmos, por medio de los procedimientos cuyo pseudocódigo se
-ha detallado en el punto anterior. Asimismo se ha empleado el siguiente procedimiento para realizar los reemplazamientos
-en los dos genéticos.
+Se ha empleado una metafunción a la que pasándole distintos \textit{settings} es capaz de efectuar los dos algoritmos.
+Por claridad en este apartado se detallan los pseudocódigos de ambos algoritmos por separado, aunque se puede apreciar que
+las únicas diferencias notables entre ambos las constituyen la actualización local de feromona, que en SHMM no está presente,
+y el tratamiento de $\tau_{max}$ y $\tau_{min}$, que solo se encuentra en SHMM.
 
 
-\subsection{Algoritmo de Colonia de Hormigas}.
+  \subsection{Algoritmo de Colonia de Hormigas}.
 
-%\small{\texttt{\input{AGG}}}
-\normalsize
+  \small{\texttt{\input{och_sch}}}
+  \normalsize
 
-\subsection{Algoritmo de Sistema de Hormigas Max Min}
-En este caso la probabilidad de cruce es 1.
+  \subsection{Algoritmo de Sistema de Hormigas Max Min}
 
-%\small{\texttt{\input{AGE}}}
-\normalsize
+  \small{\texttt{\input{och_shmm}}}
+  \normalsize
 
+  
 \section{Algoritmo de comparación: SFS}
 \small{\texttt{\input{SFS}}}
 

@@ -97,8 +97,8 @@ OCH <- function(data){
           
           # Regla del sistema de hormigas
         } else {
-          non.selected <- (1:n)[values > 0]
-          values <- values[values > 0]
+          non.selected <- which(values > 0)
+          values <- values[ non.selected ]
           selected <- non.selected[ sample( 1:length(non.selected), size=1, prob=values ) ]
         }
         path[selected] <- 1
@@ -114,7 +114,7 @@ OCH <- function(data){
     result <- trail * as.numeric(!mask) + 
               ((1 - factor.evap) * trail +  
               factor.evap * extra) * as.numeric(mask)
-    # normalize.vector(result)
+
     result
   }
   

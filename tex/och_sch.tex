@@ -1,0 +1,35 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{} \\
+\mbox{}\textbf{\textcolor{Blue}{def}}\ SCH$\_$BL\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ data$\_$heuristic\ \textcolor{BrickRed}{=}\ entropy\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{while}}\textcolor{BrickRed}{(}n$\_$eval\ \textcolor{BrickRed}{\textless{}}\ max$\_$eval\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ init$\_$iteration\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{for}}\ k\ \textbf{\textcolor{Blue}{in}}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}num\textcolor{BrickRed}{.}ants\textcolor{Red}{\}\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ paths\textcolor{BrickRed}{[}k\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ make\textcolor{BrickRed}{.}transitions\textcolor{BrickRed}{(}paths\textcolor{BrickRed}{[[}k\textcolor{BrickRed}{]],}\ num$\_$features\textcolor{BrickRed}{[}k\textcolor{BrickRed}{],}\ trail$\_$features\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Actualizacion\ local\ de\ la\ feromona}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ update$\_$trail\textcolor{BrickRed}{(}\ \ trail$\_$features\textcolor{BrickRed}{,}\ local\textcolor{BrickRed}{.}evap\textcolor{BrickRed}{,}\ \textcolor{Purple}{10}\textcolor{BrickRed}{\textasciicircum{}(-}\textcolor{Purple}{6}\textcolor{BrickRed}{),}\ paths\textcolor{BrickRed}{[}k\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Aplicamos\ busqueda\ local}} \\
+\mbox{}\ \ \ \ \ \ \ \ paths\textcolor{BrickRed}{,}\ evs$\_$BL\ \textcolor{BrickRed}{=}\ map\textcolor{BrickRed}{(}BL\textcolor{BrickRed}{,}\ paths\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ scores\ \textcolor{BrickRed}{=}\ map\textcolor{BrickRed}{(}tasa$\_$clasificacion\textcolor{BrickRed}{,}\ paths\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ n$\_$eval\ \textcolor{BrickRed}{=}\ n$\_$eval\ \textcolor{BrickRed}{+}\ sum\textcolor{BrickRed}{(}evs$\_$BL\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{+}\ num$\_$ants \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\textcolor{BrickRed}{(}max\textcolor{BrickRed}{(}scores\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textgreater{}}\ tasa$\_$best\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mask$\_$best\ \textcolor{BrickRed}{=}\ paths\textcolor{BrickRed}{[}\ arg$\_$max\textcolor{BrickRed}{(}scores\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{]} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Actualizacion\ global\ de\ feromona}} \\
+\mbox{}\ \ \ \ \ \ \ \ update$\_$trail\textcolor{BrickRed}{(}\ trail$\_$features\textcolor{BrickRed}{,}\ global$\_$evap\textcolor{BrickRed}{,} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ scores\textcolor{BrickRed}{[}arg$\_$max\textcolor{BrickRed}{(}scores\textcolor{BrickRed}{)],}\ paths\textcolor{BrickRed}{[}arg$\_$max\textcolor{BrickRed}{(}scores\textcolor{BrickRed}{)]}\ \textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ El\ único\ 1\ del\ vector\ que\ pasamos\ a\ update$\_$trail\ está\ en\ arg$\_$max(scores)}} \\
+\mbox{}\ \ \ \ \ \ \ \ update\textcolor{BrickRed}{.}trail\textcolor{BrickRed}{(}\ trail$\_$num$\_$features\textcolor{BrickRed}{,}\ global$\_$evap\textcolor{BrickRed}{,}\ max\textcolor{BrickRed}{(}score\textcolor{BrickRed}{),}\ \textcolor{BrickRed}{[}\ \textcolor{Purple}{0}\textcolor{BrickRed}{,}\textcolor{Purple}{0}\textcolor{BrickRed}{,...}\textcolor{Purple}{1}\textcolor{BrickRed}{,...}\textcolor{Purple}{0}\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ mask$\_$best \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}
