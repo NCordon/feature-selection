@@ -1,0 +1,38 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textbf{\textcolor{Blue}{def}}\ heuristic\textcolor{BrickRed}{.}info\textcolor{BrickRed}{()}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ heuristic\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\textcolor{Purple}{0}\textcolor{BrickRed}{,}\textcolor{Purple}{0}\textcolor{BrickRed}{...}\textcolor{Purple}{0}\textcolor{BrickRed}{]} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{for}}\ i\ \textbf{\textcolor{Blue}{in}}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}n\textcolor{Red}{\}\{} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\textcolor{BrickRed}{(}\ \textbf{\textcolor{Blue}{not}}\textcolor{BrickRed}{.}numeric\textcolor{BrickRed}{(}data\textcolor{BrickRed}{[,}i\textcolor{BrickRed}{])}\ \textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ discretized$\_$values\ \textcolor{BrickRed}{=}\ split\textcolor{BrickRed}{(}data\textcolor{BrickRed}{[,}i\textcolor{BrickRed}{],}\ data\textcolor{BrickRed}{.}\textbf{\textcolor{Blue}{class}}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ columna\ \textcolor{BrickRed}{=}\ sort\textcolor{BrickRed}{(}data\textcolor{BrickRed}{[,}i\textcolor{BrickRed}{])} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ chunk\ \textcolor{BrickRed}{=}\ ceil\textcolor{BrickRed}{(}\ length\textcolor{BrickRed}{(}columna\textcolor{BrickRed}{)/}\textcolor{Purple}{10}\ \textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ discretized$\_$values\ \textcolor{BrickRed}{=}\ split\textcolor{BrickRed}{(}columna\textcolor{BrickRed}{,}\ size$\_$split\ \textcolor{BrickRed}{=}\ chunk\ \textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ Nc\ \textcolor{BrickRed}{\textless{}-}\ length\textcolor{BrickRed}{(}unique\textcolor{BrickRed}{(}data\textcolor{BrickRed}{.}\textbf{\textcolor{Blue}{class}}\textcolor{BrickRed}{))} \\
+\mbox{}\ \ \ \ \ \ \ \ value\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{0} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{for}}\ c\ \textbf{\textcolor{Blue}{in}}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}Nc\textcolor{Red}{\}\{} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{for}}\ f\ \textbf{\textcolor{Blue}{in}}\ discretized$\_$values\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dist$\_$f\ \textcolor{BrickRed}{=}\ data\textcolor{BrickRed}{[}data\textcolor{BrickRed}{[,}i\ \textcolor{BrickRed}{\%}\textbf{\textcolor{Blue}{in}}\textcolor{BrickRed}{\%}\ f\textcolor{BrickRed}{,}\ \textcolor{BrickRed}{]} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prob$\_$c$\_$f\ \textcolor{BrickRed}{\textless{}-}\ sum\textcolor{BrickRed}{(}which\textcolor{BrickRed}{(}dist$\_$f\textcolor{BrickRed}{.}\textbf{\textcolor{Blue}{class}}\ \textcolor{BrickRed}{==}\ c\textcolor{BrickRed}{))}\ \textcolor{BrickRed}{/}\ length\textcolor{BrickRed}{(}f\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prob$\_$c\ \textcolor{BrickRed}{\textless{}-}\ sum\textcolor{BrickRed}{(}which\textcolor{BrickRed}{(}data\textcolor{BrickRed}{.}\textbf{\textcolor{Blue}{class}}\ \textcolor{BrickRed}{==}\ c\textcolor{BrickRed}{))}\ \textcolor{BrickRed}{/}\ length\textcolor{BrickRed}{(}columna\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prob$\_$f\ \textcolor{BrickRed}{\textless{}-}\ length\textcolor{BrickRed}{(}dist$\_$f\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{/}\ length\textcolor{BrickRed}{(}columna\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}prob$\_$c$\_$f\ \textcolor{BrickRed}{\textgreater{}}\ \textcolor{Purple}{0}\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ value\ \textcolor{BrickRed}{+=}\ prob\textcolor{BrickRed}{.}c\textcolor{BrickRed}{.}f\ \textcolor{BrickRed}{*}\ log$\_$2\textcolor{BrickRed}{(}prob\textcolor{BrickRed}{.}c\textcolor{BrickRed}{.}f\ \textcolor{BrickRed}{/}\ \textcolor{BrickRed}{(}prob\textcolor{BrickRed}{.}c\ \textcolor{BrickRed}{*}\ prob\textcolor{BrickRed}{.}f\textcolor{BrickRed}{))} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ heuristic\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ value \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ heuristic \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}

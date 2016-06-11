@@ -1,0 +1,22 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textbf{\textcolor{Blue}{def}}\ BL\textcolor{BrickRed}{(}m\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ Máscara\ inicial,\ por\ defecto\ aleatoria}} \\
+\mbox{}\ \ \ \ mascara\ \textcolor{BrickRed}{=}\ m \\
+\mbox{}\ \ \ \ no$\_$seleccionados\ \textcolor{BrickRed}{=}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{,}\textcolor{Purple}{2}\textcolor{BrickRed}{,...}n\textcolor{Red}{\}} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{do}}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ i\ \textcolor{BrickRed}{=}\ random\textcolor{BrickRed}{(}no$\_$seleccionados\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ no$\_$seleccionados\ \textcolor{BrickRed}{=}\ no$\_$seleccionados\ \textcolor{BrickRed}{-}\textcolor{Red}{\{}i\textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ evs$\_$hechas\textcolor{BrickRed}{++} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}tasa\textcolor{BrickRed}{(}flip\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}\ i\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textgreater{}}\ mejor$\_$tasa\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mascara\ \textcolor{BrickRed}{=}\ flip\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}i\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mejor$\_$tasa\ \textcolor{BrickRed}{=}\ tasa\textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ mejora$\_$encontrada\ \textcolor{BrickRed}{=}\ \textbf{\textcolor{Blue}{true}} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}}\textbf{\textcolor{Blue}{while}}\ \textcolor{BrickRed}{!}no$\_$seleccionados\textcolor{BrickRed}{.}empty\ \textbf{\textcolor{Blue}{and}}\ \textcolor{BrickRed}{!}mejora$\_$encontrado \\
+\mbox{} \\
+\mbox{}\ \ \textbf{\textcolor{Blue}{return}}\ \textcolor{BrickRed}{(}mascara\textcolor{BrickRed}{,}\ evs$\_$hechas\textcolor{BrickRed}{)} \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}
