@@ -1,8 +1,6 @@
 def BL(m){
-    # Máscara inicial, por defecto aleatoria
     mascara = m
     no_seleccionados = {1,2,...n}
-
     do{
         i = random(no_seleccionados)
         no_seleccionados = no_seleccionados -{i}
