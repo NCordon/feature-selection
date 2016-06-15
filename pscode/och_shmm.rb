@@ -1,4 +1,3 @@
-
 def SHMM_BL(data){
     data_heuristic = entropy(data)
 
@@ -7,9 +6,6 @@ def SHMM_BL(data){
 
         for k in {1...num.ants}{
             paths[k] = make.transitions(paths[[k]], num_features[k], trail_features)
-
-            # Actualizacion local de la feromona
-            update_trail(  trail_features, local.evap, 10^(-6), paths[k] )
         }
 
         # Aplicamos busqueda local
@@ -27,7 +23,7 @@ def SHMM_BL(data){
         update_trail( trail_features, global_evap,
                       scores[arg_max(scores)], paths[arg_max(scores)] )
         # El único 1 del vector que pasamos a update_trail está en arg_max(scores)
-        update.trail( trail_num_features, global_evap, max(score), [ 0,0,...1,...0] )
+        update.trail(trail_num_features, global_evap, max(score), [ 0,0,...1,...0])
 
 
         trail_features[ which(trail_features > trail_max) ] = trail_max

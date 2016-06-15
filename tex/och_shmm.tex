@@ -1,6 +1,5 @@
 % Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
 \noindent
-\mbox{} \\
 \mbox{}\textbf{\textcolor{Blue}{def}}\ SHMM$\_$BL\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ data$\_$heuristic\ \textcolor{BrickRed}{=}\ entropy\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)} \\
 \mbox{} \\
@@ -9,9 +8,6 @@
 \mbox{} \\
 \mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{for}}\ k\ \textbf{\textcolor{Blue}{in}}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}num\textcolor{BrickRed}{.}ants\textcolor{Red}{\}\{} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ paths\textcolor{BrickRed}{[}k\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ make\textcolor{BrickRed}{.}transitions\textcolor{BrickRed}{(}paths\textcolor{BrickRed}{[[}k\textcolor{BrickRed}{]],}\ num$\_$features\textcolor{BrickRed}{[}k\textcolor{BrickRed}{],}\ trail$\_$features\textcolor{BrickRed}{)} \\
-\mbox{} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Actualizacion\ local\ de\ la\ feromona}} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ update$\_$trail\textcolor{BrickRed}{(}\ \ trail$\_$features\textcolor{BrickRed}{,}\ local\textcolor{BrickRed}{.}evap\textcolor{BrickRed}{,}\ \textcolor{Purple}{10}\textcolor{BrickRed}{\textasciicircum{}(-}\textcolor{Purple}{6}\textcolor{BrickRed}{),}\ paths\textcolor{BrickRed}{[}k\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Aplicamos\ busqueda\ local}} \\
@@ -29,7 +25,7 @@
 \mbox{}\ \ \ \ \ \ \ \ update$\_$trail\textcolor{BrickRed}{(}\ trail$\_$features\textcolor{BrickRed}{,}\ global$\_$evap\textcolor{BrickRed}{,} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ scores\textcolor{BrickRed}{[}arg$\_$max\textcolor{BrickRed}{(}scores\textcolor{BrickRed}{)],}\ paths\textcolor{BrickRed}{[}arg$\_$max\textcolor{BrickRed}{(}scores\textcolor{BrickRed}{)]}\ \textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ El\ único\ 1\ del\ vector\ que\ pasamos\ a\ update$\_$trail\ está\ en\ arg$\_$max(scores)}} \\
-\mbox{}\ \ \ \ \ \ \ \ update\textcolor{BrickRed}{.}trail\textcolor{BrickRed}{(}\ trail$\_$num$\_$features\textcolor{BrickRed}{,}\ global$\_$evap\textcolor{BrickRed}{,}\ max\textcolor{BrickRed}{(}score\textcolor{BrickRed}{),}\ \textcolor{BrickRed}{[}\ \textcolor{Purple}{0}\textcolor{BrickRed}{,}\textcolor{Purple}{0}\textcolor{BrickRed}{,...}\textcolor{Purple}{1}\textcolor{BrickRed}{,...}\textcolor{Purple}{0}\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ update\textcolor{BrickRed}{.}trail\textcolor{BrickRed}{(}trail$\_$num$\_$features\textcolor{BrickRed}{,}\ global$\_$evap\textcolor{BrickRed}{,}\ max\textcolor{BrickRed}{(}score\textcolor{BrickRed}{),}\ \textcolor{BrickRed}{[}\ \textcolor{Purple}{0}\textcolor{BrickRed}{,}\textcolor{Purple}{0}\textcolor{BrickRed}{,...}\textcolor{Purple}{1}\textcolor{BrickRed}{,...}\textcolor{Purple}{0}\textcolor{BrickRed}{])} \\
 \mbox{} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \ \ \ \ trail$\_$features\textcolor{BrickRed}{[}\ which\textcolor{BrickRed}{(}trail$\_$features\ \textcolor{BrickRed}{\textgreater{}}\ trail$\_$max\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ trail$\_$max \\

@@ -56,14 +56,14 @@ OCH <- function(data){
   num.ants <- OCH.num.ants
   alpha <- OCH.alpha
   beta <- OCH.beta
-  global.evap <- OCH.evaporation
+  global.evap <- OCH.global.evap
   
   # q0
-  prob.trans <- OCH.BL.prob.trans
+  prob.trans <- OCH.prob.trans
   # phi
-  local.evap <- OCH.BL.evap
+  local.evap <- OCH.local.evap
   # Profundidad de la busqueda local
-  prof.bl <- OCH.BL.prof.bl
+  prof.bl <- OCH.prof.bl
   mask.best <- random.init(data)
   tasa.best <- tasa.clas(data, mask.best)
   

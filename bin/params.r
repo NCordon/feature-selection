@@ -89,7 +89,7 @@ AGE.prob.mutation <- 0.001
 OCH.num.ants <- 10
 OCH.alpha <- 1
 OCH.beta <- 2
-OCH.evaporation <- 0.2
-OCH.BL.prob.trans <- 0.8
-OCH.BL.evap <- 0.2
-OCH.BL.prof.bl <- 1
+OCH.global.evap <- 0.2
+OCH.prob.trans <- 0.8
+OCH.local.evap <- 0.2
+OCH.prof.bl <- 1

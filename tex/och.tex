@@ -23,6 +23,7 @@
 
 % Para matrices
 \usepackage{amsmath}
+\everymath{\displaystyle}
 
 % Símbolos matemáticos
 \usepackage{amssymb}
@@ -269,7 +270,7 @@ Se han escogido dos vectores para representar los rastros de feromona:
     
     En \textit{Sistema de Hormigas Max-Min con Búsqueda Local(SHMM-BL)} se inicializa: \texttt{trail.features = [$\tau_{max},\ldots \tau_{max}$]},
     donde \texttt{$\tau_{max} = \frac{tasa\_objetivo(mask\_inicial)}{global\_evap}$} donde $global\_evap = 0.2$.
-  \item \texttt{trail.num.features = [$\tau_{1 car}$, \ldots $\tau_{n car}$]}
+  \item \texttt{trail\_num\_features = [$\tau_{1 car}$, \ldots $\tau_{n car}$]}
   
     donde la componente $i-$ésima almacena la feromona correspondiente a escoger un número $i$ de características
     
@@ -309,9 +310,14 @@ Se han escogido dos vectores para representar los rastros de feromona:
 
   \item \textbf{Actualización de la feromona}:
   \footnote{Se introduce este aspecto en este apartado y no el siguiente dado que el lenguaje de programación empleado,
-  R, ha posibilitado emplear la misma función para ambos algoritmos}
+  R, ha posibilitado emplear la misma función para ambos algoritmos, tanto el de actualización local como el de actualización
+  global}
   
   \small\texttt{\input{och_update_trail}}
+  
+  Recibe \texttt{trail}, el vector de rastros, \texttt{factor\_evap}, el factor de evaporación (local o global), 
+  \texttt{extra}, aporte extra de feromona (puede venir dado por ejemplo dado por el coste de una solución), y máscara,
+  sobre la que efectuar el aporte de feromona.
   \normalsize
   
 \end{itemize}
@@ -322,10 +328,25 @@ Se han escogido dos vectores para representar los rastros de feromona:
 Se ha empleado una metafunción a la que pasándole distintos \textit{settings} es capaz de efectuar los dos algoritmos.
 Por claridad en este apartado se detallan los pseudocódigos de ambos algoritmos por separado, aunque se puede apreciar que
 las únicas diferencias notables entre ambos las constituyen la actualización local de feromona, que en SHMM no está presente,
-y el tratamiento de $\tau_{max}$ y $\tau_{min}$, que solo se encuentra en SHMM.
+y el tratamiento de $\tau_{max}$ y $\tau_{min}$, que solo se encuentra en SHMM, similitudes que han hecho posible el empleo \texttt{trail\_num\_features}
+de una única función para implementar los dos algoritmos.
+
+El esquema de los dos algoritmos por tanto es el mismo:
+
+\begin{itemize}
+ \item Se escoge el número de características que seleccionará cada hormiga haciendo una ruleta con \texttt{trail\_num\_features}
+ \item Cada hormiga construye un camino y tras la construcción completa de ese camino se efectúa una actualización local
+ de la feromona en el algoritmo de colonia de hormigas.
+ \item Aplicamos búsqueda local a las soluciones obtenidas.
+ \item Actualizamos la mejor solución y actualizamos $\tau_{max}$ y $\tau_{min}$ en el algoritmo de sistema de hormigas
+ \item Actualización global de la feromona
+ \item Reemplazo de los valores de feromona que excedan los límites $\tau_{max}$ y $\tau_{min}$ por estos valores, cuando
+ convenga.
+ max-min
+\end{itemize}
 
 
-  \subsection{Algoritmo de Colonia de Hormigas}.
+  \subsection{Algoritmo de Colonia de Hormigas}
 
   \small{\texttt{\input{och_sch}}}
   \normalsize
@@ -345,7 +366,7 @@ que la característica escogida no mejore a la mejor solución hasta el momento
 
 \section{Implementación de la práctica}
 Para la implementación de la práctica, se ha reutilizado toda la estructura de lectura de ficheros y funciones auxiliares
-empleada para las dos anteriores.
+empleada para las anteriores prácticas.
 
 El clasificador \texttt{3nn} leaving one out empleado es el incluido en el paquete \texttt{class}, de nombre
 \texttt{knn.cv}. Para su uso, se le pasa como argumento el número de vecinos a considerar (3). El argumento 
@@ -374,28 +395,50 @@ Se describe a continuación un esquema de los ficheros de código:
  particionado de \texttt{data.frames}, la función objetivo \texttt{tasa.clas} y la función \texttt{cross.eval}
  descrita arriba.
  
- \item \hrefr{AGs.r}: contiene:
+ \item \hrefr{OCH.r}: contiene:
   \begin{itemize}
-   \item La función \texttt{random.init} que se aplica 30 veces en cada algoritmo para inicializar la
- población con máscaras aleatorias
-   \item La función \texttt{crossover.OX} que es el operador de cruce que por defecto se usa. Podría implementarse otro y
-   aplicarlo en lugar del OX de forma fácil según la estructura que se ha creado al programar.
-   \item Una metafunción de nombre AG, a la que se le pasa un dataset y un operador de cruce, y devuelve dos funciones,
-   una que al ejecutarla realiza el proceso de algoritmo generacional, y otra del estacionario. Se ha optado por esta 
-   técnica de implementación para encapsular todo lo común a los dos algoritmos, que como se ha descrito en el presente
-   documento se han implementado usando las mismas funciones auxiliares para efectuar selecciones-torneos, cruces, mutaciones,
-   etc.
+   \item \texttt{heuristic.info}: función del cálculo de la entropía. Recibe como parámetro un \textit{dataset}
+    y \texttt{h}, por defecto a 10, número de intervalos en que discretizar cada variable, y devuelve un 
+    vector con la información heurística de cada característica.
+    \item \texttt{OCH}: metafunción que implementa los dos algoritmos de hormigas descritos en este documento.
+    \item \texttt{SCH.BL}: función de Sistema de Colonia de Hormigas. Se le pasa un \textit{dataset} como argumento.
+    \item \texttt{SHMM.BL}: función de Sistema de Hormigas. Se le pasa un \textit{dataset} como argumento.
   \end{itemize}
  
  \item \hrefr{params.r}: fichero del que se leen los parámetros:
   \begin{itemize}
     \item \texttt{semilla}: vector de semillas aleatorias para poder reproducir los análisis hechos.
-    \item \texttt{max\_eval}: número máximo de evaluaciones de la función objetivo.
-    \item \texttt{AG.n.crom}: tamaño de la población. Por defecto seteado a 30.
-    \item \texttt{AGG.prob.cruce, AGE.prob.cruce}: probabilidad de cruce de los padres para dar lugar a un nuevo cromosoma 
-    en los algoritmos generacional y estacionario, respectivamente. Está seteada a 0.7 y a 1 por defecto.
-    \item \texttt{AGG.prob.cruce, AGE.prob.cruce}: probabilidad de mutación de los genes(cada una de las $n$ características
-    de la máscara) en las soluciones del generacional y estacionario, respectivamente. Está seteada a 0.001 (1 gen por cada mil)
+    \item \texttt{max.eval}: número máximo de evaluaciones de la función objetivo.
+    \item \texttt{OCH.num.ants}: número de hormigas de los algoritmos de optimización por hormigas. Por defecto, 10.
+    \item \texttt{OCH.alpha}: es un parámetro usado para calcular las ponderaciones de la regla de transición empleada
+      por las hormigas:
+    
+      $$ s= \left\{\begin{array}{cr}
+             arg max_{u\in J_k(r)} \big\{[\tau_{ru}]^{\alpha} \cdot [\eta_{ru}]^{\beta}\big\}, & q\le q_0\\
+             S, &  q>q_0
+            \end{array}\right.
+      $$
+      
+      donde $J_k(r)$ representa las posibles características a las que podemos con la hormiga $k-$ésima
+      desde la $r-$ ésima, es decir las no seleccionadas aún. Y S es una característica seleccionada según 
+      la regla de transición del Sistema de Hormigas:
+      
+      $$ p_k(r,s)= 
+	     \left\{\begin{array}{cr}
+             \frac{[\tau_{ru}]^{\alpha} \cdot [\eta_{ru}]^{\beta}}{\sum_{u\in J_k(r)}[\tau_{ru}]^{\alpha} \cdot [\eta_{ru}]^{\beta}}  , & s\in J_k(r)\\
+             S, & s\not\in J_k(r)
+            \end{array}\right.
+      $$
+      
+      donde $p_k(r,s)$ es la probabilidad con la que la hormiga $k$ situada en la ciudad $r$, decide moverse
+      hacia la ciudad $s$.
+    
+      Por defecto el parámetro está seteado a 1.
+    \item \texttt{OCH.beta}: descripción análoga a la \texttt{OCH.alpha}. Por defecto, a 2.
+    \item \texttt{OCH.global.evap}: coeficiente de evaporación global. Por defecto a 0.2
+    \item \texttt{OCH.prob.trans}: el $q_0$ definido en la regla de transición. Por defecto a 0.8.
+    \item \texttt{OCH.local.evap}: coeficiente de evaporación local. Por defecto a 0.2
+    \item \texttt{OCH.prof.bl}: profundidad aplicada en la búsqueda local en ambos algoritmos. Por defecto, 1.
   \end{itemize}
  \end{itemize}
  
@@ -462,7 +505,7 @@ Se describe a continuación un esquema de los ficheros de código:
   
  
  \begin{table}[H]	
-  \caption{Resultados del AGG}
+  \caption{Resultados SCH-BL}
   \begin{adjustbox}{width=1.1\textwidth}
   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
   \hline
@@ -485,7 +528,7 @@ Se describe a continuación un esquema de los ficheros de código:
   \end{table}
   
   \begin{table}[H]	
-  \caption{Resultados del AGE}
+  \caption{Resultados de SHMM-BL}
   \begin{adjustbox}{width=1.1\textwidth}
   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
   \hline
@@ -518,19 +561,12 @@ Se describe a continuación un esquema de los ficheros de código:
   \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
   \textbf{3-NN} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
   \textbf{SFS} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
-  \textbf{AGG} & 95.53546 & 98.13689 & 0.50000 & 45.03090 & 67.27778 & 71.55556 & 0.50111 & 72.23810 & 63.93363 & 68.39616 & 0.51107 & 519.59430 \\ \hline
-  \textbf{AGE} & 95.53595 & 98.24265 & 0.50000 & 48.30810 & 68.44444 & 70.94444 & 0.49444 & 75.25070 & 64.40561 & 68.80799 & 0.52134 & 508.17010 \\ \hline
+  \textbf{SCH-BL} & 95.53546 & 98.13689 & 0.50000 & 45.03090 & 67.27778 & 71.55556 & 0.50111 & 72.23810 & 63.93363 & 68.39616 & 0.51107 & 519.59430 \\ \hline
+  \textbf{SHMM-BL} & 95.53595 & 98.24265 & 0.50000 & 48.30810 & 68.44444 & 70.94444 & 0.49444 & 75.25070 & 64.40561 & 68.80799 & 0.52134 & 508.17010 \\ \hline
   \end{tabular}
   \end{adjustbox}
   \label{all}
   \end{table}
-  
-  Observamos a juzgar por los datos que estamos obteniendo que los algoritmos genéticos que hemos usado tienen la limitación
-  de que su tasa de reducción tiende a ser 0.5 (ya que las soluciones iniciales se generan aleatoriamente, y tienden a tener
-  la misma cantidad de ceros y de unos, por ser equiprobables los hechos de escoger un 0 o un 1. Además las operaciones que se
-  hacen (mutaciones, cruces) conservan estas probabilidades de al escoger una característica ser 0 o 1. Por tanto, podemos
-  encontrar ahí una limitación fuerte en los algoritmos genéticos por ejemplo en el dataset Arrhythmia, donde hemos observado
-  que las mejores soluciones tienden a tener pocas características.
   
   \subsection{Wdbc}
   
