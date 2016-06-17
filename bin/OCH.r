@@ -123,7 +123,7 @@ OCH <- function(data){
                             local.update, trail.max, trail.min){
     
     trail.features <- rep(init.trail, n)
-  
+    
     while(n.eval < max.eval){
       # Inicializacion de los caminos seguidos por cada hormiga
       paths <- lapply(1:num.ants, function(x){ sample(c(1,rep(0,n-1))) })

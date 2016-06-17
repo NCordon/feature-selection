@@ -574,28 +574,9 @@ Se describe a continuación un esquema de los ficheros de código:
   
   Es un problema de clasificación binaria en un dataset de 30 características y 569 instancias.
   
-  \imagen{../data/genetic/wdbc.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
+  \imagen{../data/och/wdbc.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
   
   
-  Prácticamente los dos modelos de algoritmo genético funcionan igual de bien en todos los datasets. El \textit{overfiting} no
-  se aprecia con tasas tan elevadas de \textit{score} en Wdbc. Observamos eso sí, que la desviación típica del modelo estacionario es
-  menor tanto en porcentajes de clasificación como en tasas de acierto. Esto se debe a que la diversidad del modelo generacional
-  es mayor, al ser sustituida la población entera por otra población en la que en el peor de los casos, todos los individuos
-  podrían ser muy malas soluciones excepto una, que es la que se conserva por elitismo. En el modelo elitista, al ser únicamente
-  dos los cromosomas que se van sustituyendo a cada paso en la población de 30, tenemos menor diversidad, pero una convergencia
-  un poco más uniforme. Este comentario es extensible al análisis de los otros dos datasets.
-  
-  Las metaheurísticas que se han programado para este dataset (trayectorias, multiarranque, genéticos) no están consiguiendo
-  batir al clasificador 3-NN. Este clasificador en baja dimensión aproxima muy bien el \textit{Bayes decision boundary}, que es
-  el límite que estima el clasificador de Bayes para clasificar una instancia como de una clase u otra reduciendo la probabilidad
-  de fallo. Podemos empezar a teorizar llegados a este punto, que en baja dimensión no vamos a conseguir obtener tasas muy
-  superiores al clasificador 3-NN. En tema de interpretabilidad, las soluciones aportadas por los genéticos son mejores 
-  que las proporcionadas por el clasificador 3-NN, pero peores que el SFS, ya que como se ha explicado la tasa de 
-  reducción tiende a ser 0.5.
-  
-  En cuanto a tiempos, ambos genéticos tardan lo mismo, alrededor de 45 segundos. Constituyen tiempos bastante peores de 
-  lo que tardaban las metaheurísticas de trayectorias o multiarranque, obteniendo tasas de reducción muy inferiores a las
-  que se obtenían por ejemplo con el GRASP.
   %\imgn{../data/wdbc3nn.png}{Selección de características del SFS}{1}
   
   %\imgn{../data/wdbctabu.png}{Boxplot de variables del wdbc}{1}
@@ -605,47 +586,18 @@ Se describe a continuación un esquema de los ficheros de código:
   Se trata de un problema de clasficación multiclase (15 clases después de normalizar el dataset). 
   Contiene 360 instancias y 90 características.
   
-  Como se ha comentado, el generacional proporciona soluciones con mayor desviación típica en la tasa de clasificación y 
-  de reducción.
   
-  Para este dataset, solo se aprecia diferencia en tiempo con respecto a las metaheurísticas de multiarranque de la práctica
-  anterior y en tasa de reducción respecto al GRASP, siendo peor en el caso de los genéticos.
-  
-  Para Movement Libras, el modelo estacionario funciona ligeramente mejor en cuanto a convergencia y tasa de clasificación
-  de las soluciones que el generacional. Así bien las diferencias en términos porcentuales en \textit{score} entre ambos 
-  modelos no son muy acusadas, apenas de un punto porcentual.
-  
-  \imagen{../data/genetic/mlibras.png}{Tasas de clasificación en Movement Libras}{wdbcgraph}{0.7}
+  \imagen{../data/och/mlibras.png}{Tasas de clasificación en Movement Libras}{wdbcgraph}{0.7}
   
   
   \subsection{Arrhythmia}
   
   Se trata de un problema de clasficación multiclase (5 clases después de normalizar el dataset). 
   Tiene 386 instancias y 253 características.
-  
-  
-  Como se ha comentado, el generacional proporciona soluciones con mayor desviación típica en la tasa de clasificación y 
-  de reducción.
-  
-  Prácticamente las dos metaheaurísticas son iguales, pero ofrecen tiempos muy superiores a los que arrojaban las 
-  metaheaurísticas multiarranque, y unas tasas de reducción y de clasificación muy alejadas de la solución que obteníamos
-  en el GRASP.
-  
-  Como punto positivo, podemos afirmar que los genéticos baten al clasificador vecino más cercano en este caso, pero no
-  podemos olvidar que este último es especialmente malo en alta dimensionalidad. De hecho, el algoritmo que mejor funciona
-  es el \textit{greedy} SFS, por seleccionar un número pequeño de características.
-  
-  \imagen{../data/genetic/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
+ 
+  \imagen{../data/och/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
   
   \subsection{Notas finales}
   
-  Podemos concluir que el uso de algoritmos genéticos en datasets de baja dimensionalidad está desaconsejado, por el tiempo
-  que consume, que comparado al resto de metaheurísticas es grande.
-  
-  Al igual que en la práctica de multiarranque, en la que se propuso añadir a futuras prácticas un \textit{stepwise} para
-  aumentar las tasas de reducción de las soluciones, durante la programación de los genéticos ha surgido la idea (que 
-  plausiblemente pueda aplicarse en meméticos) de usar codificaciones con mayor probabilidad de contener ceros que unos y
-  que esta probabilidad de generar un 0 o un 1 sea adaptativa al \textit{dataset} (características e instancias que tengamos).
-  
-  También se deja como intención el probar otros operadores de cruce con los algoritmos meméticos.
-\end{document}
+
+  \end{document}

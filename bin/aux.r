@@ -122,7 +122,7 @@ cross.eval <- function(algorithm){
     result.mean <- apply(result, 2, mean) 
     
     all.results[[d]] <- with.decimals(result)
-    mean.results[[d]] <- with.decimals(result.mean)
+    mean.results[[d]] <- result.mean
   }
   
   names(all.results) <- datasets.names
