@@ -2,17 +2,18 @@
 \noindent
 \mbox{}\textbf{\textcolor{Blue}{def}}\ make$\_$transitions\ \textcolor{BrickRed}{(}path\textcolor{BrickRed}{,}\ num$\_$car\textcolor{BrickRed}{,}\ trail$\_$features\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ \textbf{\textcolor{Blue}{if}}\textcolor{BrickRed}{(}num$\_$car\ \textcolor{BrickRed}{\textgreater{}}\ \textcolor{Purple}{0}\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
-\mbox{}\ \ \ \ \ \ \ \ probabilidades\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\textbf{\textcolor{Blue}{for}}\ i\ \textbf{\textcolor{Blue}{in}}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}num$\_$car\textcolor{Red}{\}}\ runif\textcolor{BrickRed}{()]} \\
+\mbox{}\ \ \ \ \ \ \ \ probabilidades\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\textbf{\textcolor{Blue}{for}}\ i\ \textbf{\textcolor{Blue}{in}}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}num$\_$car\textcolor{Red}{\}}\ random$\_$unif\textcolor{BrickRed}{(}\textcolor{Purple}{0}\textcolor{BrickRed}{,}\textcolor{Purple}{1}\textcolor{BrickRed}{)]} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{for}}\ i\ \textbf{\textcolor{Blue}{in}}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}num\textcolor{BrickRed}{.}car\textcolor{Red}{\}\{} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ values\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ \textbf{\textcolor{Blue}{for}}\ j\ \textbf{\textcolor{Blue}{in}}\ \textcolor{Purple}{1}\textcolor{BrickRed}{...}length\textcolor{BrickRed}{(}path\textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ path\textcolor{BrickRed}{[}j\textcolor{BrickRed}{]==}\textcolor{Purple}{0}\textcolor{BrickRed}{:} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{BrickRed}{(}trail$\_$features\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]\textasciicircum{}}alpha\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{*}\ \textcolor{BrickRed}{(}data\textcolor{BrickRed}{.}heuristic\textcolor{BrickRed}{\textasciicircum{}}beta\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ data$\_$heuristic\ =\ entropy(data)}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{BrickRed}{(}trail$\_$features\textcolor{BrickRed}{[}j\textcolor{BrickRed}{]\textasciicircum{}}alpha\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{*}\ \textcolor{BrickRed}{(}data$\_$heuristic\textcolor{BrickRed}{[}j\textcolor{BrickRed}{]\textasciicircum{}}beta\textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\ \textcolor{Purple}{0} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{BrickRed}{]} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Regla\ de\ la\ colonia\ de\ hormigas}} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}probabilidades\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{\textless{}}\ probabilidad\textcolor{BrickRed}{.}transition\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}probabilidades\textcolor{BrickRed}{[}i\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{\textless{}}\ probabilidad$\_$transicion\textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ selected\ \textcolor{BrickRed}{=}\ arg$\_$max\ \textcolor{BrickRed}{(}values\textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Regla\ del\ sistema\ de\ hormigas}} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\textcolor{Red}{\{} \\
@@ -20,7 +21,7 @@
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ values\ \textcolor{BrickRed}{=}\ values\textcolor{BrickRed}{[}\ non$\_$selected\ \textcolor{BrickRed}{]} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ selected\ \textcolor{BrickRed}{=}\ random\textcolor{BrickRed}{(}non$\_$selected\textcolor{BrickRed}{,}\ prob\ \textcolor{BrickRed}{=}\ values\textcolor{BrickRed}{)} \\
 \mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
-\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ path\textcolor{BrickRed}{[}selected\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{1} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ path\textcolor{BrickRed}{[}selected\textcolor{BrickRed}{]}\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{1} \\
 \mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
 \mbox{}\ \ \ \ \textcolor{Red}{\}} \\
 \mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ path \\

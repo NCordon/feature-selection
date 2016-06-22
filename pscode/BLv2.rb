@@ -3,7 +3,7 @@ def BL(m){
     no_seleccionados = {1,2,...n}
     do{
         i = random(no_seleccionados)
-        no_seleccionados = no_seleccionados -{i}
+        no_seleccionados = no_seleccionados - {i}
         evs_hechas++
 
         if (tasa(flip(mascara, i) > mejor_tasa){

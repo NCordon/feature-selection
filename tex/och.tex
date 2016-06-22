@@ -269,12 +269,12 @@ Se han escogido dos vectores para representar los rastros de feromona:
     En \textit{Sistema de Colonia de Hormigas con Búsqueda Local (SCH-BL)} se inicializa: \texttt{trail.features = [$10^{-6},\ldots 10^{-6}$]}
     
     En \textit{Sistema de Hormigas Max-Min con Búsqueda Local(SHMM-BL)} se inicializa: \texttt{trail.features = [$\tau_{max},\ldots \tau_{max}$]},
-    donde \texttt{$\tau_{max} = \frac{tasa\_objetivo(mask\_inicial)}{global\_evap}$} donde $global\_evap = 0.2$.
+    donde \texttt{$\tau_{max} = \frac{tasa\_objetivo(mask\_inicial)}{global\_evap}$} y $global\_evap = 0.2$.
   \item \texttt{trail\_num\_features = [$\tau_{1 car}$, \ldots $\tau_{n car}$]}
   
     donde la componente $i-$ésima almacena la feromona correspondiente a escoger un número $i$ de características
     
-    En ambos casos se inicializará \texttt{trail.num.features = \big[$\frac{1}{n}$, \ldots $\frac{1}{n}$\big]}
+    En ambos casos se inicializará \texttt{trail.num.features = \Big[$\frac{1}{n}$, \ldots $\frac{1}{n}$\Big]}
     
     donde $n$ es el número de características del problema.
   El cálculo de la entropía se efectúa de acuerdo al siguiente procedimiento:\\
@@ -288,7 +288,13 @@ Se han escogido dos vectores para representar los rastros de feromona:
     \normalsize  
   
   Situamos cada hormiga en una característica inicial, y seleccionamos al azar el número de características que escogera
-  cada hormiga, usando como ruleta \texttt{trail\_num\_features}
+  cada hormiga, usando como ruleta \texttt{trail\_num\_features}.
+  
+  El procedimiento para efectuar las transiciones ha sido, con probabilidad de transición a 0.8: \\
+  
+    \small\texttt{\input{och_transitions}}
+    \normalsize  
+  
 
   \item \textbf{Algoritmo Búsqueda Local (BL)} empleado:
   
@@ -311,7 +317,7 @@ Se han escogido dos vectores para representar los rastros de feromona:
   \item \textbf{Actualización de la feromona}:
   \footnote{Se introduce este aspecto en este apartado y no el siguiente dado que el lenguaje de programación empleado,
   R, ha posibilitado emplear la misma función para ambos algoritmos, tanto el de actualización local como el de actualización
-  global}
+  global de la feromona}
   
   \small\texttt{\input{och_update_trail}}
   
@@ -328,21 +334,21 @@ Se han escogido dos vectores para representar los rastros de feromona:
 Se ha empleado una metafunción a la que pasándole distintos \textit{settings} es capaz de efectuar los dos algoritmos.
 Por claridad en este apartado se detallan los pseudocódigos de ambos algoritmos por separado, aunque se puede apreciar que
 las únicas diferencias notables entre ambos las constituyen la actualización local de feromona, que en SHMM no está presente,
-y el tratamiento de $\tau_{max}$ y $\tau_{min}$, que solo se encuentra en SHMM, similitudes que han hecho posible el empleo \texttt{trail\_num\_features}
+y el tratamiento de $\tau_{max}$ y $\tau_{min}$, que solo se encuentra en SHMM, similitudes que han hecho posible el empleo
 de una única función para implementar los dos algoritmos.
 
 El esquema de los dos algoritmos por tanto es el mismo:
 
 \begin{itemize}
  \item Se escoge el número de características que seleccionará cada hormiga haciendo una ruleta con \texttt{trail\_num\_features}
- \item Cada hormiga construye un camino y tras la construcción completa de ese camino se efectúa una actualización local
- de la feromona en el algoritmo de colonia de hormigas.
+ \item Cada hormiga construye un camino. En SCH, tras la construcción completa de ese camino se efectúa una actualización local
+ de la feromona.
  \item Aplicamos búsqueda local a las soluciones obtenidas.
- \item Actualizamos la mejor solución y actualizamos $\tau_{max}$ y $\tau_{min}$ en el algoritmo de sistema de hormigas
- \item Actualización global de la feromona
- \item Reemplazo de los valores de feromona que excedan los límites $\tau_{max}$ y $\tau_{min}$ por estos valores, cuando
+ \item Actualizamos la mejor solución y actualizamos $\tau_{max}$ y $\tau_{min}$ en el algoritmo SHMM.
+ \item Actualización global de la feromona.
+ \item En SHMM, reemplazo de los valores de feromona que excedan los límites $\tau_{max}$ y $\tau_{min}$ por estos valores, cuando
  convenga.
- max-min
+ 
 \end{itemize}
 
 
@@ -576,16 +582,38 @@ Se describe a continuación un esquema de los ficheros de código:
   
   \imagen{../data/och/wdbc.png}{Tasas de clasificación en Wdbc}{wdbcgraph}{0.7}
   
+  En este dataset, SCH es de las 3 metaheurísticas comparadas el que mejor funciona, aunque obtiene una tasa de \textit{score}
+  ligeramente inferior al clasificador 3-nn sin metaheurística (96.23931\% frente a 96.55597\%). Sin embargo, la reducción
+  del SCH es significativa frente al 0\% del clasificador 3-nn. 
   
-  %\imgn{../data/wdbc3nn.png}{Selección de características del SFS}{1}
+  Existe una ligera diferencia de resultados en cuanto a tasa de clasificación entre los dos algoritmos de hormigas que
+  puede deberse a que en Sistema de Colonia de Hormigas se realiza una actualización local de feromona, mientras que en
+  Sistema de Hormigas Máx-Min no se efectúa esta actualización local de feromona, por lo que éste último ofrece más inestabilidad en la convergencia de soluciones.
   
-  %\imgn{../data/wdbctabu.png}{Boxplot de variables del wdbc}{1}
- 
+  De hecho, esta última afirmación puede verse reflejada en que la desviación típica del Sistema de Colonia de Hormigas es mayor
+  que la desviación del Sistema de Hormigas Máx-Min, y esta afirmación es extensible a todos los datasets.
+  
+  Los resultados en este dataset no resultan demasiado ilustrativos para evaluar el funcionamiento de las metaheurísticas porque
+  hay únicamente dos clases y ínfimas características. En general, los algoritmos sobre este dataset son bastante rápidos, y
+  podríamos permitirnos resolverlo por fuerza bruta.
+  
   \subsection{Movement libras}
   
   Se trata de un problema de clasficación multiclase (15 clases después de normalizar el dataset). 
   Contiene 360 instancias y 90 características.
   
+  En este dataset se acusa especialmente el mal funcionamiento de los algoritmos de optimización de hormigas, frente al algoritmo
+  genético estacionario, por ejemplo, que obtenía una tasa de clasificación de más del 68\%, o algunas metaheurísticas multiarranque.
+  
+  De nuevo se comenta que en este dataset la información para caracterizar a cada una de las clases es ínfima, por lo que
+  encontrar información suficiente en las iteraciones de la metaheurística para converger a la mejor solución, que separe bien
+  a todas las clases, es muy difícil, sobretodo si la convergencia es muy acusada como en estos algoritmos, frente a su baja diversidad.
+  
+  Observamos como además hay muchos casos de \textit{overfitting} en este dataset en ambos algoritmos. Este efecto es más
+  acusado en SCH-BL, donde la actualización local de feromona hace que el algoritmo sobreaprenda de los datos más que en SHMM-BL.
+  Las tasas de reducción en ambos algoritmos de hormigas son muy positivas. Frente a otras heurísticas que usaban la distribución
+  equiprobable de seleccionar una característica o no hacerlo, y que obtenían tasas de reducción en torno al 50\%, aquí observamos
+  como las tasas de reducción parecen adaptarse mejor a los datasets.
   
   \imagen{../data/och/mlibras.png}{Tasas de clasificación en Movement Libras}{wdbcgraph}{0.7}
   
@@ -597,7 +625,22 @@ Se describe a continuación un esquema de los ficheros de código:
  
   \imagen{../data/och/arrhythmia.png}{Tasas de clasificación en Arrhythmia}{wdbcgraph}{0.7}
   
+  Resulta muy positiva en este dataset la tasa de reducción arrojada por las metaheurísticas de hormigas, que compite
+  incluso con la aportada por SFS (superior al 95\%).
+  
+  Se realiza mucho \textit{overfitting} en algunas iteraciones.
+  
+  Los tiempos de ejecución son significativamente inferiores a los de por ejemplo las metaheurísticas de algoritmos genéticos,
+  pero las tasas de clasificación obtenidas están lejos de la del GRASP (en torno al 71\%).
+  
   \subsection{Notas finales}
   
+  Hemos observado que los algoritmos de optimización por hormigas tienen algunas ventajas, como su adaptabilidad al número
+  de características en función del dataset (en los tres datasets las tasas de reducción han sido diferentes, y muy similares
+  a las del SFS); pero inconvenientes como su alto grado de \textit{overfitting} y sus pobres resultados frente a algoritmos más
+  asumibles computacionalmente como el SFS.
+  
+  Aún con todo lo dicho, se piensa que estas metaheurísticas pueden llegar a ser muy útiles para encontrar por ejemplo reglas
+  de asociación entre las distintas características.
 
   \end{document}

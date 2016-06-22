@@ -3,7 +3,7 @@ def entropy(data){
 
     for i in {1...n}{
 
-        if( not.numeric(data[,i]) ){
+        if( not_numeric(data[,i]) ){
             discretized_values = split(data[,i], data.class)
         }
         else{
