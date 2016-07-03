@@ -144,7 +144,7 @@ OCH <- function(data){
       }
     
       # Aplicamos busqueda local a los caminos encontrados por las hormigas
-      paths <- lapply(paths, function(p){ BL.entornos(data, p, max.entornos=1) })
+      paths <- lapply(paths, function(p){ BL.entornos(data, p, max.entornos=prof.bl) })
       n.eval <- n.eval + sum(sapply(paths, '[[', 2))
       paths <- lapply(paths, '[[', 1)
       

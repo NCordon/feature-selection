@@ -67,29 +67,29 @@ ILS.num.sols.init <- 25
 
 
 
-# Parametros de AGs (AGG: generacional, AGE: estacionario)
+# Parametros de AGs (AGG: generacional, AGE: estacionario) y meméticos
 #### n.crom               numero de cromososmas en cada iteracion
 #### prob.cruce           probabilidad de que dos padres crucen
 #### prob.mutacion        probabilidad de mutacion de un gen
-####
+#### prob.bl              profundidad a aplicar en la búsqueda local
 AG.n.crom <- 30
 AGG.prob.cruce <- 0.7
 AGG.prob.mutation <- 0.001
 AGE.prob.cruce <- 1
-AGE.prob.mutation <- 0.001
-
+AM.prof.bl <- 1
 
 # Parametros de las OCH  
 #### num.ants             numero de hormigas
 #### alpha                parametro de la regla de transicion
 #### beta                 parametro de la regla de transicion
 #### evaporation          parametro de evaporacion global, en tanto por uno
-#### trans.prob           prob
-#### prof.bl              profundidad de la busqueda local (*n)
+#### prob.trans           probabilidad de efectuar transicion
+#### local.evap           parametro de evaporacion local
+#### prof.bl              profundidad a aplicar en la busqueda local
 OCH.num.ants <- 10
 OCH.alpha <- 1
 OCH.beta <- 2
 OCH.global.evap <- 0.2
 OCH.prob.trans <- 0.8
 OCH.local.evap <- 0.2
-OCH.prof.bl <- 1
+OCH.prob.bl <- 1

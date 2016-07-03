@@ -79,6 +79,11 @@ ILS.results <- cross.eval(ILS)
 AGG.results <- cross.eval(AGG)
 AGE.results <- cross.eval(AGE)
 
+# Algoritmos meméticos
+AM.10.1.results <- cross.eval(AM.10.1)
+AM.10.0.1.results <- cross.eval(AM.10.0.1)
+AM.10.0.1.mej.results <- cross.eval(AM.10.0.1.mej)
+
 # Algoritmos de Optimización de Hormigas
 SCH.BL.results <- cross.eval(SCH.BL)
 SHMM.BL.results <- cross.eval(SHMM.BL)
