@@ -48,8 +48,9 @@ tasa.clas <- function (train, mask){
   if (1 %in% mask){
     # Aplicamos la mascara
     cl <- train$class
+    #print(mask)
     train <- subset(train, select = which(mask==1))
-    
+    #print('hola')
     # Obtenemos el fit que se haria del conjunto test para el 3-knn
     fit <- knn.cv(train, cl, k=3, use.all = TRUE)
     

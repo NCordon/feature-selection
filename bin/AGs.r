@@ -244,11 +244,13 @@ AGE <- function(data){
 
 
 ##########################################################################
-### Fucniones de algoritmos meméticos
+### Funciones de búsqueda local para los algoritmos memeticos
 ###
+### prob        probabilidad de aplicar busqueda local
+### prof.bl     profundidad de la busqueda local que se aplica
+### apply.best  si esta a TRUE, aplica busqueda local a los prob*N mejores
 ##########################################################################
-
-memetic.BL <- function(prob, prof.bl, apply.best){
+memetic.BL <- function(data, prob, prof.bl, apply.best){
   function(population){
     
     size.population <- length(population)
@@ -279,15 +281,25 @@ memetic.BL <- function(prob, prof.bl, apply.best){
 }
 
 
+##########################################################################
+### Funciones AM (algoritmos meméticos)
+###     Para un data frame devuelve para el clasificador 3-knn el conjunto
+###     de caracteristicas que se obtienen de aplicar un algoritmo memetico
+###     con distintos parametros en su busqueda local
+###
+##########################################################################
+
 AM.10.1 <- function(data){
-  AG(data = data, function.BL = memetic.BL(prob = 1, prof.bl = AM.prof.bl, apply.best = F), gen.memetic=10)$generational()
+  AG(data = data, function.BL = memetic.BL(data, prob = 1, prof.bl = AM.prof.bl, apply.best = F), 
+     gen.memetic=10)$generational()
 }
 
 AM.10.0.1 <- function(data){
-  AG(data = data, function.BL = memetic.BL(prob = 0.1, prof.bl = AM.prof.bl, apply.best = F), gen.memetic=10)$generational()
+  AG(data = data, function.BL = memetic.BL(data, prob = 0.1, prof.bl = AM.prof.bl, apply.best = F), 
+     gen.memetic=10)$generational()
 }
   
 AM.10.0.1.mej <- function(data){
-  AG(data = data, function.BL = memetic.BL(prob = 0.1, prof.bl = AM.prof.bl, apply.best = T), gen.memetic=10)$generational()
+  AG(data = data, function.BL = memetic.BL(data, prob = 0.1, prof.bl = AM.prof.bl, apply.best = T), 
+     gen.memetic=10)$generational()
 }
-
