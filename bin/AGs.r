@@ -157,12 +157,14 @@ AG <- function(data, crossover = crossover.OX, function.BL, gen.memetic){
     prob.mutation <- AGG.prob.mutation
     n.eval <- 0
     evs.bl <- 0
+    n.generations <- 0
     
     # Bucle principal
     while(n.eval < max.eval){
       # Aplicamos busqueda local si el algoritmo es memetico
       
-      if (memetic.algorithm && n.eval %% gen.memetic == 0 && n.eval !=0){
+      if (memetic.algorithm && n.generations %% gen.memetic == 0 
+          && n.generations !=0){
         result.bl <- function.BL(population)
         population <- result.bl[[1]]
         evs.bl <- result.bl[[2]]
@@ -183,6 +185,9 @@ AG <- function(data, crossover = crossover.OX, function.BL, gen.memetic){
       population <- eval.fitness(population)
       # Elitismo
       population <- keep.elitism (population, old.best)
+      
+      # Aumentamos el número de generaciones
+      n.generations <- n.generations + 1
     }  
     
     # Ordenando la poblacion por tasa de menor a mayor, delvolvemos el mejor...

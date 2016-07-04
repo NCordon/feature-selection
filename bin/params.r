@@ -72,7 +72,7 @@ ILS.num.sols.init <- 25
 #### prob.cruce           probabilidad de que dos padres crucen
 #### prob.mutacion        probabilidad de mutacion de un gen
 #### prob.bl              profundidad a aplicar en la búsqueda local
-AG.n.crom <- 30
+AG.n.crom <- 10
 AGG.prob.cruce <- 0.7
 AGG.prob.mutation <- 0.001
 AGE.prob.cruce <- 1

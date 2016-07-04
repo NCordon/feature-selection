@@ -161,8 +161,8 @@
 %----------------------------------------------------------------------------------------
 \bigskip
 \HRule \\[0.4cm]
-{ \huge \bfseries Práctica III}\\[0.4cm] % Title of your document
-{ \huge \bfseries Selección de características}\\
+{ \huge \bfseries Práctica V}\\[0.4cm] % Title of your document
+{ \huge \bfseries Búsquedas Híbridas para Selección de Características}\\
 \HRule \\[1.5cm]
  
 %----------------------------------------------------------------------------------------
@@ -171,8 +171,9 @@
 
 \begin{minipage}{\textwidth}
 \begin{center} \large
-\emph{Algoritmo genético generacional}\\
-\emph{Algoritmo genético estacionario}\\
+\emph{AM-(10, 1,0)}\\
+\emph{AM-(10, 0.1)}\\
+\emph{AM-(10, 0.1mej)}\\
 \end{center}
 \end{minipage}
 
@@ -257,48 +258,22 @@ obtenido.
   \small\texttt{\input{tasa_clasificacion}}
   \normalsize
   
-\item \textbf{Generación de soluciones aleatorias}:
-  La población inicial en ambos casos se inicializa haciendo uso del siguiente procedimiento, con 30 cromosomas en ambos casos.
-  (\texttt{num\_crom = 30})\\
+\item \textbf{Algoritmo Búsqueda Local (BL)} empleado:
   
-  \small\texttt{\input{AG_gen_init}}
+  El operador de generación de vecino usado ha sido:
+  \footnote{En R, puesto que estamos manejando un vector de 0 y 1, el operador \texttt{flip} puede explicitarse como
+  \texttt{mask[j]} = \texttt{!mask[j]}}
+  
+  \small\texttt{\input{flip}}
   \normalsize
-
-\item \textbf{Mecanismo de selección}:
-  El mecanismo de selección empleado ha sido el siguiente, donde para el modelo generacional \texttt{size\_generation = 30} y para
-  el estacionario se tiene \texttt{size\_generation = 2}, y en ambos casos el tamaño de la población es 30 (\texttt{num\_crom=30}).
-
-  Se seleccionan \texttt{size\_generation} parejas de cromosomas, y se decide cuál de los dos individuos de la pareja se 
-  queda en la población por torneo binario.\\
+     
+  El algoritmo, propiamente dicho, que se ha empleado ha sido:\\
   
-  \small\texttt{\input{AG_selection}}
+  \small\texttt{\input{BLv2}}
   \normalsize
   
-  
-\item \textbf{Operador de cruce}:
-
-  Se incluye a continuación el pseudocódigo del operador de cruce OX y de la función que se emplea para aplicarlo\\
-
-  \small\texttt{\input{AG_crossover}}
-  \normalsize
-
-  
-  Se ha optado por hacer en cada generación un número de cruces equivalente a la esperanza matemática de cruzar. Esto es
-  correcto porque los cruces siguen una distribución uniforme a lo largo de las iteraciones (ya que los números aleatorios
-  que generamos siguen una distribución uniforme).
-  
-\item \textbf{Operador de mutación}:
-
-  \small\texttt{\input{AG_mutation}}
-  \normalsize
-  
-  Puesto que la parte de selección incluía un matiz aleatorio en la ordenación del vector, mutamos siempre los cromosomas
-  que nos encontramos al principio. Se ha querido adaptar esta función para que funcione tanto para el modelo generacional
-  como el estacionario. Por tanto, el problema de usar la esperanza matemática de mutar en lugar de generar un aleatorio
-  por cada gen se materializa en que para pocos genes (wdbc tiene 30 características), y para 2 padres, tendremos 60 genes,
-  de los cuales podríamos mutar 1 gen siempre, o no mutar ninguno, por ser la esperanza menor que cero. Por eso para 
-  resolver esta tesitura se lanza un aleatorio, y si es menor que la esperanza calculada, mutaremos un gen en dicha 
-  llamada. Caso opuesto, no.
+  Se realiza 1 iteracion en el bucle principal de la búsqueda local, tanto si se ha encontrado mejora en el entorno como
+  si no. Como solución se devuelve la máscara junto al número de evaluaciones de la función objetivo efectuado.
 
 \end{itemize}
 
@@ -322,24 +297,6 @@ modificado no sufreen reevaluación del score.
 La estructura de los dos algoritmos a partir de todos estos procedimientos auxiliares se detalla a continuación, donde
 \texttt{max\_eval} = 15000 y \texttt{p\_mutation}=0.001(por gen) en ambos casos.
 
-\subsection{Algoritmo genético generacional}.
-En este caso la probabilidad de cruce es 0.7
-
-\small{\texttt{\input{AGG}}}
-\normalsize
-
-\subsection{Algoritmo genético estacionario}
-En este caso la probabilidad de cruce es 1.
-
-\small{\texttt{\input{AGE}}}
-\normalsize
-
-\section{Algoritmo de comparación: SFS}
-\small{\texttt{\input{SFS}}}
-
-Partiendo de una selección de características vacía (máscara nula), va añadiendo a cada paso la característica
-de las no escogidas hasta el momento que maximiza la tasa de clasificación añadiéndola a la solución, hasta
-que la característica escogida no mejore a la mejor solución hasta el momento
 
 \section{Implementación de la práctica}
 Para la implementación de la práctica, se ha reutilizado toda la estructura de lectura de ficheros y funciones auxiliares
@@ -378,23 +335,32 @@ Se describe a continuación un esquema de los ficheros de código:
  población con máscaras aleatorias
    \item La función \texttt{crossover.OX} que es el operador de cruce que por defecto se usa. Podría implementarse otro y
    aplicarlo en lugar del OX de forma fácil según la estructura que se ha creado al programar.
-   \item Una metafunción de nombre AG, a la que se le pasa un dataset y un operador de cruce, y devuelve dos funciones,
-   una que al ejecutarla realiza el proceso de algoritmo generacional, y otra del estacionario. Se ha optado por esta 
-   técnica de implementación para encapsular todo lo común a los dos algoritmos, que como se ha descrito en el presente
-   documento se han implementado usando las mismas funciones auxiliares para efectuar selecciones-torneos, cruces, mutaciones,
-   etc.
+   \item Una función de nombre AG, a la que se le pasa un dataset, un operador de cruce, una función de búsqueda local y
+   cada cuántas generaciones queremos aplicarla
+   \item La función \texttt{memetic.BL} una función \textit{wrapper} de la función de búsqueda local para aplicar en 
+   hibridación de genéticos al que le pasamos el dataset, la probabilidad de aplicación de la búsqueda local, 
+   la profundidad con la que queremos que se aplique la búsqueda local y un \textit{flag} para indicar si queremos que la
+   búsqueda local se aplique solo a los mejores individuos de una población. Devuelve la función a aplicar sobre una población.
   \end{itemize}
+  
+ \item \hrefr{BL.r}: contiene la función de búsqueda local \texttt{BL.entornos}, que recibe como parámetros un dataset,
+ una máscara a la que aplicarle búsqueda local, y \texttt{max.entornos}, profundidad de la búsqueda local a aplicar.
+
  
  \item \hrefr{params.r}: fichero del que se leen los parámetros:
   \begin{itemize}
     \item \texttt{semilla}: vector de semillas aleatorias para poder reproducir los análisis hechos.
     \item \texttt{max\_eval}: número máximo de evaluaciones de la función objetivo.
-    \item \texttt{AG.n.crom}: tamaño de la población. Por defecto seteado a 30.
-    \item \texttt{AGG.prob.cruce, AGE.prob.cruce}: probabilidad de cruce de los padres para dar lugar a un nuevo cromosoma 
-    en los algoritmos generacional y estacionario, respectivamente. Está seteada a 0.7 y a 1 por defecto.
-    \item \texttt{AGG.prob.cruce, AGE.prob.cruce}: probabilidad de mutación de los genes(cada una de las $n$ características
-    de la máscara) en las soluciones del generacional y estacionario, respectivamente. Está seteada a 0.001 (1 gen por cada mil)
+    \item \texttt{AG.n.crom}: tamaño de la población. Por defecto seteado a 10.
+    \item \texttt{AGG.prob.cruce}: probabilidad de cruce de los padres para dar lugar a un nuevo cromosoma. 
+    Está seteada a 0.7 y a 1 por defecto.
+    \item \texttt{AGG.prob.mutation}: probabilidad de mutación de los genes(cada una de las $n$ características
+    de la máscara) en las soluciones del algoritmo genético generacional. Está seteada a 0.001 (1 gen por cada mil)
+    \item \texttt{AM.prof.bl}: profundidad de la búsqueda local aplicada. Por defecto, a 1.
   \end{itemize}
+  
+ \item \href{NN3.r}: contiene una implementación del vecino más cercano con $k=3$
+ \item \href{SFS.r}: implementación del algoritmo \textit{sequential forward selection}
  \end{itemize}
  
  Para verificar los datos aportados para el algoritmo \texttt{algx}, a saber, basta ejecutar todo el fichero \texttt{main.r}
