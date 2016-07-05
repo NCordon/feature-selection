@@ -171,7 +171,7 @@
 
 \begin{minipage}{\textwidth}
 \begin{center} \large
-\emph{AM-(10, 1,0)}\\
+\emph{AM-(10, 1.0)}\\
 \emph{AM-(10, 0.1)}\\
 \emph{AM-(10, 0.1mej)}\\
 \end{center}
@@ -242,7 +242,7 @@ a 1. A una representación de esta forma, la denominamos máscara: $$ mask =\beg
 \end{matrix}$$
 
 \newpage
-\section{Descripción elementos comunes de los algoritmos}
+\section{Descripción elementos básicos}
 Los algoritmos considerados tienen las siguientes componentes:
 
 \begin{itemize} 
@@ -258,6 +258,49 @@ obtenido.
   \small\texttt{\input{tasa_clasificacion}}
   \normalsize
   
+\item \textbf{Generación de soluciones aleatorias}:
+  La población inicial en ambos casos se inicializa haciendo uso del siguiente procedimiento, con 30 cromosomas en ambos casos.
+  (\texttt{num\_crom = 30})\\
+  
+  \small\texttt{\input{AG_gen_init}}
+  \normalsize
+
+\item \textbf{Mecanismo de selección}:
+  El mecanismo de selección empleado ha sido el siguiente, donde para el modelo generacional \texttt{size\_generation = 30} y para
+  el estacionario se tiene \texttt{size\_generation = 2}, y en ambos casos el tamaño de la población es 30 (\texttt{num\_crom=30}).
+
+  Se seleccionan \texttt{size\_generation} parejas de cromosomas, y se decide cuál de los dos individuos de la pareja se 
+  queda en la población por torneo binario.\\
+  
+  \small\texttt{\input{AG_selection}}
+  \normalsize
+  
+  
+\item \textbf{Operador de cruce}:
+
+  Se incluye a continuación el pseudocódigo del operador de cruce OX y de la función que se emplea para aplicarlo\\
+
+  \small\texttt{\input{AG_crossover}}
+  \normalsize
+
+  
+  Se ha optado por hacer en cada generación un número de cruces equivalente a la esperanza matemática de cruzar. Esto es
+  correcto porque los cruces siguen una distribución uniforme a lo largo de las iteraciones (ya que los números aleatorios
+  que generamos siguen una distribución uniforme).
+  
+\item \textbf{Operador de mutación}:
+
+  \small\texttt{\input{AG_mutation}}
+  \normalsize
+  
+  Puesto que la parte de selección incluía un matiz aleatorio en la ordenación del vector, mutamos siempre los cromosomas
+  que nos encontramos al principio. Se ha querido adaptar esta función para que funcione tanto para el modelo generacional
+  como el estacionario. Por tanto, el problema de usar la esperanza matemática de mutar en lugar de generar un aleatorio
+  por cada gen se materializa en que para pocos genes (wdbc tiene 30 características), y para 2 padres, tendremos 60 genes,
+  de los cuales podríamos mutar 1 gen siempre, o no mutar ninguno, por ser la esperanza menor que cero. Por eso para 
+  resolver esta tesitura se lanza un aleatorio, y si es menor que la esperanza calculada, mutaremos un gen en dicha 
+  llamada. Caso opuesto, no.
+
 \item \textbf{Algoritmo Búsqueda Local (BL)} empleado:
   
   El operador de generación de vecino usado ha sido:
@@ -279,9 +322,9 @@ obtenido.
 
 %\newpage
 \section{Profundización en los algoritmos}
-Se ha empleado una estructura común para construir los dos algoritmos, por medio de los procedimientos cuyo pseudocódigo se
-ha detallado en el punto anterior. Asimismo se ha empleado el siguiente procedimiento para realizar los reemplazamientos
-en los dos genéticos.
+
+Se ha empleado una estructura común para construir los tres algoritmos, por medio de los procedimientos cuyo pseudocódigo se
+ha detallado en el punto anterior. Asimismo se ha empleado el siguiente procedimiento para realizar los reemplazamientos:
 
 \small{\texttt{\input{AGs}}}
 \normalsize
@@ -294,8 +337,38 @@ La función \texttt{reeval} se emplea para calcular el \textit{score} a aquellas
 el proceso de evaluación genética, y que se han marcado a reevaluar mediante un \textit{flag}. Las máscaras que no se han
 modificado no sufreen reevaluación del score.
 
-La estructura de los dos algoritmos a partir de todos estos procedimientos auxiliares se detalla a continuación, donde
-\texttt{max\_eval} = 15000 y \texttt{p\_mutation}=0.001(por gen) en ambos casos.
+
+Se ha empleado una función \textit{wrapper} de la función de búsqueda local, que se detalla a continuación:
+
+\small{\texttt{\input{memetic_bl}}}
+\normalsize
+
+
+El esquema general de ejecución en los tres casos ha sido, proporcionando una función de búsqueda local (una instancia de la
+función \textit{wrapper} con ciertos parámetros):
+
+\small{\texttt{\input{AM}}}
+\normalsize
+
+Los parámetros usados han sido \texttt{max\_eval} = 15000, \texttt{p\_cruce=0.7} y \texttt{p\_mutation}=0.001.
+
+\subsection{AM-(10, 1.0)}
+
+Instancia de memético con \texttt{bl = memetic\_bl(data, prob = 1, flag\_best = FALSE)}
+
+\subsection{AM-(10, 0.1)}
+
+Instancia de memético con \texttt{bl = memetic\_bl(data, prob = 0.1, flag\_best = FALSE)}
+
+\subsection{AM-(10, 0.1mej)}
+
+Instancia de memético con \texttt{bl = memetic\_bl(data, prob = 0.1, flag\_best = TRUE)}
+
+
+\section{Algoritmo de comparación: SFS}
+
+\small{\texttt{\input{SFS}}}
+\normalsize
 
 
 \section{Implementación de la práctica}
@@ -341,6 +414,7 @@ Se describe a continuación un esquema de los ficheros de código:
    hibridación de genéticos al que le pasamos el dataset, la probabilidad de aplicación de la búsqueda local, 
    la profundidad con la que queremos que se aplique la búsqueda local y un \textit{flag} para indicar si queremos que la
    búsqueda local se aplique solo a los mejores individuos de una población. Devuelve la función a aplicar sobre una población.
+   \item Las funciones AM.10.1, AM.10.0.1 y AM.10.0.1.mej correspondientes a los tres algoritmos meméticos pedidos.
   \end{itemize}
   
  \item \hrefr{BL.r}: contiene la función de búsqueda local \texttt{BL.entornos}, que recibe como parámetros un dataset,
@@ -359,8 +433,8 @@ Se describe a continuación un esquema de los ficheros de código:
     \item \texttt{AM.prof.bl}: profundidad de la búsqueda local aplicada. Por defecto, a 1.
   \end{itemize}
   
- \item \href{NN3.r}: contiene una implementación del vecino más cercano con $k=3$
- \item \href{SFS.r}: implementación del algoritmo \textit{sequential forward selection}
+ \item \hrefr{NN3.r}: contiene una implementación del vecino más cercano con $k=3$.
+ \item \hrefr{SFS.r}: implementación del algoritmo \textit{sequential forward selection}.
  \end{itemize}
  
  Para verificar los datos aportados para el algoritmo \texttt{algx}, a saber, basta ejecutar todo el fichero \texttt{main.r}

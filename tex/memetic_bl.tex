@@ -1,0 +1,24 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textbf{\textcolor{Blue}{def}}\ memetic$\_$bl\ \textcolor{BrickRed}{(}data\textcolor{BrickRed}{,}\ prob\textcolor{BrickRed}{,}\ flag$\_$best\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\textcolor{BrickRed}{(} \\
+\mbox{}\ \ \ \ \ \ \ \ function\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ evs\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{0} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ La\ poblacion\ está\ ordenada}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}flag$\_$best\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ to$\_$apply\ \textcolor{BrickRed}{=}\ \textcolor{Red}{\{}\textcolor{Purple}{1}\textcolor{BrickRed}{...}prob\textcolor{BrickRed}{*}size\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)}\textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ to$\_$apply\ \textcolor{BrickRed}{+=}\ \textcolor{BrickRed}{(}size\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{-}\ size\textcolor{BrickRed}{(}to$\_$apply\textcolor{BrickRed}{))} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{else}}\ to$\_$apply\ \textcolor{BrickRed}{=}\ which\textcolor{BrickRed}{(}runif\textcolor{BrickRed}{(}\textcolor{Purple}{0}\textcolor{BrickRed}{,}\ \textcolor{Purple}{1}\textcolor{BrickRed}{,}\ size\textcolor{BrickRed}{(}population\textcolor{BrickRed}{))}\ \textcolor{BrickRed}{\textless{}=}\ prob\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{for}}\ \textcolor{BrickRed}{(}i\ \textbf{\textcolor{Blue}{in}}\ to$\_$apply\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ result\ \textcolor{BrickRed}{=}\ BL\textcolor{BrickRed}{(}population\textcolor{BrickRed}{[[}i\textcolor{BrickRed}{]].}mask\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[[}i\textcolor{BrickRed}{]].}mask\ \textcolor{BrickRed}{=}\ result\textcolor{BrickRed}{.}mask \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ population\textcolor{BrickRed}{[[}i\textcolor{BrickRed}{]].}evaluated\ \textcolor{BrickRed}{=}\ False \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ \ \ evs\ \textcolor{BrickRed}{=}\ evs\ \textcolor{BrickRed}{+}\ result\textcolor{BrickRed}{.}eval \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{return}}\ \textcolor{BrickRed}{[}population\textcolor{BrickRed}{,}\ evs\textcolor{BrickRed}{]} \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \textcolor{BrickRed}{)} \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}

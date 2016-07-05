@@ -1,0 +1,28 @@
+% Generator: GNU source-highlight, by Lorenzo Bettini, http://www.gnu.org/software/src-highlite
+\noindent
+\mbox{}\textbf{\textcolor{Blue}{def}}\ memetic\textcolor{BrickRed}{(}data\textcolor{BrickRed}{,}\ crossover\textcolor{BrickRed}{,}\ bl\textcolor{BrickRed}{,}\ gen$\_$memetic\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ n\ \textcolor{BrickRed}{=}\ num$\_$variables\textcolor{BrickRed}{(}data\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ n$\_$eval\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{0} \\
+\mbox{}\ \ \ \ n$\_$generations\ \textcolor{BrickRed}{=}\ \textcolor{Purple}{0} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{while}}\textcolor{BrickRed}{(}n$\_$eval\ \textcolor{BrickRed}{\textless{}}\ max$\_$eval\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \textbf{\textcolor{Blue}{if}}\textcolor{BrickRed}{(}n$\_$generations\ \textcolor{BrickRed}{\%}\ gen$\_$memetic\ \textcolor{BrickRed}{==}\ \textcolor{Purple}{0}\ \textbf{\textcolor{Blue}{and}}\ num$\_$generations\ \textcolor{BrickRed}{\textgreater{}}\ \textcolor{Purple}{0}\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ result\ \textcolor{BrickRed}{=}\ bl\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ result\textcolor{BrickRed}{.}population \\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ \ evs$\_$bl\ \textcolor{BrickRed}{=}\ result\textcolor{BrickRed}{.}evs \\
+\mbox{}\ \ \ \ \ \ \ \ \textcolor{Red}{\}} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ old$\_$best\ \textcolor{BrickRed}{=}\ population\textcolor{BrickRed}{[}\ arg\ max\ population\textcolor{BrickRed}{.}fitness\ \textcolor{BrickRed}{]} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ selection\textcolor{BrickRed}{(}\textcolor{Purple}{10}\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ crossover\textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ p$\_$cruce\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ mutate\textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ p$\_$mutation\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ n$\_$eval\ \textcolor{BrickRed}{+=}\ count\ \textcolor{BrickRed}{(}which\textcolor{BrickRed}{(}\textbf{\textcolor{Blue}{not}}\ population\textcolor{BrickRed}{.}evaluated\textcolor{BrickRed}{))}\ \textcolor{BrickRed}{+}\ evs$\_$bl \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ reeval\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)} \\
+\mbox{} \\
+\mbox{}\ \ \ \ \ \ \ \ population\ \textcolor{BrickRed}{=}\ keep$\_$elitism\ \textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ old\textcolor{BrickRed}{.}best\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ n$\_$generations\textcolor{BrickRed}{++} \\
+\mbox{}\ \ \ \ \textcolor{Red}{\}} \\
+\mbox{}\ \ \ \ \textbf{\textcolor{Blue}{return}}\ \textcolor{BrickRed}{(}population\textcolor{BrickRed}{[}\ arg\ max\ population\textcolor{BrickRed}{.}fitness\ \textcolor{BrickRed}{].}mask\textcolor{BrickRed}{)} \\
+\mbox{}\textcolor{Red}{\}} \\
+\mbox{}

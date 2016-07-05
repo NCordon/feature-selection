@@ -161,8 +161,9 @@ AG <- function(data, crossover = crossover.OX, function.BL, gen.memetic){
     
     # Bucle principal
     while(n.eval < max.eval){
-      # Aplicamos busqueda local si el algoritmo es memetico
       
+      # Aplicamos busqueda local si el algoritmo es memetico
+        
       if (memetic.algorithm && n.generations %% gen.memetic == 0 
           && n.generations !=0){
         result.bl <- function.BL(population)
@@ -287,7 +288,7 @@ memetic.BL <- function(data, prob, prof.bl, apply.best){
 
 
 ##########################################################################
-### Funciones AM (algoritmos meméticos)
+### Funciones AM (algoritmos memeticos)
 ###     Para un data frame devuelve para el clasificador 3-knn el conjunto
 ###     de caracteristicas que se obtienen de aplicar un algoritmo memetico
 ###     con distintos parametros en su busqueda local
