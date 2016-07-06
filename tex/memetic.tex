@@ -500,51 +500,77 @@ Se describe a continuación un esquema de los ficheros de código:
   
  
  \begin{table}[H]	
-  \caption{Resultados del AGG}
-  \begin{adjustbox}{width=1.1\textwidth}
-  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
-  \hline
-  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
-  \textbf{Partición 1-1} & 96.14035 & 98.94366 & 0.46667 & 42.45600 & 63.88889 & 70.55556 & 0.53333 & 69.70300 & 69.07216 & 68.22917 & 0.47431 & 540.86500 \\ \hline
-  \textbf{Partición 1-2} & 95.07042 & 98.59649 & 0.63333 & 43.79400 & 65.55556 & 71.11111 & 0.47778 & 70.91200 & 66.14583 & 70.61856 & 0.58498 & 501.70800 \\ \hline
-  \textbf{Partición 2-1} & 95.08772 & 97.18310 & 0.50000 & 45.44200 & 66.11111 & 67.77778 & 0.48889 & 74.08400 & 62.37113 & 72.39583 & 0.46640 & 537.66100 \\ \hline
-  \textbf{Partición 2-2} & 96.47887 & 98.94737 & 0.46667 & 45.10000 & 62.77778 & 75.55556 & 0.53333 & 77.48200 & 61.97917 & 65.97938 & 0.49012 & 496.93400 \\ \hline
-  \textbf{Partición 3-1} & 96.14035 & 97.18310 & 0.53333 & 43.84000 & 73.33333 & 68.88889 & 0.48889 & 77.51000 & 63.91753 & 67.18750 & 0.49012 & 520.82900 \\ \hline
-  \textbf{Partición 3-2} & 95.07042 & 98.24561 & 0.46667 & 45.26400 & 66.66667 & 78.88889 & 0.48889 & 77.85100 & 61.97917 & 67.52577 & 0.46640 & 492.01200 \\ \hline
-  \textbf{Partición 4-1} & 95.08772 & 99.29577 & 0.40000 & 44.32100 & 73.33333 & 69.44444 & 0.47778 & 72.34400 & 68.04124 & 68.22917 & 0.54545 & 533.04200 \\ \hline
-  \textbf{Partición 4-2} & 96.83099 & 97.19298 & 0.56667 & 44.96400 & 66.11111 & 73.88889 & 0.52222 & 72.25600 & 61.45833 & 69.58763 & 0.50593 & 503.29800 \\ \hline
-  \textbf{Partición 5-1} & 96.84211 & 97.53521 & 0.33333 & 45.77500 & 65.55556 & 73.88889 & 0.53333 & 65.11200 & 60.30928 & 68.22917 & 0.52964 & 551.07800 \\ \hline
-  \textbf{Partición 5-2} & 92.60563 & 98.24561 & 0.63333 & 49.35300 & 69.44444 & 65.55556 & 0.46667 & 65.12700 & 64.06250 & 65.97938 & 0.55731 & 518.51600 \\ \hline
-  \textbf{Media} & 95.53546 & 98.13689 & 0.50000 & 45.03090 & 67.27778 & 71.55556 & 0.50111 & 72.23810 & 63.93363 & 68.39616 & 0.51107 & 519.59430 \\ \hline
-  \textbf{Desv.Típica} & 1.20104 & 0.77188 & 0.09068 & 1.71898 & 3.44668 & 3.79083 & 0.02507 & 4.46933 & 2.78446 & 1.90630 & 0.03921 & 19.52783 \\ \hline
-  \end{tabular}
-  \end{adjustbox}
-  \label{AGG}
-  \end{table}
-  
-  \begin{table}[H]	
-  \caption{Resultados del AGE}
+  \caption{Resultados del AM-(10, 1.0)}
   \begin{adjustbox}{width=1.1\textwidth}
   \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
   \hline
   \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
-  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
-  \textbf{Partición 1-1} & 95.43860 & 99.29577 & 0.40000 & 50.12100 & 65.00000 & 71.66667 & 0.57778 & 71.52400 & 67.52577 & 69.79167 & 0.49802 & 520.74700 \\ \hline
-  \textbf{Partición 1-2} & 96.47887 & 98.24561 & 0.43333 & 52.61000 & 68.88889 & 69.44444 & 0.43333 & 78.16000 & 66.14583 & 68.55670 & 0.58498 & 474.08400 \\ \hline
-  \textbf{Partición 2-1} & 95.43860 & 97.53521 & 0.60000 & 52.66800 & 72.22222 & 66.66667 & 0.47778 & 75.68800 & 64.43299 & 70.31250 & 0.51383 & 523.33000 \\ \hline
-  \textbf{Partición 2-2} & 95.42254 & 98.59649 & 0.50000 & 47.40900 & 65.00000 & 72.77778 & 0.50000 & 75.94300 & 66.66667 & 69.58763 & 0.46640 & 503.43600 \\ \hline
-  \textbf{Partición 3-1} & 95.78947 & 97.53521 & 0.60000 & 45.66200 & 73.88889 & 67.77778 & 0.50000 & 80.08000 & 61.85567 & 67.70833 & 0.52174 & 545.61800 \\ \hline
-  \textbf{Partición 3-2} & 94.01408 & 98.24561 & 0.53333 & 47.37400 & 65.00000 & 79.44444 & 0.52222 & 75.07400 & 63.54167 & 66.49485 & 0.57708 & 482.20600 \\ \hline
-  \textbf{Partición 4-1} & 94.73684 & 99.29577 & 0.40000 & 46.46900 & 72.22222 & 67.22222 & 0.42222 & 74.29900 & 63.91753 & 67.70833 & 0.47826 & 516.64900 \\ \hline
-  \textbf{Partición 4-2} & 96.47887 & 97.54386 & 0.50000 & 47.50900 & 67.22222 & 72.77778 & 0.46667 & 78.42300 & 63.02083 & 68.55670 & 0.55336 & 490.41700 \\ \hline
-  \textbf{Partición 5-1} & 96.49123 & 97.88732 & 0.50000 & 47.69300 & 66.66667 & 73.33333 & 0.54444 & 72.92700 & 62.88660 & 68.22917 & 0.50988 & 531.90500 \\ \hline
-  \textbf{Partición 5-2} & 95.07042 & 98.24561 & 0.53333 & 45.56600 & 68.33333 & 68.33333 & 0.50000 & 70.38900 & 64.06250 & 71.13402 & 0.50988 & 493.30900 \\ \hline
-  \textbf{Media} & 95.53595 & 98.24265 & 0.50000 & 48.30810 & 68.44444 & 70.94444 & 0.49444 & 75.25070 & 64.40561 & 68.80799 & 0.52134 & 508.17010 \\ \hline
-  \textbf{Desv.Típica} & 0.77190 & 0.62919 & 0.06831 & 2.47796 & 3.14073 & 3.69392 & 0.04507 & 2.93907 & 1.72356 & 1.32211 & 0.03731 & 21.95454 \\ \hline  \end{tabular}
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 92.98246 & 98.23944 & 0.56667 & 6.88100 & 65.00000 & 68.33333 & 0.46667 & 10.49400 & 65.97938 & 69.27083 & 0.49012 & 97.68700 \\ \hline
+  \textbf{Partición 1-2} & 95.42254 & 97.54386 & 0.73333 & 6.49400 & 66.66667 & 67.77778 & 0.43333 & 10.33800 & 65.10417 & 66.49485 & 0.52569 & 81.45000 \\ \hline
+  \textbf{Partición 2-1} & 96.49123 & 95.77465 & 0.33333 & 7.32400 & 68.33333 & 66.11111 & 0.55556 & 9.60900 & 58.76289 & 65.10417 & 0.52569 & 79.72400 \\ \hline
+  \textbf{Partición 2-2} & 95.77465 & 98.59649 & 0.46667 & 5.90100 & 65.00000 & 69.44444 & 0.50000 & 10.55500 & 63.02083 & 61.85567 & 0.47036 & 91.52600 \\ \hline
+  \textbf{Partición 3-1} & 95.43860 & 96.12676 & 0.46667 & 6.82600 & 69.44444 & 66.11111 & 0.46667 & 10.92900 & 61.34021 & 64.58333 & 0.56522 & 91.26400 \\ \hline
+  \textbf{Partición 3-2} & 94.36620 & 96.84211 & 0.46667 & 6.97500 & 63.88889 & 75.55556 & 0.56667 & 10.12600 & 64.06250 & 61.34021 & 0.54150 & 75.53200 \\ \hline
+  \textbf{Partición 4-1} & 91.57895 & 97.88732 & 0.46667 & 6.89300 & 73.88889 & 63.33333 & 0.48889 & 10.45900 & 65.46392 & 66.66667 & 0.47826 & 113.06300 \\ \hline
+  \textbf{Partición 4-2} & 97.53521 & 94.73684 & 0.70000 & 7.79100 & 63.88889 & 75.00000 & 0.40000 & 10.35200 & 58.85417 & 64.43299 & 0.48617 & 76.73700 \\ \hline
+  \textbf{Partición 5-1} & 96.49123 & 95.77465 & 0.46667 & 6.87900 & 61.66667 & 69.44444 & 0.51111 & 10.49900 & 64.94845 & 64.58333 & 0.48221 & 95.07600 \\ \hline
+  \textbf{Partición 5-2} & 94.01408 & 96.84211 & 0.46667 & 5.47200 & 68.33333 & 64.44444 & 0.50000 & 10.88600 & 62.50000 & 63.91753 & 0.49802 & 87.44000 \\ \hline
+  \textbf{Media} & 95.00952 & 96.83642 & 0.51333 & 6.74360 & 66.61111 & 68.55555 & 0.48889 & 10.42470 & 63.00365 & 64.82496 & 0.50632 & 88.94990 \\ \hline
+  \textbf{Desv.Típica} & 1.70272 & 1.17634 & 0.11470 & 0.62793 & 3.33750 & 3.85861 & 0.04818 & 0.35538 & 2.49893 & 2.19267 & 0.02976 & 10.86342 \\ \hline
+  \end{tabular}
   \end{adjustbox}
-  \label{AGE}
+  \label{AM1}
   \end{table}
   
+  \begin{table}[H]	
+  \caption{Resultados del AM-(10, 0.1)}
+  \begin{adjustbox}{width=1.1\textwidth}
+ \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 95.08772 & 98.94366 & 0.56667 & 11.98800 & 63.88889 & 66.11111 & 0.58889 & 25.79900 & 65.46392 & 68.22917 & 0.46640 & 274.44900 \\ \hline
+  \textbf{Partición 1-2} & 96.12676 & 97.19298 & 0.46667 & 15.50200 & 66.11111 & 66.66667 & 0.45556 & 23.60100 & 62.50000 & 65.46392 & 0.46640 & 183.12800 \\ \hline
+  \textbf{Partición 2-1} & 95.78947 & 96.83099 & 0.46667 & 15.78500 & 70.55556 & 66.11111 & 0.51111 & 26.73900 & 59.27835 & 66.14583 & 0.52964 & 277.13400 \\ \hline
+  \textbf{Partición 2-2} & 95.77465 & 97.54386 & 0.46667 & 15.51200 & 65.55556 & 75.55556 & 0.47778 & 24.00700 & 67.18750 & 63.40206 & 0.46245 & 264.25500 \\ \hline
+  \textbf{Partición 3-1} & 95.43860 & 96.12676 & 0.46667 & 16.19900 & 72.22222 & 64.44444 & 0.53333 & 25.55400 & 63.91753 & 66.66667 & 0.52569 & 182.31200 \\ \hline
+  \textbf{Partición 3-2} & 94.71831 & 97.19298 & 0.36667 & 15.47400 & 62.77778 & 71.66667 & 0.47778 & 29.22800 & 59.37500 & 65.97938 & 0.47036 & 225.77200 \\ \hline
+  \textbf{Partición 4-1} & 94.03509 & 97.88732 & 0.56667 & 14.54500 & 70.55556 & 63.33333 & 0.45556 & 24.22100 & 65.97938 & 66.14583 & 0.47036 & 277.11400 \\ \hline
+  \textbf{Partición 4-2} & 96.47887 & 96.84211 & 0.53333 & 15.79600 & 65.55556 & 73.33333 & 0.38889 & 24.17700 & 59.37500 & 66.49485 & 0.59289 & 238.66900 \\ \hline
+  \textbf{Partición 5-1} & 96.49123 & 95.77465 & 0.46667 & 14.78100 & 65.00000 & 75.00000 & 0.45556 & 30.30200 & 65.97938 & 65.62500 & 0.48221 & 229.58400 \\ \hline
+  \textbf{Partición 5-2} & 95.77465 & 97.89474 & 0.53333 & 12.28900 & 67.22222 & 65.00000 & 0.61111 & 24.34900 & 60.93750 & 65.97938 & 0.47036 & 229.95400 \\ \hline
+  \textbf{Media} & 95.57154 & 97.22301 & 0.49000 & 14.78710 & 66.94445 & 68.72222 & 0.49556 & 25.79770 & 62.99936 & 66.01321 & 0.49368 & 238.23710 \\ \hline
+  \textbf{Desv.Típica} & 0.73809 & 0.86926 & 0.05783 & 1.40177 & 2.98401 & 4.41693 & 0.06367 & 2.19647 & 2.94681 & 1.13479 & 0.04048 & 33.87668 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{AM2}
+  \end{table}
+  
+  
+  \begin{table}[H]	
+  \caption{Resultados del AM-(10, 0.1mej)}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 96.14035 & 97.88732 & 0.46667 & 8.91400 & 65.00000 & 68.88889 & 0.51111 & 24.67800 & 67.01031 & 67.70833 & 0.51383 & 150.43800 \\ \hline
+  \textbf{Partición 1-2} & 96.47887 & 97.54386 & 0.43333 & 8.89500 & 63.88889 & 63.88889 & 0.52222 & 17.27100 & 61.45833 & 66.49485 & 0.52964 & 223.49600 \\ \hline
+  \textbf{Partición 2-1} & 96.49123 & 96.47887 & 0.63333 & 10.17400 & 69.44444 & 67.22222 & 0.54444 & 19.64800 & 62.37113 & 67.18750 & 0.50988 & 174.23000 \\ \hline
+  \textbf{Partición 2-2} & 95.42254 & 97.19298 & 0.53333 & 10.51600 & 62.22222 & 72.22222 & 0.46667 & 26.73100 & 60.41667 & 63.91753 & 0.46640 & 187.97100 \\ \hline
+  \textbf{Partición 3-1} & 95.08772 & 96.47887 & 0.46667 & 9.34900 & 69.44444 & 67.22222 & 0.46667 & 22.16300 & 60.82474 & 65.10417 & 0.55731 & 252.26600 \\ \hline
+  \textbf{Partición 3-2} & 94.71831 & 97.54386 & 0.36667 & 9.15300 & 67.77778 & 75.00000 & 0.58889 & 21.68600 & 60.93750 & 62.37113 & 0.53360 & 182.59400 \\ \hline
+  \textbf{Partición 4-1} & 95.08772 & 97.53521 & 0.46667 & 9.38700 & 73.33333 & 63.33333 & 0.48889 & 24.69300 & 67.01031 & 64.58333 & 0.50198 & 254.71500 \\ \hline
+  \textbf{Partición 4-2} & 96.47887 & 96.49123 & 0.33333 & 8.89900 & 62.22222 & 73.88889 & 0.53333 & 25.59200 & 60.93750 & 64.43299 & 0.54150 & 198.72100 \\ \hline
+  \textbf{Partición 5-1} & 95.43860 & 96.47887 & 0.46667 & 8.78800 & 62.77778 & 70.00000 & 0.51111 & 23.93300 & 64.43299 & 64.58333 & 0.48221 & 160.49500 \\ \hline
+  \textbf{Partición 5-2} & 95.42254 & 96.49123 & 0.33333 & 10.97200 & 72.22222 & 67.22222 & 0.47778 & 21.83000 & 64.06250 & 67.01031 & 0.49012 & 186.45500 \\ \hline
+  \textbf{Media} & 95.67668 & 97.01223 & 0.45000 & 9.50470 & 66.83333 & 68.88889 & 0.51111 & 22.82250 & 62.94620 & 65.33935 & 0.51265 & 197.13810 \\ \hline
+  \textbf{Desv.Típica} & 0.62957 & 0.55077 & 0.08724 & 0.73394 & 3.96006 & 3.72678 & 0.03651 & 2.73367 & 2.40840 & 1.61266 & 0.02693 & 33.92569 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{AM3}
+  \end{table}
   
   
   \begin{table}[H]
@@ -556,8 +582,9 @@ Se describe a continuación un esquema de los ficheros de código:
   \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas test}}} & \multicolumn{1}{c|}{\textbf{\textit{\% clas train}}} & \multicolumn{1}{c|}{\textbf{\textit{tasa red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
   \textbf{3-NN} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
   \textbf{SFS} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
-  \textbf{AGG} & 95.53546 & 98.13689 & 0.50000 & 45.03090 & 67.27778 & 71.55556 & 0.50111 & 72.23810 & 63.93363 & 68.39616 & 0.51107 & 519.59430 \\ \hline
-  \textbf{AGE} & 95.53595 & 98.24265 & 0.50000 & 48.30810 & 68.44444 & 70.94444 & 0.49444 & 75.25070 & 64.40561 & 68.80799 & 0.52134 & 508.17010 \\ \hline
+  \textbf{AM-(10, 1.0)} & 95.00952 & 96.83642 & 0.51333 & 6.74360 & 66.61111 & 68.55555 & 0.48889 & 10.42470 & 63.00365 & 64.82496 & 0.50632 & 88.94990 \\ \hline
+  \textbf{AM-(10, 0.1)} & 95.57154 & 97.22301 & 0.49000 & 14.78710 & 66.94445 & 68.72222 & 0.49556 & 25.79770 & 62.99936 & 66.01321 & 0.49368 & 238.23710 \\ \hline
+  \textbf{AM-(10, 0.1mej)} & 95.67668 & 97.01223 & 0.45000 & 9.50470 & 66.83333 & 68.88889 & 0.51111 & 22.82250 & 62.94620 & 65.33935 & 0.51265 & 197.13810 \\ \hline
   \end{tabular}
   \end{adjustbox}
   \label{all}

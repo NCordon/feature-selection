@@ -275,9 +275,7 @@ memetic.BL <- function(data, prob, prof.bl, apply.best){
     for (i in 1:length(population)){
       if (apply.to[i]){
         result <- BL.entornos(data, population[[i]]$mask, max.entornos=prof.bl)
-        
         population[[i]] <- list (mask = result$mask, fitness = 0, evaluated = FALSE)
-        
         evs <- evs + result$eval
       }
     }
