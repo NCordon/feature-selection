@@ -193,7 +193,12 @@ AG <- function(data, crossover = crossover.OX, function.BL, gen.memetic){
     
     # Ordenando la poblacion por tasa de menor a mayor, delvolvemos el mejor...
     population <- sorted(population)
-    population[[n.crom]]$mask
+    
+    if (AM.backward.selection){
+      backward.selection(data, population[[n.crom]]$mask)
+    } else{
+      population[[n.crom]]$mask
+    }
   }
   
   stationary <- function(){
@@ -220,7 +225,13 @@ AG <- function(data, crossover = crossover.OX, function.BL, gen.memetic){
     }  
     # Ordenando la poblacion por tasa de menor a mayor, delvolvemos el mejor...
     population <- sorted(population)
-    population[[n.crom]]$mask
+    
+    
+    if (AM.backward.selection){
+      backward.selection(data, population[[n.crom]]$mask)
+    } else{
+      population[[n.crom]]$mask
+    }
   }
   
   list (generational = generational, stationary = stationary)

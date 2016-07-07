@@ -77,6 +77,7 @@ AGG.prob.cruce <- 0.7
 AGG.prob.mutation <- 0.001
 AGE.prob.cruce <- 1
 AM.prof.bl <- 1
+AM.backward.selection <- T
 
 # Parametros de las OCH  
 #### num.ants             numero de hormigas

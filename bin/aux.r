@@ -132,10 +132,15 @@ cross.eval <- function(algorithm){
   append(all.results, mean.results)
 } 
 
-
+#########################################################################
+### Funcion de backward selection 
+###     Para un conjunto de datos y una mascara, va quitando componentes
+###     seleccionadas en la mascara mientras no se pierda calidad de
+###     scoring del algoritmo
+##########################################################################
 
 backward.selection <- function(data, mask){
-  non.selected <- which(mask == 1)
+  selected <- which(mask == 1)
   actual <- tasa.clas(data, mask)
   mejora <- TRUE
   
@@ -152,7 +157,7 @@ backward.selection <- function(data, mask){
     else{
       sel <- selected[which.max (evs)]
       mask [sel] <- 0
-      selected <- selected[non.selected != sel]
+      selected <- selected[selected != sel]
       actual <- max(evs)
     }
   }
