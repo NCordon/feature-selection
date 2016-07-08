@@ -389,7 +389,7 @@ Se describe a continuación un esquema de los ficheros de código:
 \begin{itemize}
  \item \hrefr{main.r}: de arriba a abajo, carga los paquetes necesarios, incluye el código fuente de otros ficheros
   (\hrefr{aux.r}, \hrefr{AGs.r}, \ldots) y lee los parámetros necesarios, entre ellos las 
-  semillas aleatorias (12345678, 23456781, 34567812, 45678123, 56781234) desde el fichero \hrefr{params.r}
+  semillas aleatorias (12345678, 23456781, 34567812, 45678123, 56781234) desde el fichero \hrefr{params.r}.
   
   Se ejecuta la función \texttt{cross.eval(algoritmo)}, que almacena los resultados de la ejecución en la lista
   \texttt{algoritmo.results}. Esta lista contendrá 3 dataframes con los datos del 5x2 cross validation, uno por dataset, 
@@ -400,7 +400,13 @@ Se describe a continuación un esquema de los ficheros de código:
   
  \item \hrefr{aux.r}: contiene las implementaciones de la función de normalización de datasets, la función de
  particionado de \texttt{data.frames}, la función objetivo \texttt{tasa.clas} y la función \texttt{cross.eval}
- descrita arriba.
+ descrita arriba. También contiene una implementación de una función \texttt{backward.selection}, a la que se le pasa
+ un \textit{dataset} y una máscara, y va suprimiendo características escogidas mientras no se pierda calidad del \textit{scoring}.
+ Esta función se le aplica a la máscara que ofrece como resultado cualquier algoritmo memético siempre que hayamos
+ seteado el parámetro \texttt{AM.backward.selection} a \texttt{TRUE} en \hrefr{params.r}. En caso opuesto, se ejecuta
+ el algoritmo memético de manera usual. Cabe destacar que el uso de esta función no garantiza a priori mejores o iguales
+ resultados de \texttt{scoring} en las máscaras, pero sí una máscara con la misma o menor reducción que la obtenida al aplicar
+ un memético de forma convencional.
  
  \item \hrefr{AGs.r}: contiene:
   \begin{itemize}
@@ -431,6 +437,8 @@ Se describe a continuación un esquema de los ficheros de código:
     \item \texttt{AGG.prob.mutation}: probabilidad de mutación de los genes(cada una de las $n$ características
     de la máscara) en las soluciones del algoritmo genético generacional. Está seteada a 0.001 (1 gen por cada mil)
     \item \texttt{AM.prof.bl}: profundidad de la búsqueda local aplicada. Por defecto, a 1.
+    \item \texttt{AM.backward.selection}: activa la aplicación de la \textit{backward selection} a las máscaras obtenidas
+    mediante los algoritmos meméticos.
   \end{itemize}
   
  \item \hrefr{NN3.r}: contiene una implementación del vecino más cercano con $k=3$.
@@ -573,6 +581,81 @@ Se describe a continuación un esquema de los ficheros de código:
   \end{table}
   
   
+  
+  
+  \begin{table}[H]
+  \caption{Resultados del AM-(10, 1.0) con \textit{backward selection}}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 93.33333 & 98.59155 & 0.60000 & 11.24100 & 65.00000 & 68.88889 & 0.47778 & 11.36200 & 67.01031 & 70.83333 & 0.50593 & 121.88000 \\ \hline
+  \textbf{Partición 1-2} & 97.53521 & 97.54386 & 0.73333 & 9.40000 & 69.44444 & 65.00000 & 0.51111 & 12.27000 & 68.75000 & 69.07216 & 0.52174 & 108.54400 \\ \hline
+  \textbf{Partición 2-1} & 96.14035 & 97.18310 & 0.43333 & 11.97700 & 70.00000 & 68.88889 & 0.64444 & 11.73000 & 61.34021 & 67.70833 & 0.54545 & 101.50400 \\ \hline
+  \textbf{Partición 2-2} & 96.47887 & 98.24561 & 0.53333 & 7.77500 & 60.00000 & 73.33333 & 0.42222 & 10.29300 & 61.97917 & 65.97938 & 0.49012 & 94.35100 \\ \hline
+  \textbf{Partición 3-1} & 95.08772 & 97.53521 & 0.66667 & 8.33900 & 71.66667 & 68.33333 & 0.52222 & 13.08600 & 61.85567 & 66.14583 & 0.57312 & 101.67800 \\ \hline
+  \textbf{Partición 3-2} & 96.47887 & 97.54386 & 0.60000 & 7.97800 & 64.44444 & 75.55556 & 0.53333 & 11.12700 & 61.97917 & 67.52577 & 0.50198 & 83.85600 \\ \hline
+  \textbf{Partición 4-1} & 93.68421 & 98.59155 & 0.63333 & 7.69400 & 71.11111 & 64.44444 & 0.50000 & 12.01800 & 66.49485 & 68.75000 & 0.50593 & 147.92100 \\ \hline
+  \textbf{Partición 4-2} & 97.18310 & 97.54386 & 0.60000 & 7.92900 & 67.77778 & 73.88889 & 0.52222 & 12.03700 & 64.58333 & 69.07216 & 0.50593 & 90.75400 \\ \hline
+  \textbf{Partición 5-1} & 95.08772 & 97.18310 & 0.73333 & 7.84700 & 61.66667 & 72.77778 & 0.53333 & 12.05700 & 64.94845 & 66.66667 & 0.50593 & 129.81100 \\ \hline
+  \textbf{Partición 5-2} & 93.66197 & 98.59649 & 0.63333 & 8.21500 & 68.33333 & 63.33333 & 0.42222 & 11.99200 & 61.45833 & 68.55670 & 0.49407 & 135.77300 \\ \hline
+  \textbf{Media} & 95.46714 & 97.85582 & 0.61667 & 8.83950 & 66.94444 & 69.44444 & 0.50889 & 11.79720 & 64.03995 & 68.03103 & 0.51502 & 111.60720 \\ \hline
+  \textbf{Desv.Típica} & 1.44915 & 0.55525 & 0.08466 & 1.46858 & 3.79449 & 4.09004 & 0.06000 & 0.70724 & 2.55681 & 1.44216 & 0.02430 & 20.13056 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{}
+  \end{table}
+  
+  
+  \begin{table}[H]
+  \caption{Resultados del AM-(10, 0.1) con \textit{backward selection}}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 95.08772 & 98.94366 & 0.63333 & 12.38200 & 65.00000 & 70.00000 & 0.61111 & 26.13200 & 65.97938 & 68.75000 & 0.49407 & 311.78800 \\ \hline
+  \textbf{Partición 1-2} & 96.12676 & 98.24561 & 0.60000 & 14.54300 & 65.55556 & 67.77778 & 0.60000 & 21.96300 & 65.62500 & 68.04124 & 0.50593 & 209.11800 \\ \hline
+  \textbf{Partición 2-1} & 95.43860 & 97.88732 & 0.53333 & 15.54900 & 67.22222 & 66.66667 & 0.52222 & 27.09700 & 59.27835 & 65.62500 & 0.53360 & 280.01400 \\ \hline
+  \textbf{Partición 2-2} & 94.01408 & 98.59649 & 0.66667 & 16.67300 & 62.22222 & 68.33333 & 0.47778 & 23.04700 & 64.06250 & 63.40206 & 0.55336 & 206.48000 \\ \hline
+  \textbf{Partición 3-1} & 95.08772 & 97.53521 & 0.66667 & 16.22100 & 73.33333 & 65.55556 & 0.56667 & 26.22900 & 63.40206 & 67.18750 & 0.52964 & 188.71900 \\ \hline
+  \textbf{Partición 3-2} & 96.12676 & 97.89474 & 0.60000 & 15.21600 & 66.66667 & 73.88889 & 0.56667 & 25.63700 & 65.10417 & 68.04124 & 0.51383 & 294.00000 \\ \hline
+  \textbf{Partición 4-1} & 94.03509 & 98.59155 & 0.70000 & 14.34900 & 67.77778 & 65.00000 & 0.47778 & 24.92100 & 65.97938 & 66.66667 & 0.48221 & 283.92000 \\ \hline
+  \textbf{Partición 4-2} & 96.83099 & 96.84211 & 0.73333 & 18.65000 & 66.66667 & 76.11111 & 0.58889 & 22.87000 & 63.54167 & 65.97938 & 0.54941 & 213.47700 \\ \hline
+  \textbf{Partición 5-1} & 95.08772 & 97.18310 & 0.73333 & 14.98000 & 62.77778 & 75.00000 & 0.47778 & 30.04400 & 64.94845 & 66.14583 & 0.49407 & 247.84800 \\ \hline
+  \textbf{Partición 5-2} & 95.07042 & 97.89474 & 0.73333 & 14.68100 & 64.44444 & 63.88889 & 0.56667 & 21.80400 & 63.02083 & 68.55670 & 0.55731 & 256.98700 \\ \hline
+  \textbf{Media} & 95.29059 & 97.96145 & 0.66000 & 15.32440 & 66.16667 & 69.22222 & 0.54556 & 24.97440 & 64.09418 & 66.83956 & 0.52134 & 249.23510 \\ \hline
+  \textbf{Desv.Típica} & 0.84681 & 0.62455 & 0.06464 & 1.56514 & 2.95491 & 4.15145 & 0.04980 & 2.46628 & 1.90606 & 1.55403 & 0.02576 & 40.62928 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{}
+  \end{table}
+  
+  \begin{table}[H]
+  \caption{Resultados del AM-(10, 0.1mej) con \textit{backward selection}}
+  \begin{adjustbox}{width=1.1\textwidth}
+  \begin{tabular}{|c|r|r|r|r|r|r|r|r|r|r|r|r|}
+  \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{ 4}{c|}{\textbf{\textit{Wdbc}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Movement\_Libras}}} & \multicolumn{ 4}{c|}{\textbf{\textit{Arrhytmia}}} \\ \hline
+  \multicolumn{1}{|l|}{} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_test}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_cl\_train}}} & \multicolumn{1}{c|}{\textbf{\textit{\%\_red}}} & \multicolumn{1}{c|}{\textbf{T(s)}} \\ \hline
+  \textbf{Partición 1-1} & 95.78947 & 98.59155 & 0.50000 & 8.97900 & 61.66667 & 68.33333 & 0.54444 & 25.51400 & 67.52577 & 68.22917 & 0.52964 & 168.05100 \\ \hline
+  \textbf{Partición 1-2} & 95.42254 & 98.24561 & 0.63333 & 10.17400 & 71.11111 & 65.55556 & 0.58889 & 17.54600 & 66.14583 & 68.55670 & 0.51383 & 260.56500 \\ \hline
+  \textbf{Partición 2-1} & 95.08772 & 96.83099 & 0.76667 & 10.29900 & 71.11111 & 67.77778 & 0.61111 & 20.58200 & 63.91753 & 66.66667 & 0.51779 & 184.03700 \\ \hline
+  \textbf{Partición 2-2} & 96.12676 & 98.24561 & 0.30000 & 9.86800 & 65.00000 & 72.22222 & 0.48889 & 24.82700 & 63.54167 & 64.43299 & 0.55336 & 229.13700 \\ \hline
+  \textbf{Partición 3-1} & 94.38596 & 96.83099 & 0.53333 & 9.56800 & 70.00000 & 70.00000 & 0.48889 & 22.55300 & 61.34021 & 68.22917 & 0.60870 & 294.06200 \\ \hline
+  \textbf{Partición 3-2} & 94.01408 & 98.24561 & 0.63333 & 9.42600 & 63.88889 & 78.33333 & 0.47778 & 22.22700 & 63.02083 & 64.94845 & 0.51779 & 220.74800 \\ \hline
+  \textbf{Partición 4-1} & 94.38596 & 98.59155 & 0.70000 & 9.68800 & 73.33333 & 66.11111 & 0.52222 & 25.44500 & 65.97938 & 68.22917 & 0.51779 & 270.23200 \\ \hline
+  \textbf{Partición 4-2} & 96.47887 & 96.49123 & 0.53333 & 11.09000 & 61.66667 & 73.88889 & 0.56667 & 20.20800 & 63.54167 & 71.64948 & 0.48221 & 217.74400 \\ \hline
+  \textbf{Partición 5-1} & 96.14035 & 97.53521 & 0.60000 & 9.01400 & 61.11111 & 75.00000 & 0.54444 & 24.37100 & 63.40206 & 65.62500 & 0.49012 & 170.83300 \\ \hline
+  \textbf{Partición 5-2} & 95.07042 & 97.89474 & 0.50000 & 9.09200 & 67.22222 & 63.88889 & 0.43333 & 21.42200 & 62.50000 & 67.52577 & 0.50988 & 250.45900 \\ \hline
+  \textbf{Media} & 95.29021 & 97.75031 & 0.57000 & 9.71980 & 66.61111 & 70.11111 & 0.52667 & 22.46950 & 64.09150 & 67.40926 & 0.52411 & 226.58680 \\ \hline
+  \textbf{Desv.Típica} & 0.80345 & 0.74122 & 0.12243 & 0.63187 & 4.32085 & 4.40818 & 0.05216 & 2.47744 & 1.78711 & 1.99938 & 0.03373 & 40.80001 \\ \hline
+  \end{tabular}
+  \end{adjustbox}
+  \label{}
+  \end{table}
+  
   \begin{table}[H]
   \caption{Resultados globales}
   \begin{adjustbox}{width=1.1\textwidth}
@@ -583,19 +666,26 @@ Se describe a continuación un esquema de los ficheros de código:
   \textbf{3-NN} & 96.55597 & 96.55597 & 0.00000 & 0.00000 & 67.27778 & 68.22222 & 0.00000 & 0.00000 & 63.15883 & 63.31454 & 0.00000 & 0.00000 \\ \hline
   \textbf{SFS} & 93.63652 & 96.69644 & 0.87000 & 0.16150 & 64.50000 & 70.77778 & 0.89556 & 1.01970 & 69.85019 & 75.85911 & 0.98340 & 2.06640 \\ \hline
   \textbf{AM-(10, 1.0)} & 95.00952 & 96.83642 & 0.51333 & 6.74360 & 66.61111 & 68.55555 & 0.48889 & 10.42470 & 63.00365 & 64.82496 & 0.50632 & 88.94990 \\ \hline
+  \textbf{AM-(10, 1.0) + bs} & 95.46714 & 97.85582 & 0.61667 & 8.83950 & 66.94444 & 69.44444 & 0.50889 & 11.79720 & 64.03995 & 68.03103 & 0.51502 & 111.60720 \\ \hline
   \textbf{AM-(10, 0.1)} & 95.57154 & 97.22301 & 0.49000 & 14.78710 & 66.94445 & 68.72222 & 0.49556 & 25.79770 & 62.99936 & 66.01321 & 0.49368 & 238.23710 \\ \hline
+  \textbf{AM-(10, 0.1) + bs} & 95.29059 & 97.96145 & 0.66000 & 15.32440 & 66.16667 & 69.22222 & 0.54556 & 24.97440 & 64.09418 & 66.83956 & 0.52134 & 249.23510 \\ \hline
   \textbf{AM-(10, 0.1mej)} & 95.67668 & 97.01223 & 0.45000 & 9.50470 & 66.83333 & 68.88889 & 0.51111 & 22.82250 & 62.94620 & 65.33935 & 0.51265 & 197.13810 \\ \hline
+  \textbf{AM-(10, 0.1mej) + bs} & 95.29021 & 97.75031 & 0.57000 & 9.71980 & 66.61111 & 70.11111 & 0.52667 & 22.46950 & 64.09150 & 67.40926 & 0.52411 & 226.58680 \\ \hline
   \end{tabular}
   \end{adjustbox}
   \label{all}
   \end{table}
   
-  Los datos que hemos obtenido tienen la limitación de tener tasa de reducción cercana al 50\%, como ya se comentó en algoritmos
+  Los datos que hemos obtenido\footnote{En los gráficos comparativos y en los análisis que siguen a continuación
+  no se reflejan las metaheurísticas con \textit{backward selection}}
+  tienen la limitación de tener tasa de reducción cercana al 50\%, como ya se comentó en algoritmos
   genéticos. Se esperaba que la hibridación con búsqueda local arrojara mejores resultados de \textit{score} y de tasa de reducción,
   pero podemos afirmar que un factor determinante en la no mejora de resultados es que estamos usando un equilibrio de hibridación
   genéticos-búsqueda local incorrecto. Recordemos que en los resultados obtenidos mediante algoritmos genéticos usábamos 
   poblaciones de 30 cromosomas, mientras que aquí estamos empleando 10 cromosomas. Deberíamos por tanto quizás buscar más
   diversidad con poblaciones de cromosomas más grandes.
+  
+ 
   \subsection{Wdbc}
   
   Es un problema de clasificación binaria en un dataset de 30 características y 569 instancias.
@@ -651,4 +741,11 @@ Se describe a continuación un esquema de los ficheros de código:
   Los algoritmos meméticos no han resultado obtener tan buenos resultados como se esperaban de ellos, ya que a priori, podían
   proporcionar un buen equilibrio diversidad-convergencia. De hecho, ahí parece haber radicado el problema, puesto que el
   \textit{setting} que hemos empleado para garantizar tal equilibrio podría no haber sido el adecuado.
+  
+  En cuanto a las metaheurísticas añadiéndole \textit{backward selection}, experimento que se prometió realizar en prácticas
+  anteriores, hemos obtenido resultados muy positivos, con tasas de reducción que han aumentado significativamente en el caso
+  del \textit{dataset} Wdbc, y menos, en los otros dos \textit{datasets}, pero manteniendo los resultados de \textit{scoring},
+  incluso mejorándolos levemente en muchos casos, y en media, debido a que podemos estar eliminando sobreajustes quitando
+  características.
+  
 \end{document}
