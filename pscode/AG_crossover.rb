@@ -2,7 +2,7 @@ def OX(xx, xy){
     k = length(xx)
     limites = {random(1,k)...random(1,k)}
     chromosome = yy
-    chromosome[limites] <- xy[limites]
+    chromosome[limites] = xy[limites]
 
     return(chromosome)
 }

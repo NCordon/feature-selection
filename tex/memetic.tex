@@ -259,17 +259,15 @@ obtenido.
   \normalsize
   
 \item \textbf{Generación de soluciones aleatorias}:
-  La población inicial en ambos casos se inicializa haciendo uso del siguiente procedimiento, con 30 cromosomas en ambos casos.
-  (\texttt{num\_crom = 30})\\
+  La población inicial en ambos casos se inicializa haciendo uso del siguiente procedimiento, con \texttt{num\_crom=10}\\
   
   \small\texttt{\input{AG_gen_init}}
   \normalsize
 
 \item \textbf{Mecanismo de selección}:
-  El mecanismo de selección empleado ha sido el siguiente, donde para el modelo generacional \texttt{size\_generation = 30} y para
-  el estacionario se tiene \texttt{size\_generation = 2}, y en ambos casos el tamaño de la población es 30 (\texttt{num\_crom=30}).
-
-  Se seleccionan \texttt{size\_generation} parejas de cromosomas, y se decide cuál de los dos individuos de la pareja se 
+  El mecanismo de selección empleado ha sido el siguiente:
+  
+  Se seleccionan \texttt{size\_generation = num\_crom} parejas de cromosomas, y se decide cuál de los dos individuos de la pareja se 
   queda en la población por torneo binario.\\
   
   \small\texttt{\input{AG_selection}}
@@ -293,13 +291,6 @@ obtenido.
   \small\texttt{\input{AG_mutation}}
   \normalsize
   
-  Puesto que la parte de selección incluía un matiz aleatorio en la ordenación del vector, mutamos siempre los cromosomas
-  que nos encontramos al principio. Se ha querido adaptar esta función para que funcione tanto para el modelo generacional
-  como el estacionario. Por tanto, el problema de usar la esperanza matemática de mutar en lugar de generar un aleatorio
-  por cada gen se materializa en que para pocos genes (wdbc tiene 30 características), y para 2 padres, tendremos 60 genes,
-  de los cuales podríamos mutar 1 gen siempre, o no mutar ninguno, por ser la esperanza menor que cero. Por eso para 
-  resolver esta tesitura se lanza un aleatorio, y si es menor que la esperanza calculada, mutaremos un gen en dicha 
-  llamada. Caso opuesto, no.
 
 \item \textbf{Algoritmo Búsqueda Local (BL)} empleado:
   
@@ -350,7 +341,7 @@ función \textit{wrapper} con ciertos parámetros):
 \small{\texttt{\input{AM}}}
 \normalsize
 
-Los parámetros usados han sido \texttt{max\_eval} = 15000, \texttt{p\_cruce=0.7} y \texttt{p\_mutation}=0.001.
+Los parámetros usados han sido \texttt{max\_eval} = 15000, \texttt{p\_cruce=0.7} y \texttt{p\_mutation}=0.001, \texttt{gen\_memetic=10}
 
 \subsection{AM-(10, 1.0)}
 
@@ -402,15 +393,14 @@ Se describe a continuación un esquema de los ficheros de código:
  particionado de \texttt{data.frames}, la función objetivo \texttt{tasa.clas} y la función \texttt{cross.eval}
  descrita arriba. También contiene una implementación de una función \texttt{backward.selection}, a la que se le pasa
  un \textit{dataset} y una máscara, y va suprimiendo características escogidas mientras no se pierda calidad del \textit{scoring}.
- Esta función se le aplica a la máscara que ofrece como resultado cualquier algoritmo memético siempre que hayamos
- seteado el parámetro \texttt{AM.backward.selection} a \texttt{TRUE} en \hrefr{params.r}. En caso opuesto, se ejecuta
+ Esta función se le aplica a la máscara que ofrece como resultado cualquier algoritmo memético al setear el parámetro \texttt{AM.backward.selection} a \texttt{TRUE} en \hrefr{params.r}. En caso opuesto, se ejecuta
  el algoritmo memético de manera usual. Cabe destacar que el uso de esta función no garantiza a priori mejores o iguales
- resultados de \texttt{scoring} en las máscaras, pero sí una máscara con la misma o menor reducción que la obtenida al aplicar
+ resultados de \textit{scoring} en las máscaras, pero sí una máscara con la misma o menor reducción que la obtenida al aplicar
  un memético de forma convencional.
  
  \item \hrefr{AGs.r}: contiene:
   \begin{itemize}
-   \item La función \texttt{random.init} que se aplica 30 veces en cada algoritmo para inicializar la
+   \item La función \texttt{random.init} que se aplica 10 veces en cada algoritmo para inicializar la
  población con máscaras aleatorias
    \item La función \texttt{crossover.OX} que es el operador de cruce que por defecto se usa. Podría implementarse otro y
    aplicarlo en lugar del OX de forma fácil según la estructura que se ha creado al programar.
@@ -433,7 +423,7 @@ Se describe a continuación un esquema de los ficheros de código:
     \item \texttt{max\_eval}: número máximo de evaluaciones de la función objetivo.
     \item \texttt{AG.n.crom}: tamaño de la población. Por defecto seteado a 10.
     \item \texttt{AGG.prob.cruce}: probabilidad de cruce de los padres para dar lugar a un nuevo cromosoma. 
-    Está seteada a 0.7 y a 1 por defecto.
+    Está seteada a 0.7 por defecto.
     \item \texttt{AGG.prob.mutation}: probabilidad de mutación de los genes(cada una de las $n$ características
     de la máscara) en las soluciones del algoritmo genético generacional. Está seteada a 0.001 (1 gen por cada mil)
     \item \texttt{AM.prof.bl}: profundidad de la búsqueda local aplicada. Por defecto, a 1.
@@ -681,9 +671,9 @@ Se describe a continuación un esquema de los ficheros de código:
   tienen la limitación de tener tasa de reducción cercana al 50\%, como ya se comentó en algoritmos
   genéticos. Se esperaba que la hibridación con búsqueda local arrojara mejores resultados de \textit{score} y de tasa de reducción,
   pero podemos afirmar que un factor determinante en la no mejora de resultados es que estamos usando un equilibrio de hibridación
-  genéticos-búsqueda local incorrecto. Recordemos que en los resultados obtenidos mediante algoritmos genéticos usábamos 
-  poblaciones de 30 cromosomas, mientras que aquí estamos empleando 10 cromosomas. Deberíamos por tanto quizás buscar más
-  diversidad con poblaciones de cromosomas más grandes.
+  genéticos-búsqueda local poco afinado, y un operador de cruce bastante mejorable. Recordemos que en los resultados 
+  obtenidos mediante algoritmos genéticos usábamos poblaciones de 30 cromosomas, mientras que aquí estamos empleando 
+  10 cromosomas. Deberíamos por tanto quizás buscar más diversidad con poblaciones de cromosomas más grandes.
   
  
   \subsection{Wdbc}
@@ -715,7 +705,7 @@ Se describe a continuación un esquema de los ficheros de código:
   que se ha modelado el equilibrio diversidad-convergencia pueden afinarse más. Recuérdese que los resultados que obteníamos
   tanto con el genético generacional simple como con el estacionario eran mejores que con el vecino más cercano.
   
-  Se observa overfitting bastante fuerte en algunas de las ejecuciones para los tres algoritmos. Observamos además que las
+  Se observa \textit{overfitting} bastante fuerte en algunas de las ejecuciones para los tres algoritmos. Observamos además que las
   desviaciones son superiores que en el conjunto Wdbc, porque teneemos muy poca información para caracterizar las variables
   del \textit{dataset}.
   
@@ -738,14 +728,14 @@ Se describe a continuación un esquema de los ficheros de código:
   
   \subsection{Notas finales}
   
-  Los algoritmos meméticos no han resultado obtener tan buenos resultados como se esperaban de ellos, ya que a priori, podían
+  Los algoritmos meméticos no han resultado obtener tan buenos resultados como se esperaba de ellos, ya que a priori, podían
   proporcionar un buen equilibrio diversidad-convergencia. De hecho, ahí parece haber radicado el problema, puesto que el
   \textit{setting} que hemos empleado para garantizar tal equilibrio podría no haber sido el adecuado.
   
   En cuanto a las metaheurísticas añadiéndole \textit{backward selection}, experimento que se prometió realizar en prácticas
   anteriores, hemos obtenido resultados muy positivos, con tasas de reducción que han aumentado significativamente en el caso
   del \textit{dataset} Wdbc, y menos, en los otros dos \textit{datasets}, pero manteniendo los resultados de \textit{scoring},
-  incluso mejorándolos levemente en muchos casos, y en media, debido a que podemos estar eliminando sobreajustes quitando
+  incluso mejorándolos levemente en muchos casos, y en media, debido a que podríamos estar eliminando sobreajustes quitando
   características.
   
 \end{document}

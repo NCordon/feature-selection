@@ -2,12 +2,12 @@
 \noindent
 \mbox{}\textbf{\textcolor{Blue}{def}}\ mutate\textcolor{BrickRed}{(}population\textcolor{BrickRed}{,}\ prob\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
 \mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ n\ es\ el\ número\ de\ predictores\ del\ dataset}} \\
-\mbox{}\ \ \ \ M\ \textcolor{BrickRed}{\textless{}-}\ length\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)} \\
-\mbox{}\ \ \ \ mutations\ \textcolor{BrickRed}{\textless{}-}\ n\textcolor{BrickRed}{*}M\textcolor{BrickRed}{*}prob \\
+\mbox{}\ \ \ \ M\ \textcolor{BrickRed}{=}\ length\textcolor{BrickRed}{(}population\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ mutations\ \textcolor{BrickRed}{=}\ n\textcolor{BrickRed}{*}M\textcolor{BrickRed}{*}prob \\
 \mbox{} \\
 \mbox{}\ \ \ \ \textit{\textcolor{Brown}{\#\ Esto\ impide\ que\ mutemos\ siempre\ en\ el\ estacionario}} \\
 \mbox{}\ \ \ \ \textbf{\textcolor{Blue}{if}}\ \textcolor{BrickRed}{(}random\textcolor{BrickRed}{(}\textcolor{Purple}{0.0}\textcolor{BrickRed}{,}\ \textcolor{Purple}{1.0}\textcolor{BrickRed}{)}\ \textcolor{BrickRed}{\textless{}}\ mutations\textcolor{BrickRed}{)}\textcolor{Red}{\{} \\
-\mbox{}\ \ \ \ \ \ \ \ mutations\ \textcolor{BrickRed}{\textless{}-}\ ceil\textcolor{BrickRed}{(}mutations\textcolor{BrickRed}{)} \\
+\mbox{}\ \ \ \ \ \ \ \ mutations\ \textcolor{BrickRed}{=}\ ceil\textcolor{BrickRed}{(}mutations\textcolor{BrickRed}{)} \\
 \mbox{} \\
 \mbox{}\ \ \ \ \ \ \ \ \textit{\textcolor{Brown}{\#\ Se\ escogen\ los\ genes\ que\ se\ mutarán\ junto\ a\ sus\ cromosomas}} \\
 \mbox{}\ \ \ \ \ \ \ \ crom\ \textcolor{BrickRed}{=}\ \textcolor{BrickRed}{[}\ \textbf{\textcolor{Blue}{for}}\ i\ \textcolor{BrickRed}{\textless{}}\ mutations\ random\textcolor{BrickRed}{[}\textcolor{Red}{\{}\textcolor{Purple}{0}\textcolor{BrickRed}{,...,}M\textcolor{Red}{\}}\textcolor{BrickRed}{]} \\
