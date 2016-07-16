@@ -1,11 +1,11 @@
 # Feature Selection
 
-Contains implementations from scratch of several metaheuristics adjusted for feature selection and its application to three
+Contains implementations from scratch of several metaheuristics adjusted for feature selection, and its application to three
 different datasets:
 
-    * [Wdbc](https://github.com/NCordon/feature-selection/blob/master/data/wdbc.arff)
-    * [Arrhythmia](https://github.com/NCordon/feature-selection/blob/master/data/arrhythmia.arff)
-    * [Movement Libras](https://github.com/NCordon/feature-selection/blob/master/data/movement_libras.arff)
+- [Wdbc](data/wdbc.arff)
+- [Arrhythmia](data/arrhythmia.arff)
+- [Movement Libras](data/movement_libras.arff)
 
 ## License
 GNU licensed
@@ -22,9 +22,7 @@ GNU licensed
     * ILS `ILS.r`
     * Ant Colony Optimization `OCH.r`
     * Memetic algorithms `AGs.r`
-
-* `data` contains datasets and graphs
-
+* `data` contains datasets, graphs and boxplots.
 * `pscode` contains pseudocodes that are compiled to `.tex` doing `make`
 * `tex` contains documentation, only available in Spanish:
     * `trajectories.tex`
@@ -40,8 +38,9 @@ of each algorithm.
 
 For example, to gather the results from local search algorithm applied to all three datasets:
 ```r
-BL.results <- cross.eval(BL) ```
+BL.results <- cross.eval(BL) 
+```
 
 `params.r` contains settings used by the algorithms.
 
-![](https://github.com/NCordon/feature-selection/blob/master/data/trajectories/wdbc_3nn_boxplot.png)
+![Boxplot del dataset Wdbc](data/trajectories/wdbc_3nn_boxplot.png)
